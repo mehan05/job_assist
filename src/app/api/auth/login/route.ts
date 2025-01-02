@@ -1,10 +1,12 @@
 import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 interface LoginBody{
     email:string,
     password:string
 }
+const Secret = process.env.SECRET_KEY as string
 export async function POST(req:NextRequest){
     const body:LoginBody = await req.json();
     try {
@@ -16,7 +18,9 @@ export async function POST(req:NextRequest){
             const passwordMatch = await bcrypt.compare(body.password,userExist.password);
             if(passwordMatch)
             {
-                return NextResponse.json({message:"Login Success"},{status:200});
+                const token = jwt.sign({ email: userExist.email, id: userExist.id, role: userExist.role }, Secret, { expiresIn: "1d" });
+                
+                return NextResponse.json({message:"Login Success",token},{status:200});
             }
     
                 return NextResponse.json({message:"Invalid Password"},{status:402})
