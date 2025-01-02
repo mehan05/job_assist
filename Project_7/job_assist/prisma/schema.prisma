@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  age Int
+  gender String
+  place String
+  skills String[]
+  email String
+  password String
+  jobApplications JobApplication[]
+  workapace WorkSpace[]  @relation("UserWorkSpace")
+  createdWorkSpaces WorkSpace[] 
+  analytics Analytic[]
+  @@unique([email])
+}
+
+model JobApplication{
+  id Int @id @default(autoincrement())
+  title String
+  company String
+  status String
+  notes String
+  userId Int?
+  user User? @relation(fields: [userId]  , references: [id] ,onDelete: Cascade)
+}
+
+model WorkSpace{
+  id Int @id @default(autoincrement())
+  name String
+  createdById Int?
+  createdAt DateTime @default(now())
+  UpdatedAt DateTime @updatedAt
+  users User[]  @relation("UserWorkSpace")
+  user User? @relation(fields: [createdById] ,references: [id])
+}
+
+model JobBoard{
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  location String
+  postById Int
+  concactEmail String
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+} 
+
+model Analytic{
+  id Int @id @default(autoincrement())
+  userId Int?
+  applicationCount Int
+  successCount Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User? @relation(fields: [userId] ,references: [id])
+} 
