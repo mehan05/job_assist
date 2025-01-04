@@ -16,19 +16,27 @@ export async function POST(req:NextRequest)
     try {
         if(result.success)
         {
-           await prisma.user.create({
+          const createdUser =  await prisma.user.create({
                 data:{
                     ...body
                 }
             })
-            const token = jwt.sign({email:body.email,id:body.id, role:body.role},Secret,{expiresIn:"1d"})
+            const token = jwt.sign({email:body.email,id:createdUser.id, role:body.role},Secret,{expiresIn:"1d"})
 
             const response = NextResponse.json({message:"user created",token},{status:200});
             response.cookies.set("token",token);
+            
             return  response;
         }
         return NextResponse.json({error:"invalid data"},{status:400})
-    } catch (error) {
-            return NextResponse.json({Error:"Error While Adding User",error},{status:500})
+    } catch (error:unknown) {
+        if(error instanceof Error)
+        {
+                console.error("Error while adding user:", error.message);
+                return NextResponse.json(
+                { error: "Error while adding user", details: error.message },
+                { status: 500 }
+                );
+        }
     }
 }
