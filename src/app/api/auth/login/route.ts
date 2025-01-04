@@ -19,8 +19,12 @@ export async function POST(req:NextRequest){
             if(passwordMatch)
             {
                 const token = jwt.sign({ email: userExist.email, id: userExist.id, role: userExist.role }, Secret, { expiresIn: "1d" });
+
+                const response =  NextResponse.json({message:"Login Success",token},{status:200})
                 
-                return NextResponse.json({message:"Login Success",token},{status:200});
+                response.cookies.set("token",token);
+
+                return response;
             }
     
                 return NextResponse.json({message:"Invalid Password"},{status:402})

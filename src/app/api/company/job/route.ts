@@ -21,8 +21,3 @@ export async function POST(req:NextRequest) {
     }
 }
 
-export async function DELETE(res:NextRequest)
-{
-    const body  = await res.json();
-    
-}
