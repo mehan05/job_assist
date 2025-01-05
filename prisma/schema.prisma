@@ -57,6 +57,7 @@ model WorkSpace{
   createdAt DateTime @default(now())
   UpdatedAt DateTime @updatedAt
   members User[]  @relation("UserWorkSpace")
+  isPublic Boolean
   owner User @relation("WorkSpaceOwners",fields: [createdById] ,references: [id])
   jobBoards JobBoard[]
 }
