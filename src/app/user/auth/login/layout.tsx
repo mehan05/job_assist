@@ -5,11 +5,9 @@ const layout = ({children}:{children:React.ReactNode}) => {
   return (
     
     <div className='h-screen '>
-        <BackgroundBeamsWithCollision >
           <div className='h-screen '>
           {children}
           </div>
-        </BackgroundBeamsWithCollision>
     </div>
   )
 }

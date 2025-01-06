@@ -6,8 +6,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --background: hsl(0, 0%, 96%);
+    --foreground: hsl(0, 0%, 0%);
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
@@ -34,7 +34,7 @@
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
+    --background: hsl(0, 0%, 0%);
     --foreground: 210 20% 98%;
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
@@ -68,4 +68,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+input::placeholder {
+  color: var(--muted-foreground); 
+  font-size: 1rem;
+  font-family: 'Josefin Sans', sans-serif;
 }
