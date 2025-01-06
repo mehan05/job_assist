@@ -1,11 +1,19 @@
 "use client";
 import { BackgroundGradient } from '@/components/ui/background-gradient';
+import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import Image from 'next/image';
 import React from 'react';
 
 const UserLogin = () => {
+  const words = "Job_Assist";
   return (
     <div>
+      <div className='flex justify-center items-center '>
+        <div className='fixed top-10'>
+          <TextGenerateEffect words={words} className='text-4xl'/>
+        </div>
+
+      </div>
       <div className='flex justify-center items-center h-screen'>
       <BackgroundGradient className="rounded-3xl bg-white dark:bg-black ">
         <div className='border-2 border-foreground rounded-3xl w-[1000px] h-[550px] p-10 bg-background text-foreground'>
