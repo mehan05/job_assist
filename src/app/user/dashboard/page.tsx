@@ -1,11 +1,10 @@
+import { NavBar } from '@/components/NavBar'
 import React from 'react'
 
 const UserDashboard = () => {
   return (
     <div>
-        <h1>
-          
-        </h1>
+          <NavBar/>
     </div>
   )
 }

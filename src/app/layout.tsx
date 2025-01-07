@@ -31,9 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
           <Provider>
-            <div className="fixed top-0 left-0 w-full flex justify-end p-4 bg-background text-foreground z-50">
-                <ThemeSwitch />
-          </div>
+           
             {children}
           </Provider>
       </body>

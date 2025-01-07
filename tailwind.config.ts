@@ -11,7 +11,6 @@ export default {
   ],
   theme: {
   	extend: {
-	
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -54,13 +53,36 @@ export default {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
-		fontFamily:{
-			Josefin_Sans:["Josefin Sans","Josefin Sans"]
-		},
+  		fontFamily: {
+  			Josefin_Sans: [
+  				'Josefin Sans',
+  				'Josefin Sans'
+  			]
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		animation: {
+  			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+  			rippling: 'rippling var(--duration) ease-out'
+  		},
+  		keyframes: {
+  			'border-beam': {
+  				'100%': {
+  					'offset-distance': '100%'
+  				}
+  			},
+  			rippling: {
+  				'0%': {
+  					opacity: '1'
+  				},
+  				'100%': {
+  					transform: 'scale(2)',
+  					opacity: '0'
+  				}
+  			}
   		}
   	}
   },

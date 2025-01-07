@@ -28,14 +28,14 @@ const UserSignup = () => {
   }
   return (
     <div>
-      <div className='flex justify-center items-center mb-10'>
+      <div className='flex justify-center items-center mb-5'>
         <div className=''>
           <TextGenerateEffect words={words} />
         </div>
       </div>
       <div className='flex justify-center items-center'>
       <BackgroundGradient className="rounded-3xl bg-white dark:bg-black ">
-        <div className='border-2 border-foreground rounded-3xl w-[1000px] h-auto p-10 bg-background text-foreground'>
+        <div className='border-2 border-foreground rounded-3xl w-full max-w-full h-auto p-10 bg-background text-foreground '>
           <div className='flex justify-around items-center gap-5 '>
             <div className='flex flex-col gap-5'>
               <div className='flex flex-col gap-2 items-center justify-start overflow-hidden'>
@@ -90,7 +90,7 @@ const UserSignup = () => {
                     }
                     <button
                       type='submit'
-                      className='bg-primary hover:scale-105 text-primary-foreground font-bold py-2 px-4 rounded-xl'
+                      className='bg-primary hover:scale-105 hover:rounded-xl text-primary-foreground font-bold py-2 px-4 rounded-xl'
                     >
                       Login
                     </button>
