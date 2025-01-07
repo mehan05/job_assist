@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export const HoverEffect = ({
@@ -10,11 +10,15 @@ export const HoverEffect = ({
   items: {
     title: string;
     description: string;
-    link: string;
   }[];
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [imageLocationLinks,setimageLocationLinks] = useState<string[]>([
+    "/job-applied_icon.png",
+    "/job-rejected-icon.png",
+    "/job-pending-icon.png",
+    "/job-selected-icon.png"]);
 
   return (
     <div
@@ -24,9 +28,8 @@ export const HoverEffect = ({
       )}
     >
       {items.map((item, idx) => (
-        <Link
-          href={item?.link}
-          key={item?.link}
+        <div
+          key={idx}
           className="relative group  block p-2   max-w-70 min-w-50"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
@@ -49,10 +52,19 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card>
-            <CardTitle>{item.title}</CardTitle>
-            <CardDescription>{item.description}</CardDescription>
+          <div className="flex gap-10 justify-between items-center ">
+              <div>
+                <CardTitle className="text-2xl font-bold font-Josefin_Sans">{item.title}</CardTitle>
+                <CardDescription className="text-sm font-semibold font-Josefin_Sans">{item.description}</CardDescription>
+              </div>
+              {/*Add Logo below*/}
+              <div>
+                <Image src={imageLocationLinks[idx]} alt="logo" height={40} width={40} className="invert"/>
+              </div>
+          </div>
+            
           </Card>
-        </Link>
+        </div>
       ))}
     </div>
   );
@@ -99,22 +111,14 @@ export const CardDescription = ({
   children: React.ReactNode;
 }) => {
   return (
-    <p
+    <div
       className={cn(
         "mt-1 dark:text-zinc-100 font-Josefin_Sans text-black  tracking-wide leading-relaxed text-sm",
         className
       )}
     > 
-      <div className="flex gap-10 justify-between items-center ">
-        <div>
-
         {children}
-        </div>
-        {/*Add Logo below*/}
-        <div>
-           hello
-        </div>
-      </div>
-    </p>
+    
+    </div>
   );
 };

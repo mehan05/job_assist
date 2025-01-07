@@ -2,6 +2,8 @@ import { NavBar } from '@/components/NavBar'
 import { TextAnimate } from '@/components/ui/text-animate'
 import React from 'react'
 import Card from './(components)/card/Card'
+import AppliedJobs from './(components)/appliedJobs/AppliedJobs'
+import JobAlerts from './(components)/JobAlerts/JobAlerts'
 
 const UserDashboard = () => {
 
@@ -21,12 +23,12 @@ const UserDashboard = () => {
                 </div>
 
                 <div className='flex justify-between  items-center  w-full h-[400px] mt-2'>
-                    <div className='w-1/2 h-full max-w-70 border-2 border-white mx-6 p-4 rounded-3xl'>
-                              hello
+                    <div className='w-1/2 h-full max-w-70  dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700  mx-6 p-4 rounded-3xl scrollable-element   overflow-y-auto'>
+                             <JobAlerts/>
                     </div>
 
-                    <div className='w-1/2 h-full max-w-70 border-2 border-white mx-6 p-4 rounded-3xl'>
-                        hello
+                    <div className='w-1/2 h-full max-w-70  dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700  mx-6 p-4 rounded-3xl scrollable-element  overflow-y-auto'>
+                          <AppliedJobs/>
                     </div>
                 </div>
               </div>
