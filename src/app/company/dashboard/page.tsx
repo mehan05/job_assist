@@ -33,6 +33,10 @@ const CompanyDashboard = () => {
                         <h1 className='font-Josefin_Sans text-2xl '>Job Postings</h1>
                       <TableLayoutComponent/>
                       </div>
+                      <div className='w-full  flex-col gap-2'>
+                        <h1 className='font-Josefin_Sans text-2xl '>Job Applications</h1>
+                      <TableLayoutComponent/>
+                      </div>
                       </div>
                     
 

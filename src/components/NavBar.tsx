@@ -19,7 +19,7 @@ export function NavBar() {
     console.log(pathName.startsWith("/user/auth"));
 
   return (
-    <div className="relative ">
+    <div className="relative m-3 ">
                 {!pathName.includes("auth")&&(
                   <div className="flex gap-5 justify-between items-center " >
 
