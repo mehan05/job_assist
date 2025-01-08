@@ -78,7 +78,7 @@ input::placeholder {
 
 /* Style the scrollbar track */
 .scrollable-element::-webkit-scrollbar-track {
-  background-color: #000000; /* Set the track color */
+  background: transparent; /* Set the track color */
   border-radius: 10px; /* Optionally round the corners */
 }
 
