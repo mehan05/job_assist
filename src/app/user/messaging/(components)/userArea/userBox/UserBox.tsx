@@ -12,7 +12,7 @@ const UserBox = () => {
             </div>
             <div className="flex justify-between w-full items-center">
               <div className="">
-                <h1 className="font-Josefin_Sans font-bold">User Name</h1>
+                <h1 className="font-Josefin_Sans font-bold text-[#9574e2]">User Name</h1>
                 <p className=" ml-2 font-Josefin_Sans text-gray-400">message from the user</p>
               </div>
 
