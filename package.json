@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/popover": "^2.3.9",
     "@nextui-org/react": "^2.6.11",
+    "@nextui-org/table": "^2.2.8",
     "@prisma/client": "^6.1.0",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.4",
