@@ -1,6 +1,5 @@
 "use client";
 import { NavBar } from '@/components/NavBar';
-import { BackgroundGradient } from '@/components/ui/background-gradient';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import Image from 'next/image';
 import React from 'react';
@@ -18,7 +17,6 @@ const UserLogin = () => {
 
       </div>
       <div className='flex justify-center items-center h-screen'>
-      <BackgroundGradient className="rounded-3xl bg-white dark:bg-black ">
         <div className='border-2 border-foreground rounded-3xl w-[1000px] h-[550px] p-10 bg-background text-foreground'>
           <div className='flex justify-around items-center gap-5 '>
             <div className='flex flex-col gap-5'>
@@ -65,7 +63,6 @@ const UserLogin = () => {
             </div>
           </div>
         </div>
-      </BackgroundGradient>
       </div>
     </div>
   );

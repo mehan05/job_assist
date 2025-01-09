@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/popover"
 
 export function DatePickerDemo({setDate,date}:{setDate:(date:Date|undefined)=> void,date:Date}) {
-
+      const [popOverOpen,setpopOverOpen] = React.useState(false);
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <Popover open={popOverOpen} onOpenChange={setpopOverOpen}>
+      <PopoverTrigger asChild >
         <Button
           variant={"outline"}
           className={cn(
@@ -33,8 +33,12 @@ export function DatePickerDemo({setDate,date}:{setDate:(date:Date|undefined)=> v
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(selectedDate)=>{
+            setDate(selectedDate)
+            setpopOverOpen(false)
+          }}
           initialFocus
+          className="z-50 dark:bg-black"
         />
       </PopoverContent>
     </Popover>
