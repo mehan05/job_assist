@@ -26,6 +26,7 @@ model User{
   place String
   role ROLE @default(USER)
   skills String[]
+  dob DateTime
   email String @unique
   password String
   jobApplications JobApplication[]

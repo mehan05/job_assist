@@ -7,14 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import React, {  useEffect, useState } from "react";
-const UserSignup = () => {
+const CompanySignup = () => {
   const words = "Job_Assist";
-  const [skills, SetSkills] = useState<string[]>([]);
-  const [skill, setSkill] = useState<string>("");
   const [date, setDate] = React.useState<Date>();
-  console.log("Skill",skills);
-  console.log("date:",date&& date?.getFullYear());
-  console.log("age",((new Date().getFullYear())-((date?.getFullYear())??0)))
   const [userData, setUserData] = useState({
     name: "",
     age: 0,
@@ -22,23 +17,12 @@ const UserSignup = () => {
     gender: "",
     DOB:date,
     password: "",
-    skills: skills,
     place: "",
     headlines: "",
     bio: "",
   });
   console.log(date);
 
-  const handleAddSkill = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      if (skill.trim()) {
-        e.preventDefault();
-        SetSkills((prev) => [...prev, skill]);
-        setSkill("");
-      }
-    }
-    console.log(skills);
-  };
   const handleFormSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(userData);
@@ -60,11 +44,10 @@ const UserSignup = () => {
   }
   useEffect(() => {
       setUserData((prev)=>({...prev,DOB:date}));
-      setUserData((prev)=>({...prev,skills}));
       userData.age= ((date&& date?.getFullYear())??0)-(new Date().getFullYear());
-  },[date,skill])
+  },[date])
   return (
-    <div className="">
+    <div className="max-w-7xl mx-auto">
       <NavBar />
       <div className="flex justify-center items-center mb-5">
         <div className="">
@@ -136,28 +119,7 @@ const UserSignup = () => {
                       name="place"
                       className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
                     />
-                    <input
-                      type="text"
-                      placeholder="Add Skills"
-                      value={skill}
-                      onChange={(e) => setSkill(e.target.value)}
-                      onKeyDown={handleAddSkill}
-                      className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
-                    />
-
-                    {skills.length > 0 && (
-                      <div className="m-1 p-1 flex gap-2 flex-wrap break-words w-full max-w-[300px]">
-                        <p className="font-Josefin_Sans font-semibold">
-                          Skills:
-                        </p>
-
-                        {skills.map((ele, index) => (
-                          <Badge key={index} variant={"outline"}>
-                            {ele}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
+                   
                     <div className="grid w-full gap-2">
                       <Textarea placeholder="Add Bio" name="bio" onChange={handleOnchange} />
                     </div>
@@ -209,4 +171,4 @@ const UserSignup = () => {
   );
 };
 
-export default UserSignup;
+export default CompanySignup;

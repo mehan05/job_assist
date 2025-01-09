@@ -5,8 +5,11 @@ export const UserSchema = z.object({
     age:z.number(),
     email:z.string().email(),
     gender:z.string(),
-    password:z.string().min(8).max(16),
+    DOB:z.string().refine((date)=>!isNaN(Date.parse(date)),{message: "Enter valid date"}).transform((date)=> new Date(date)),
+    password:z.string(),
     skills:z.array(z.string()),
     place:z.string(),
+    headlines:z.string(),
+    bio:z.string(),
 })
 
