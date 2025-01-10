@@ -3,6 +3,7 @@ import { NavBar } from "@/components/NavBar";
 import TypingAnimation from "@/components/ui/typing-animation";
 
 export default function Home() {
+  
   return (
     <div className="overflow-hidden">
       <div>
@@ -10,7 +11,6 @@ export default function Home() {
       </div>
 
       <div className="mt-10 ml-10 m-5">
-        {/* Hero Section */}
         <div className="h-64 w-auto max-w-3/4 flex  items-center ">
           <div className="  w-full">
             <div>
@@ -44,7 +44,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Marquee section*/}
         <div className="mt-10">
           <div>
             <h1 className="font-Josefin_Sans text-2xl font-bold ">
@@ -63,7 +62,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/**Working section */}
         <div>
           <div>
             <h1 className="font-Josefin_Sans text-2xl mt-5 font-bold ">
@@ -126,7 +124,7 @@ export default function Home() {
           </div>
 
           <div>
-              <footer className="mt-20 border-t-1 border-gray-700 text-white py-10">
+              <footer className="mt-20 border-t-1 border-gray-700 text-black dark:text-white py-10">
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
                   <div>
                     <h2 className="text-2xl font-bold mb-4">Job_Assist</h2>

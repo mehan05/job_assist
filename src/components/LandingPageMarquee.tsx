@@ -41,7 +41,6 @@ const reviews = [
   
 
 const firstRow = reviews.slice(0, reviews.length / 2);
-const secondRow = reviews.slice(reviews.length / 2);
 
 const ReviewCard = ({
   img,
@@ -80,7 +79,7 @@ const ReviewCard = ({
 
 export function LandingPageMarquee() {
   return (
-    <div className="relative mt-5 flex h-auto w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+    <div className="relative mt-5 flex h-auto w-full flex-col items-center justify-center overflow-hidden rounded-lg  bg-background md:shadow-xl">
       <Marquee pauseOnHover className="[--duration:20s]">
         {firstRow.map((review) => (
           <ReviewCard key={review.username} {...review} />
@@ -94,3 +93,4 @@ export function LandingPageMarquee() {
 }  dark:from-background"></div>
     </div>
   ); 
+}
