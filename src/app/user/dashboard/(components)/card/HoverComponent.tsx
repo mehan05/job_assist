@@ -22,7 +22,7 @@ const HoverComponent = () => {
       "Jobs Selected",
   },]
   return (
-    <div>
+    <div >
          <HoverEffect items={JobDetails}/>
 
     </div>

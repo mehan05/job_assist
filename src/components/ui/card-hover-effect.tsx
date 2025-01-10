@@ -23,7 +23,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-3 max-w-screen-xl min-screen-md w-screen  gap-5  lg:grid-cols-4  py-1 ,mb-2",
+        "grid grid-cols-1 md:grid-cols-3 max-w-screen-xl  min-screen-md w-screen  gap-5  lg:grid-cols-4  py-1 ,mb-2",
         className
       )}
     >
@@ -52,7 +52,7 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card>
-          <div className="flex gap-10 justify-between items-center ">
+          <div className="flex gap-10 justify-between  items-center ">
               <div>
                 <CardTitle className="text-2xl font-bold font-Josefin_Sans">{item.title}</CardTitle>
                 <CardDescription className="text-sm font-semibold font-Josefin_Sans">{item.description}</CardDescription>
@@ -80,7 +80,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-2xl max-w-70 min-w-50 p-2 overflow-hidden bg-white text-black dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700 relative z-20",
+        "rounded-2xl max-w-70 min-w-50 p-2  overflow-hidden bg-white max-h-28 text-black dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700 relative z-20",
         className
       )}
     >

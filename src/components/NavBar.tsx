@@ -28,7 +28,7 @@ export function NavBar() {
                         <p className="font-Josefin_Sans font-semibold">Get Your Dream Job</p>
                       </div>
 
-              <div className="flex justify-center">
+              <div className="">
                 <Dock direction="middle">
                     <BorderBeam />
                         <DockIcon>

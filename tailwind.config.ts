@@ -66,7 +66,9 @@ export default {
   		},
   		animation: {
   			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
-  			rippling: 'rippling var(--duration) ease-out'
+  			rippling: 'rippling var(--duration) ease-out',
+  			marquee: 'marquee var(--duration) infinite linear',
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
   		},
   		keyframes: {
   			'border-beam': {
@@ -82,11 +84,27 @@ export default {
   					transform: 'scale(2)',
   					opacity: '0'
   				}
+  			},
+  			marquee: {
+  				from: {
+  					transform: 'translateX(0)'
+  				},
+  				to: {
+  					transform: 'translateX(calc(-100% - var(--gap)))'
+  				}
+  			},
+  			'marquee-vertical': {
+  				from: {
+  					transform: 'translateY(0)'
+  				},
+  				to: {
+  					transform: 'translateY(calc(-100% - var(--gap)))'
+  				}
   			}
   		}
   	}
   },
-  darkMode: "class",
+  darkMode: ["class", "class"],
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [nextui(), require("tailwindcss-animate")],
 } satisfies Config;
