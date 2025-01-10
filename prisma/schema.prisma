@@ -20,13 +20,13 @@ model User{
   id Int @id @default(autoincrement())
   name String
   age Int
-  headlines String
-  bio String
+  headlines String @default("")
+  bio String @default("")
   gender String
   place String
   role ROLE @default(USER)
   skills String[]
-  dob DateTime
+  dob DateTime @default(now())  
   email String @unique
   password String
   jobApplications JobApplication[]

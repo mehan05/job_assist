@@ -12,7 +12,8 @@ export async function POST(req:NextRequest)
     const Secret = process.env.SECRET_KEY!
     const hashPassword = await bcrypt.hash(body.password,10)
     body.password = hashPassword
-    console.log(body)
+    console.log(body);
+    console.log("Zod Result:",result.error);
     try {
         if(result.success)
         {
@@ -28,7 +29,7 @@ export async function POST(req:NextRequest)
             
             return  response;
         }
-        return NextResponse.json({error:"invalid data"},{status:400})
+        return NextResponse.json({error:"invalid data",errormsg:result.error},{status:400})
     } catch (error:unknown) {
         if(error instanceof Error)
         {

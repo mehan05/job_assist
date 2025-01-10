@@ -1,5 +1,4 @@
 "use client";
-import { DatePickerDemo } from "@/components/DateSwitcher";
 import { NavBar } from "@/components/NavBar";
 import { Badge } from "@/components/ui/badge";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
@@ -12,22 +11,17 @@ const UserSignup = () => {
   const [skills, SetSkills] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
   const [date, setDate] = React.useState<Date>();
-  console.log("Skill",skills);
-  console.log("date:",date&& date?.getFullYear());
-  console.log("age",((new Date().getFullYear())-((date?.getFullYear())??0)))
   const [userData, setUserData] = useState({
     name: "",
     age: 0,
     email: "",
     gender: "",
-    DOB:date,
     password: "",
     skills: skills,
     place: "",
     headlines: "",
     bio: "",
   });
-  console.log(date);
 
   const handleAddSkill = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -53,16 +47,17 @@ const UserSignup = () => {
       }
   
   };
-  const handleOnchange = (e)=>{
-    const { name, value } = e.target as HTMLInputElement;
+  const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement>)=>{
+    const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-    console.log("FOrm data:",userData);
   }
+
   useEffect(() => {
-      setUserData((prev)=>({...prev,DOB:date}));
-      setUserData((prev)=>({...prev,skills}));
+      setUserData((prev)=>({...prev,skills,age:(((date&&date.getFullYear())??0)-(new Date().getFullYear())),dob:date?.toISOString()}));
       userData.age= ((date&& date?.getFullYear())??0)-(new Date().getFullYear());
   },[date,skill])
+
+
   return (
     <div className="">
       <NavBar />
@@ -71,7 +66,6 @@ const UserSignup = () => {
           <TextGenerateEffect words={words} />
         </div>
       </div>
-
       <div className="flex justify-center items-center">
         <div className="border-2 border-foreground rounded-3xl w-full max-w-full h-auto p-10 bg-background text-foreground ">
           <div className="flex justify-around items-center gap-5 ">
@@ -117,16 +111,17 @@ const UserSignup = () => {
                             value={userData.gender}
                             onChange={handleOnchange}
                             name="gender"
+                            
                             className="border p-2 rounded font-Josefin_Sans bg-black"
                           >
+                            <option hidden >Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                     </select>
 
-                    <DatePickerDemo
-                      setDate={setDate}
-                      date={date ?? new Date()}
-                    />
+                    <input type="date" onChange={(e) => setDate(e.target.valueAsDate ?? undefined)
+                    
+                    } className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground" />
 
                     <input
                       type="text"
@@ -144,18 +139,20 @@ const UserSignup = () => {
                       onKeyDown={handleAddSkill}
                       className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
                     />
-
                     {skills.length > 0 && (
-                      <div className="m-1 p-1 flex gap-2 flex-wrap break-words w-full max-w-[300px]">
+                      <div className="flex gap-1 items-center  ">
+
                         <p className="font-Josefin_Sans font-semibold">
                           Skills:
                         </p>
+                      <div className="m-1 p-1 flex gap-2   scrollable-element overflow-x-auto w-full max-w-[300px]">
 
                         {skills.map((ele, index) => (
                           <Badge key={index} variant={"outline"}>
                             {ele}
                           </Badge>
                         ))}
+                      </div>
                       </div>
                     )}
                     <div className="grid w-full gap-2">
