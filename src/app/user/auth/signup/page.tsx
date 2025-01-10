@@ -3,6 +3,7 @@ import { NavBar } from "@/components/NavBar";
 import { Badge } from "@/components/ui/badge";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Textarea } from "@/components/ui/textarea";
+import {toast} from "sonner";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import React, {  useEffect, useState } from "react";
@@ -39,15 +40,20 @@ const UserSignup = () => {
       try {
         const response = await axios.post("http://localhost:3000/api/auth/signup",userData);
         console.log("response",response);
+        if(response)
+        {
+          toast.success("User Created Successfully");
+        }
       } catch (error) {
             if(error instanceof AxiosError)
             {
               console.log(error.response?.data);
+              toast.error("Something went wrong");
             }
       }
   
   };
-  const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement>)=>{
+  const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   }

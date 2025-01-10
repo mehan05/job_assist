@@ -1,12 +1,60 @@
 "use client";
 import { NavBar } from '@/components/NavBar';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
+import axios, { AxiosError } from 'axios';
 import Image from 'next/image';
-import React from 'react';
-
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+interface UserData {
+  email: string;
+  password: string;
+}
 const UserLogin = () => {
+  const router = useRouter();
   const words = "Job_Assist";
-  
+  const[userData,setUserData] = useState<UserData>({
+    email:"",
+    password:""
+  });
+  const handleOnSubmit = async(e:React.FormEvent)=>{
+    e.preventDefault();
+      try {
+        const response = await axios.post("http://localhost:3000/api/auth/login",userData);
+        console.log(response.data);
+        if(response.status === 200)
+        {
+          router.push("/user/dashboard");
+          toast.success("User Logged In Successfully");
+        }
+        else if(response.status === 401)
+        {
+          toast.error("Invalid Password");
+        }
+        else if(response.status === 403)
+        {
+          toast.error("Invalid Data");
+        }
+        else if(response.status === 404)
+        {
+          toast.error("Invalid User");
+        }
+        else if(response.status===500)
+        {
+            toast.error("Something went wrong");
+        }
+      } catch (error) {
+          if(error instanceof AxiosError)
+          {
+            console.log(error.response?.data);
+            toast.error("Something went wrong")
+          }
+      }
+  }
+  const handleOnchange  = (e:React.ChangeEvent<HTMLInputElement>)=>{
+      const{name,value} = e.target;
+      setUserData((prev)=>({...prev,[name]:value}))
+  }
   return (
     <div>
       <NavBar/>
@@ -24,16 +72,20 @@ const UserLogin = () => {
                 <h1 className='text-7xl  font-bold font-Josefin_Sans  dark:text-[var(--primary)]'>Welcome</h1>
                 <p className='font-Josefin_Sans font-semibold'>Login to Find Your Job</p>
 
-                <form action="" className='w-full'>
+                <form onSubmit={handleOnSubmit} className='w-full'>
                   <div className='flex flex-col gap-5 mt-5'>
                     <input
                       type="email"
+                      name='email'
                       placeholder='Email'
+                      onChange={handleOnchange}
                       className='p-2 w-full border-2 rounded-lg focus:outline-none bg-background   border-foreground text-foreground'
                     />
                     <input
                       type="password"
+                      name='password'
                       placeholder='Password'
+                      onChange={handleOnchange}
                       className='p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground'
                     />
                     <button
