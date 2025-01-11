@@ -1,6 +1,6 @@
 import { NavBar } from '@/components/NavBar'
 import React from 'react'
-import MyApplications from './(components)/MyApplication'
+import CreateJobPage from './(components)/CreateJobPage'
 
 const page = () => {
   return (
@@ -9,8 +9,8 @@ const page = () => {
             <NavBar/>
         </div>
 
-        <div className='scale-90'>
-            <MyApplications/>
+        <div>
+            <CreateJobPage/>
         </div>
     </div>
   )

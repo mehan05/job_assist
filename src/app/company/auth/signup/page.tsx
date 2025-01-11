@@ -37,6 +37,7 @@ const CompanySignup = () => {
       }
   
   };
+
   const handleOnchange = (e)=>{
     const { name, value } = e.target as HTMLInputElement;
     setUserData((prev) => ({ ...prev, [name]: value }));

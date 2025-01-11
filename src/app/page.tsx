@@ -27,7 +27,7 @@ export default function Home() {
               </h1>
               <p className="font-Josefin_Sans text-xl font-semibold mb-3 ">
                 Explore opportunities, grow your skills, and achieve career
-                milestones with
+                milestones with 
                 <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                   {" "}
                   Job_Assist{" "}
