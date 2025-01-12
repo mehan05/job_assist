@@ -1,20 +1,60 @@
 "use client"
-import { useState } from "react";
-
+import {  useEffect, useState } from "react";
+interface JobData {
+  jobTitle: string;
+  skills:string[];
+  jobDescription: string;
+  location: string;
+  salaryFrom: number;
+  salaryTo: number;
+  employmentType: string;
+  deadline: string;
+}
 export default function CreateJobPage() {
-  const [jobTitle, setJobTitle] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
-  const [skills, setSkills] = useState("");
-  const [location, setLocation] = useState("");
-  const [salaryFrom, setSalaryFrom] = useState("");
-  const [salaryTo, setSalaryTo] = useState("");
-  const [employmentType, setEmploymentType] = useState("Full-time");
-  const [deadline, setDeadline] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+  const [skill, setSkill] = useState<string>("");
+  const [date, setDate] = useState<Date>(new Date());
+  const [jobData, setJobData] = useState<JobData>({
+    jobTitle: "",
+    jobDescription: "",
+    skills: [],
+    location: "",
+    salaryFrom: 0,
+    salaryTo: 0,
+    employmentType: "Full-time",
+    deadline: "",
+  })
+
+  const handleOnChange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
+    const{name,value} = e.target;
+    setJobData((prev)=>({...prev,[name]:value}));
+  }
+
+  useEffect(() => {
+        
+        setJobData((prev)=>({...prev,skills:skills}))
+  },[skills]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const date1 = date.toISOString().split('T')[0];
+    setJobData((prev)=>({...prev,deadline:date1}));
+
+    console.log(jobData);
   };
 
+  const HandleSkillAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      console.log("skill",skills);
+      if(skill.trim())
+      {
+        e.preventDefault();
+        setSkills((prev)=>[...prev,skill]);
+        setSkill("");
+      }
+    }
+  }
+  console.log(jobData);
   return (
     <div className="overflow-hidden scale-90">
       <div className=" ml-10 m-2">
@@ -27,8 +67,9 @@ export default function CreateJobPage() {
               <label className="font-Josefin_Sans text-xl font-semibold">Job Title</label>
               <input
                 type="text"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
+                name="jobTitle"
+                value={jobData.jobTitle}
+                onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter job title"
               />
@@ -37,8 +78,9 @@ export default function CreateJobPage() {
             <div>
               <label className="font-Josefin_Sans text-xl font-semibold">Job Description</label>
               <textarea
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
+              name="jobDescription"
+                value={jobData.jobDescription}
+                onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 rows={6}
                 placeholder="Enter a detailed job description"
@@ -49,8 +91,10 @@ export default function CreateJobPage() {
               <label className="font-Josefin_Sans text-xl font-semibold">Required Skills</label>
               <input
                 type="text"
-                value={skills}
-                onChange={(e) => setSkills(e.target.value)}
+                value={skill}
+                name="skills"
+                onKeyDown={HandleSkillAdd}
+                onChange={(e) => setSkill(e.target.value)}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter required skills (e.g., React, Node.js)"
               />
@@ -60,8 +104,9 @@ export default function CreateJobPage() {
               <label className="font-Josefin_Sans text-xl font-semibold">Location</label>
               <input
                 type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                name="location"
+                value={jobData.location}
+                onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter job location"
               />
@@ -70,8 +115,9 @@ export default function CreateJobPage() {
             <div>
               <label className="font-Josefin_Sans text-xl font-semibold">Employment Type</label>
               <select
-                value={employmentType}
-                onChange={(e) => setEmploymentType(e.target.value)}
+                value={jobData.employmentType}
+                onChange={handleOnChange}
+                name="employmentType"
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="Full-time">Full-time</option>
@@ -86,15 +132,17 @@ export default function CreateJobPage() {
               <div className="flex space-x-4 mt-2">
                 <input
                   type="number"
-                  value={salaryFrom}
-                  onChange={(e) => setSalaryFrom(e.target.value)}
+                  value={jobData.salaryFrom}
+                  onChange={handleOnChange}
+                  name="salaryFrom"
                   className="w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="From"
                 />
                 <input
                   type="number"
-                  value={salaryTo}
-                  onChange={(e) => setSalaryTo(e.target.value)}
+                  value={jobData.salaryTo}
+                  onChange={handleOnChange}
+                  name="salaryTo"
                   className="w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="To"
                 />
@@ -105,8 +153,9 @@ export default function CreateJobPage() {
               <label className="font-Josefin_Sans text-xl font-semibold">Application Deadline</label>
               <input
                 type="date"
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
+                value={jobData.deadline}
+                name="deadline"
+                onChange={(e)=>setDate(e.target.valueAsDate!)}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>

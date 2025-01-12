@@ -32,8 +32,8 @@ const UserSignup = () => {
         setSkill("");
       }
     }
-    console.log(skills);
   };
+
   const handleFormSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(userData);
@@ -53,6 +53,7 @@ const UserSignup = () => {
       }
   
   };
+
   const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
