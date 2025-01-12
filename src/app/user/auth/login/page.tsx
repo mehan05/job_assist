@@ -1,5 +1,4 @@
 "use client";
-import { NavBar } from '@/components/NavBar';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import axios, { AxiosError } from 'axios';
 import Image from 'next/image';
@@ -19,35 +18,38 @@ const UserLogin = () => {
   });
   const handleOnSubmit = async(e:React.FormEvent)=>{
     e.preventDefault();
+    let toastId;
       try {
+         toastId = toast.loading("Logging in ...");
         const response = await axios.post("http://localhost:3000/api/auth/login",userData);
         console.log(response.data);
+     
         if(response.status === 200)
-        {
-          router.push("/user/dashboard");
-          toast.success("User Logged In Successfully");
+        { 
+          router.replace("/user/dashboard");
+          toast.success("Login Success",{id:toastId});
         }
         else if(response.status === 401)
         {
-          toast.error("Invalid Password");
+          toast.error("Invalid Password",{id:toastId});
         }
         else if(response.status === 403)
         {
-          toast.error("Invalid Data");
+          toast.error("Invalid Data",{id:toastId});
         }
         else if(response.status === 404)
         {
-          toast.error("Invalid User");
+          toast.error("Invalid User",{id:toastId});
         }
         else if(response.status===500)
         {
-            toast.error("Something went wrong");
+            toast.error("Something went wrong",{id:toastId});
         }
       } catch (error) {
           if(error instanceof AxiosError)
           {
             console.log(error.response?.data);
-            toast.error("Something went wrong")
+            toast.error("Something went wrong",{id:toastId})
           }
       }
   }
@@ -57,7 +59,6 @@ const UserLogin = () => {
   }
   return (
     <div>
-      <NavBar/>
       <div className='flex justify-center items-center '>
         <div className='fixed top-10'>
           <TextGenerateEffect words={words} className='text-4xl'/>

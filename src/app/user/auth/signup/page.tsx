@@ -1,5 +1,4 @@
 "use client";
-import { NavBar } from "@/components/NavBar";
 import { Badge } from "@/components/ui/badge";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +6,7 @@ import {toast} from "sonner";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import React, {  useEffect, useState } from "react";
+import Link from "next/link";
 const UserSignup = () => {
   const words = "Job_Assist";
   const [skills, SetSkills] = useState<string[]>([]);
@@ -66,7 +66,6 @@ const UserSignup = () => {
 
   return (
     <div className="">
-      <NavBar />
       <div className="flex justify-center items-center mb-5">
         <div className="">
           <TextGenerateEffect words={words} />
@@ -169,13 +168,15 @@ const UserSignup = () => {
                       type="submit"
                       className="bg-foreground hover:scale-105 hover:rounded-xl text-primary-foreground font-bold py-2 px-4 rounded-xl dark:bg-white dark:text-black"
                     >
-                      Login
+                      signup
                     </button>
                   </div>
                 </form>
-
-                <p className="font-Josefin_Sans font-semibold mt-6  dark:text-[var(--primary)]">
-                  Login with Other Platform
+                <Link href="/user/auth/login " className="mt-5">
+                    <p className="font-Josefin_Sans font-semibold  text-xl hover:text-white text-[#9574e2]">Already have an account</p>
+                </Link>
+                <p className="font-Josefin_Sans font-semibold mt-2 text-xl dark:text-[var(--primary)]">
+                signup with Other Platform
                 </p>
 
                 <button
@@ -190,7 +191,7 @@ const UserSignup = () => {
                       height={10}
                     />
                     <span className="font-Josefin_Sans font-semibold">
-                      Login With Google
+                    signup   With Google
                     </span>
                   </div>
                 </button>

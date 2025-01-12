@@ -8,7 +8,6 @@ const page = () => {
         <div>
             <NavBar/>
         </div>
-
         <div className='m-10'>
             <PasswordResetPage/>
         </div>

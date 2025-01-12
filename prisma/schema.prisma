@@ -25,7 +25,7 @@ model User{
   gender String
   place String
   role ROLE @default(USER)
-  skills String[]
+  skills String[] @default([])
   dob DateTime @default(now())  
   email String @unique
   password String
@@ -57,12 +57,14 @@ model WorkSpace{
   name String
   description String?
   createdById Int
+  createdBy String
   createdAt DateTime @default(now())
   UpdatedAt DateTime @updatedAt
   members User[]  @relation("UserWorkSpace")
   isPublic Boolean
   owner User @relation("WorkSpaceOwners",fields: [createdById] ,references: [id])
   jobBoards JobBoard[]
+  category String[]
 }
 
 model JobBoard{

@@ -1,5 +1,5 @@
+import { CompanySchema } from "@/schemas/CompanySchema";
 import prisma from "@/lib/db";
-import { UserSchema } from "@/schemas/UserSchema";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -8,7 +8,7 @@ export async function POST(req:NextRequest)
 {
     console.log("Request arrived")
     const body = await req.json();
-    const result = UserSchema.safeParse(body);
+    const result = CompanySchema.safeParse(body);
     const Secret = process.env.SECRET_KEY!
     const hashPassword = await bcrypt.hash(body.password,10)
     body.password = hashPassword
@@ -29,7 +29,7 @@ export async function POST(req:NextRequest)
             
             return  response;
         }
-        return NextResponse.json({error:"invalid data",errormsg:result.error},{status:400})
+        return NextResponse.json({error:"invalid data",errormsg:result.error},{status:401})
     } catch (error:unknown) {
         if(error instanceof Error)
         {

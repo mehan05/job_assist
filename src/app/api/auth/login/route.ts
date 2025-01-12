@@ -22,12 +22,18 @@ export async function POST(req:NextRequest){
                 {
                     const passwordMatch = await bcrypt.compare(body.password,userExist.password);
                     if(passwordMatch)
-                    {
+                    {       
                         const token = jwt.sign({ email: userExist.email, id: userExist.id, role: userExist.role }, Secret, { expiresIn: "1d" });
             
-                        const response =  NextResponse.json({message:"Login Success",token})
-                         response.cookies.set("token",token);
-                        return NextResponse.json({msg:response},{status:200})
+                        const response =  NextResponse.json({message:"Login Success",token},{status:200})
+                         response.cookies.set("token",token,{
+                            httpOnly:true,
+                            path:"/",
+                            sameSite:"strict",
+                            maxAge:60*60*24
+                            
+                         });
+                        return response
                     }
                     return NextResponse.json({message:"Invalid Password"},{status:401})
                     

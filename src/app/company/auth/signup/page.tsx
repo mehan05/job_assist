@@ -1,21 +1,23 @@
 "use client";
 import { DatePickerDemo } from "@/components/DateSwitcher";
-import { NavBar } from "@/components/NavBar";
-import { Badge } from "@/components/ui/badge";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Textarea } from "@/components/ui/textarea";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, {  useEffect, useState } from "react";
+import { toast } from "sonner";
 const CompanySignup = () => {
   const words = "Job_Assist";
+  const router = useRouter();
   const [date, setDate] = React.useState<Date>();
   const [userData, setUserData] = useState({
     name: "",
     age: 0,
     email: "",
     gender: "",
-    DOB:date,
+    dob:date,
     password: "",
     place: "",
     headlines: "",
@@ -25,31 +27,48 @@ const CompanySignup = () => {
 
   const handleFormSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
+    let toastId;
     console.log(userData);
       try {
+        toastId = toast.loading("Creating User...");
+
         const response = await axios.post("http://localhost:3000/api/auth/signup",userData);
         console.log("response",response);
+
+        if(response.status === 200)
+        {
+          toast.success("User Created Successfully", { id: toastId });
+          router.replace("/company/dashboard");
+        }
+        else if(response.status === 401)
+        {
+          toast.warning("Invalid Data", { id: toastId });
+        }
+      
       } catch (error) {
             if(error instanceof AxiosError)
             {
+               if(error.status === 500)
+                {
+                  toast.error("Something went wrong", { id: toastId });
+                }
               console.log(error.response?.data);
             }
       }
   
   };
 
-  const handleOnchange = (e)=>{
-    const { name, value } = e.target as HTMLInputElement;
+  const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
+    const { name, value } = e.target ;
     setUserData((prev) => ({ ...prev, [name]: value }));
     console.log("FOrm data:",userData);
   }
   useEffect(() => {
-      setUserData((prev)=>({...prev,DOB:date}));
+      setUserData((prev)=>({...prev,dob:date}));
       userData.age= ((date&& date?.getFullYear())??0)-(new Date().getFullYear());
   },[date])
   return (
     <div className="max-w-7xl mx-auto">
-      <NavBar />
       <div className="flex justify-center items-center mb-5">
         <div className="">
           <TextGenerateEffect words={words} />
@@ -133,8 +152,10 @@ const CompanySignup = () => {
                     </button>
                   </div>
                 </form>
-
-                <p className="font-Josefin_Sans font-semibold mt-6  dark:text-[var(--primary)]">
+                <Link href="/company/auth/login " className="mt-5">
+                    <p className="font-Josefin_Sans font-semibold  text-xl hover:text-white text-[#9574e2]">Already have an account</p>
+                </Link>
+                <p className="font-Josefin_Sans font-semibold mt-2 text-xl  dark:text-[var(--primary)]">
                   Login with Other Platform
                 </p>
 

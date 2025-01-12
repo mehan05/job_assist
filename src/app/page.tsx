@@ -1,11 +1,13 @@
 import { LandingPageMarquee } from "@/components/LandingPageMarquee";
 import { NavBar } from "@/components/NavBar";
 import TypingAnimation from "@/components/ui/typing-animation";
-
+import dynamic from "next/dynamic";
+const RootNavigator = dynamic(() => import("./rootnavigator/page"));
 export default function Home() {
-  
   return (
     <div className="overflow-hidden">
+
+     
       <div>
         <NavBar />
       </div>
@@ -35,12 +37,12 @@ export default function Home() {
                 by your side.
               </p>
             </div>
+            {/*---------------------------*/}
+           <RootNavigator/>
 
-            <div className="  ">
-              <button className="font-Josefin_Sans text-xl font-semibold mt-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-2 border-purple-500 rounded-3xl p-3 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out  ">
-                Get Started
-              </button>
-            </div>
+
+        {/*---------------------------*/}
+
           </div>
         </div>
 
