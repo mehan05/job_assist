@@ -1,25 +1,32 @@
 "use client"
+import { Badge } from "@/components/ui/badge";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import {  useEffect, useState } from "react";
+import { toast } from "sonner";
 interface JobData {
-  jobTitle: string;
-  skills:string[];
-  jobDescription: string;
+  title: string;
+  skillsRequired:string[];
+  description: string;
   location: string;
   salaryFrom: number;
   salaryTo: number;
+  contactEmail:string
   employmentType: string;
   deadline: string;
 }
 export default function CreateJobPage() {
-  const [skills, setSkills] = useState<string[]>([]);
+  const router = useRouter();
+  const [skillsRequired, setskillsRequired] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
   const [date, setDate] = useState<Date>(new Date());
   const [jobData, setJobData] = useState<JobData>({
-    jobTitle: "",
-    jobDescription: "",
-    skills: [],
+    title: "",
+    description: "",
+    skillsRequired: [],
     location: "",
     salaryFrom: 0,
+    contactEmail:"",
     salaryTo: 0,
     employmentType: "Full-time",
     deadline: "",
@@ -28,28 +35,62 @@ export default function CreateJobPage() {
   const handleOnChange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
     const{name,value} = e.target;
     setJobData((prev)=>({...prev,[name]:value}));
+    if(name=="salaryFrom" || name==="salaryTo")
+    {
+      setJobData((prev)=>({...prev,[name]:+value}))
+    }
   }
 
   useEffect(() => {
         
-        setJobData((prev)=>({...prev,skills:skills}))
-  },[skills]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
     const date1 = date.toISOString().split('T')[0];
+    console.log(typeof date1)
+    setJobData((prev)=>({...prev,skillsRequired:skillsRequired}))
     setJobData((prev)=>({...prev,deadline:date1}));
+  },[skillsRequired,date]);
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    let toastId;
+    try {
+      toastId = toast.loading("Creating Job...");
+      const response = await axios.post("http://localhost:3000/api/company/post-job",jobData);
+
+      if (response.status === 200) {
+        toast.success("Job Created Successfully", { id: toastId });
+        router.replace("/company/dashboard");
+      }
+      else if(response.status==401)
+      {
+        toast.error("Invalid Data", { id: toastId });
+      }
+      else if(response.status==403)
+      {
+        toast.warning("Fill All Details", { id: toastId });
+      }
+      else if(response.status==402){
+        toast.error("Invalid User", { id: toastId });
+      }
+
+    } catch (error) {
+        if(error instanceof AxiosError)
+          { 
+            console.log(error.response?.data);
+            toast.error("Something went wrong", { id: toastId });
+            console.log(error)  
+          } 
+    }
 
     console.log(jobData);
   };
 
   const HandleSkillAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log("skill",skills);
+      e.preventDefault();
+      console.log("skill",skillsRequired);
       if(skill.trim())
       {
-        e.preventDefault();
-        setSkills((prev)=>[...prev,skill]);
+        setskillsRequired((prev)=>[...prev,skill]);
         setSkill("");
       }
     }
@@ -67,8 +108,8 @@ export default function CreateJobPage() {
               <label className="font-Josefin_Sans text-xl font-semibold">Job Title</label>
               <input
                 type="text"
-                name="jobTitle"
-                value={jobData.jobTitle}
+                name="title"
+                value={jobData.title}
                 onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter job title"
@@ -78,8 +119,8 @@ export default function CreateJobPage() {
             <div>
               <label className="font-Josefin_Sans text-xl font-semibold">Job Description</label>
               <textarea
-              name="jobDescription"
-                value={jobData.jobDescription}
+              name="description"
+                value={jobData.description}
                 onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 rows={6}
@@ -88,17 +129,31 @@ export default function CreateJobPage() {
             </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Required Skills</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">Required skillsRequired</label>
               <input
                 type="text"
                 value={skill}
-                name="skills"
+                name="skillsRequired"
                 onKeyDown={HandleSkillAdd}
                 onChange={(e) => setSkill(e.target.value)}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="Enter required skills (e.g., React, Node.js)"
+                placeholder="Enter required skillsRequired (e.g., React, Node.js)"
               />
             </div>
+
+                    <div className="flex gap-5">
+                        {skillsRequired.slice(0, 7).map((ele, index) => (
+                          <Badge key={index} variant={"outline"}>
+                            {ele}
+                          </Badge>
+                        ))}
+                        
+                        {skillsRequired.length > 7 && (
+                          <Badge variant={"outline"}>
+                            ...
+                          </Badge>
+                        )}
+                 </div>
 
             <div>
               <label className="font-Josefin_Sans text-xl font-semibold">Location</label>
@@ -109,6 +164,17 @@ export default function CreateJobPage() {
                 onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter job location"
+              />
+            </div>
+            <div>
+              <label className="font-Josefin_Sans text-xl font-semibold">Contact contactEmail</label>
+              <input
+                type="contactEmail"
+                name="contactEmail"
+                value={jobData.contactEmail}
+                onChange={handleOnChange}
+                className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Enter Contact contactEmail"
               />
             </div>
 

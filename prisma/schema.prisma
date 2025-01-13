@@ -73,10 +73,15 @@ model JobBoard{
   description String
   location String
   postById Int
+  deadline DateTime
+  postBy String
   skillsRequired String[]
-  concactEmail String
+  contactEmail String 
   applications JobApplication[]
   workSpaceId Int?
+  salaryFrom Int
+  salaryTo Int
+  employmentType String
   workSpace WorkSpace? @relation(fields: [workSpaceId] , references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime  @updatedAt
