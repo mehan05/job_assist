@@ -1,7 +1,7 @@
 "use client"
 import { Badge } from "@/components/ui/badge";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {  useEffect, useState } from "react";
 import { toast } from "sonner";
 interface JobData {
@@ -17,6 +17,8 @@ interface JobData {
 }
 export default function CreateJobPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const workspaceId = searchParams.get("workspaceId");
   const [skillsRequired, setskillsRequired] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
   const [date, setDate] = useState<Date>(new Date());
@@ -54,17 +56,21 @@ export default function CreateJobPage() {
     let toastId;
     try {
       toastId = toast.loading("Creating Job...");
-      const response = await axios.post("http://localhost:3000/api/company/post-job",jobData);
+      const response = await axios.post(`http://localhost:3000/api/company/post-job?workspaceId=${workspaceId}`,jobData);
 
       if (response.status === 200) {
         toast.success("Job Created Successfully", { id: toastId });
-        router.replace("/company/dashboard");
+        // router.replace("/company/dashboard");
       }
       else if(response.status==401)
       {
         toast.error("Invalid Data", { id: toastId });
       }
       else if(response.status==403)
+      {
+        toast.warning("Fill All Details", { id: toastId });
+      }
+      else if(response.status==407)
       {
         toast.warning("Fill All Details", { id: toastId });
       }
@@ -77,7 +83,7 @@ export default function CreateJobPage() {
           { 
             console.log(error.response?.data);
             toast.error("Something went wrong", { id: toastId });
-            console.log(error)  
+            console.log(error)    
           } 
     }
 

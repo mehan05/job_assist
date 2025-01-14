@@ -21,6 +21,7 @@ const TableLayoutComponent = () => {
                     <TableHead>Jobs Posted</TableHead>
                     <TableHead>Join Requests </TableHead>
                     <TableHead>Actions </TableHead>
+                    <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

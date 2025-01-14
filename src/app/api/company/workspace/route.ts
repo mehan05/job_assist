@@ -5,11 +5,12 @@ import prisma from '@/lib/db';
 import { WorkSpaceSchema } from '@/schemas/WorkSpaceSchema';
 interface tokenDecryptInterface {
   email: string;
-  id: number,
+  id: string,
   role: string,
   iat:number,
   exp:number
 }
+const Secret:string = process.env.SECRET_KEY!;
 export async function POST(req: NextRequest) {
   const body =await  req.json();
   const data = {
@@ -18,7 +19,6 @@ export async function POST(req: NextRequest) {
     
   }
   console.log(typeof body);
-  const Secret:string = process.env.SECRET_KEY!;
   const token = (await cookies()).get("token")?.value;
   const result = WorkSpaceSchema.safeParse(body);
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
@@ -27,6 +27,12 @@ export async function POST(req: NextRequest) {
   if(!tokenDecrypt) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   console.log(result.success);
   if(!result.success) return NextResponse.json({ msg: "invalid data" }, { status: 402 });
+  const testObj = { ...data,
+    createdBy:tokenDecrypt.email,
+    createdById:tokenDecrypt.id,
+    isPublic:body.visibility
+  }
+  console.log("testObj",testObj);
    if(result.success)
    {
       try {
@@ -48,6 +54,43 @@ export async function POST(req: NextRequest) {
           } 
       }
    }
+}
 
+
+export async function GET()
+{
+  const token = (await cookies()).get("token")?.value;
+  if(!token) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
+  if(!tokenDecrypt) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  try {
+    const workspaceData = await prisma.workSpace.findMany({
+      select:{
+        name:true,
+        _count:{
+          select:{
+            members:true,
+            jobBoards:true,
+            joinRequests:true
+          }
+        }
+      },
+      where:{
+        createdById:tokenDecrypt.id
+      }
+    })
+    if(workspaceData)
+    {
+      console.log("getting data:",workspaceData);
+      return NextResponse.json(workspaceData,{status:200});
+    }
+    return NextResponse.json({ msg: "Data not found" }, { status: 404 });
+  } catch (error) {
+      if(error instanceof Error)
+      {
+        console.log(error.message)
+        return NextResponse.json({ msg: "something went wrong" }, { status: 500 });
+      }
+  }
 
 }

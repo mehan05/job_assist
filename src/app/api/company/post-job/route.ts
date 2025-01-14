@@ -3,7 +3,6 @@ import { JobOpeningSchema } from "@/schemas/JobOpeningSchema";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { Result } from "postcss";
 interface tokenDecryptInterface {
   email: string;
   id: number;
@@ -12,6 +11,9 @@ interface tokenDecryptInterface {
   exp: number;
 }
 export async function POST(req: NextRequest) {
+  const url  = new URL(req.url);
+  const workspaceId = url.searchParams.get("workspaceId");  
+  console.log("workspaceId",typeof Number(workspaceId));
   const body = await req.json();
   if (!body)
     return NextResponse.json({ msg: "Enter Some Data" }, { status: 403 });
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-
+  if(!workspaceId) return NextResponse.json({ msg: "Workspace id not found" }, { status: 407 });
   if (!token) {
     return NextResponse.json({ msg: "No token provided" }, { status: 406 });
   }
@@ -44,7 +46,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
     if (!res.success)
       return NextResponse.json({ msg: "invalid data" }, { status: 402 });
-    const deadline = new Date(body.deadline);
+    const deadline = body.deadline
     delete body.deadline;
     if (res.success) {
       const jobBoard = await prisma.jobBoard.create({
@@ -52,7 +54,8 @@ export async function POST(req: NextRequest) {
           ...body,
           postBy: tokenDecrypt.email,
           postById: tokenDecrypt.id,
-          deadline:deadline,
+          deadline:new Date(deadline),
+          workSpaceId:workspaceId
         },
       });
       if (jobBoard) {
@@ -62,6 +65,7 @@ export async function POST(req: NextRequest) {
     }
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error.message);
       return NextResponse.json(
         { msg: "error in adding job", error },
         { status: 500 }

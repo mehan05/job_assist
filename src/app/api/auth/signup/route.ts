@@ -12,7 +12,7 @@ export async function POST(req:NextRequest)
     const Secret = process.env.SECRET_KEY!
     const hashPassword = await bcrypt.hash(body.password,10)
     body.password = hashPassword
-    console.log(body);
+    console.log("testbody",body);
     console.log("Zod Result:",result.error);
     try {
         if(result.success)
@@ -33,7 +33,7 @@ export async function POST(req:NextRequest)
     } catch (error:unknown) {
         if(error instanceof Error)
         {
-                console.error("Error while adding user:", error.message);
+                console.log(error)
                 return NextResponse.json(
                 { error: "Error while adding user", details: error.message },
                 { status: 500 }
