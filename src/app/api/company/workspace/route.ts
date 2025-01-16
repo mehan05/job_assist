@@ -67,11 +67,12 @@ export async function GET()
     const workspaceData = await prisma.workSpace.findMany({
       select:{
         name:true,
+        id:true,
+        joinRequests:true,
         _count:{
           select:{
             members:true,
             jobBoards:true,
-            joinRequests:true
           }
         }
       },
@@ -82,7 +83,7 @@ export async function GET()
     if(workspaceData)
     {
       console.log("getting data:",workspaceData);
-      return NextResponse.json(workspaceData,{status:200});
+      return NextResponse.json({data:workspaceData},{status:200});
     }
     return NextResponse.json({ msg: "Data not found" }, { status: 404 });
   } catch (error) {

@@ -15,15 +15,21 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 interface WorkSpaceTableProps {
-  name:string,
-  members:number,
-  jobPosted:number
+  id:string,
+  name: string;
+  members: number;
+  jobPosted: number;
+  joinRequests: number;
 }
+
 const WorkSpaceTables = () => {
   const router = useRouter();
   const[error,setError] = useState(false);
   const[loading,setLoading] = useState(true);
   const[workSpaceData,setWorkSpaceData] = useState<WorkSpaceTableProps[]>([]);
+  useEffect(()=>{
+    console.log("workspcateData:",workSpaceData); 
+  })
   const getAllWorkSpaces = async()=>{
 
     try {
@@ -32,8 +38,15 @@ const WorkSpaceTables = () => {
       if(workSpaceData.status === 200)
         {
           setLoading(false);
-          console.log("workspaceData:",workSpaceData);
-          setWorkSpaceData(workSpaceData.data); 
+          console.log("workspaceData:",workSpaceData.data);
+       
+          setWorkSpaceData(workSpaceData.data.data.map((val: any) => ({
+            id: val.id,
+            name: val.name,
+            members: val._count.members,
+            jobPosted: val._count.jobBoards,
+          })));
+          
         }
       else if(workSpaceData.status === 401)
       {
@@ -55,7 +68,7 @@ const WorkSpaceTables = () => {
 
         }
     }
-
+      console.log("workspace StateData:",workSpaceData);
   }
 
   useEffect(()=>{
@@ -80,16 +93,19 @@ const WorkSpaceTables = () => {
               
             <TableRow key={index}>
               <TableCell className="font-medium">{val.name}</TableCell>
-              <TableCell>0</TableCell>
-              <TableCell>0</TableCell>
-              <TableCell>0</TableCell>
+              <TableCell>{val.members}</TableCell>
+              <TableCell>{val.jobPosted}</TableCell>
+              <TableCell>{val.joinRequests||0}</TableCell>
 
               <TableCell>
                   <div className="flex gap-2  items-center">
                     <div>
-                      <button className="p-2  dark:bg-black border border-black dark:border-white/[0.2]   rounded-xl dark:group-hover:border-slate-700  ">
+                      <Link href={`/company/workspace/edit/${val.id}`}>
+                        <button className="p-2  dark:bg-black border border-black dark:border-white/[0.2]   rounded-xl dark:group-hover:border-slate-700  ">
                         Edit
                       </button>
+                      
+                      </Link>
                     </div>
                     <div>/</div>
                     <div>
@@ -102,7 +118,7 @@ const WorkSpaceTables = () => {
               <TableCell>
                   <Link href={{
                       pathname:"/company/post-job",
-                      query:{workspaceId:"08de30cb-defa-4d0c-8909-7cd684b0ec9c"}
+                      query:{workspaceId:val.id}
                   }}>
 
                   <div className="flex   items-center">

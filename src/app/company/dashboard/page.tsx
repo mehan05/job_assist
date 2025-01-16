@@ -32,7 +32,7 @@ const CompanyDashboard = () => {
                       <div className='w-full border-gray-700  flex-col gap-2 border-2 rounded-xl p-3'>
                         <div className='flex justify-between items-center'>
                           <h1 className='font-Josefin_Sans text-2xl '>Workspaces Managed</h1>
-                          <Link href="/company/create-workspace">
+                          <Link href="/company/workspace">
                                <button className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>Create WorkSpace</button>
                           </Link>
                         </div>

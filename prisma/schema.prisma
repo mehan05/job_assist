@@ -62,9 +62,10 @@ model WorkSpace{
   UpdatedAt DateTime @updatedAt
   members User[]  @relation("UserWorkSpace")
   isPublic Boolean
+  jobPosted Int @default(0)
   owner User @relation("WorkSpaceOwners",fields: [createdById] ,references: [id] , onDelete: Cascade)
   jobBoards JobBoard[]
-  joinRequests Int @default(0)
+  joinRequests Int @default(0)    
   category String[]
 }
 
