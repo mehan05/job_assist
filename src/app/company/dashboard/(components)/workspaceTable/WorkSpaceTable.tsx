@@ -30,11 +30,32 @@ const WorkSpaceTables = () => {
   useEffect(()=>{
     console.log("workspcateData:",workSpaceData); 
   })
+  const handleDeleteWorkspace = async(id:string)=>{
+    const toastId  = toast.loading("Deleting Workspace...");
+      try {
+        const response = await axios.delete(`/api/company-api/workspace/delete/${id}`);
+
+        if(response.status==200)
+        {
+          toast.success("Workspace Deleted Successfully", { id: toastId });
+          getAllWorkSpaces();
+        }
+        else if(response.status==401)
+        {
+          toast.warning("Invalid User", { id: toastId });
+        }
+      } catch (error) {
+          if(error instanceof AxiosError)
+          {
+            toast.error("Something went wrong", { id: toastId });
+          }
+      }
+  }
   const getAllWorkSpaces = async()=>{
 
     try {
       
-      const workSpaceData = await axios.get("http://localhost:3000/api/company/workspace");
+      const workSpaceData = await axios.get("http://localhost:3000/api/company-api/workspace");
       if(workSpaceData.status === 200)
         {
           setLoading(false);
@@ -109,7 +130,8 @@ const WorkSpaceTables = () => {
                     </div>
                     <div>/</div>
                     <div>
-                      <button className="p-2  dark:bg-black border border-black dark:border-white/[0.2]   rounded-xl dark:group-hover:border-slate-700  ">
+                      <button className="p-2  dark:bg-black border border-black dark:border-white/[0.2]   rounded-xl dark:group-hover:border-slate-700  "
+                      onClick={()=>handleDeleteWorkspace(val.id)}>
                         Delete
                       </button>
                     </div>

@@ -3,18 +3,23 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const { id } = params;
+  console.log("id:",id);
   try {
     const workspace = await prisma.workSpace.findUnique({
       where: { id },
+      include:{
+        members:true,
+      }
     });
+    console.log("request get came");
     if (!workspace) {
       return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
     }
     return NextResponse.json({ data: workspace }, { status: 200 });
+
   } catch (error) {
     if(error instanceof Error)
     {
-
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
   }
