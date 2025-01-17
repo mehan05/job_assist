@@ -80,7 +80,7 @@ model JobBoard{
   skillsRequired String[]
   contactEmail String 
   applications JobApplication[]
-  workSpaceId String @db.Uuid
+  workSpaceId String @db.Uuid 
   salaryFrom Int
   salaryTo Int
   employmentType String

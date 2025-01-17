@@ -5,6 +5,7 @@ import Companycard from './(components)/card/CompanyCard'
 import TableLayoutComponent from './(components)/tables/Table'
 import WorkSpaceTables from './(components)/workspaceTable/WorkSpaceTable'
 import Link from 'next/link'
+import PostJobTable from './(components)/postJobTable/PostJobTable'
 
 
 const CompanyDashboard = () => {
@@ -38,13 +39,17 @@ const CompanyDashboard = () => {
                         </div>
                       <WorkSpaceTables/>
                       </div>
-                      <div className='w-full  flex-col gap-2'>
-                        <h1 className='font-Josefin_Sans text-2xl '>Job Postings</h1>
-                      <TableLayoutComponent/>
-                      </div>
-                      <div className='w-full  flex-col gap-2'>
-                        <h1 className='font-Josefin_Sans text-2xl '>Job Applications</h1>
-                      <TableLayoutComponent/>
+
+
+                      <div className='w-full border-gray-700  flex-col gap-2 border-2 rounded-xl p-3'>
+
+                        <div className='flex justify-between items-center'>
+                            <h1 className='font-Josefin_Sans text-2xl '>Job  Applications</h1>
+                            <Link href="/company/post-job">
+                                <button className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>Create Job</button>
+                            </Link>
+                          </div>
+                              <PostJobTable/>
                       </div>
                       </div>
                     

@@ -10,6 +10,7 @@ interface tokenDecryptInterface {
   iat: number;
   exp: number;
 }
+const Secret = process.env.SECRET_KEY;
 export async function POST(req: NextRequest) {
   const url  = new URL(req.url);
   const workspaceId = url.searchParams.get("workspaceId");  
@@ -17,7 +18,6 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   if (!body)
     return NextResponse.json({ msg: "Enter Some Data" }, { status: 403 });
-  const Secret = process.env.SECRET_KEY;
   const token = (await cookies()).get("token")?.value;
   if (!token) {
     return NextResponse.json({ msg: "No token provided" }, { status: 406 });
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   }
   console.log(res.error);
   try {
-    if (!tokenDecrypt)
+    if (tokenDecrypt.role !== "COMPANY")
       return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
     if (!res.success)
       return NextResponse.json({ msg: "invalid data" }, { status: 402 });
@@ -72,4 +72,43 @@ export async function POST(req: NextRequest) {
       );
     }
   }
+}
+
+
+export async function GET(req:NextRequest)
+{
+  const token = (await cookies()).get("token")?.value;
+  // if(!token)
+  // {
+  //     token = req.headers.token.split(" ")[1];
+  // }
+  console.log("token from post job",token)
+  const tokenDecrypt = jwt.verify(token as string,Secret as string) as tokenDecryptInterface;
+  if(!(tokenDecrypt.role==="COMPANY")) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  try {
+    const reponse = await prisma.jobBoard.findMany({
+      select:{
+        id:true,
+        title:true,
+        salaryFrom:true,
+        salaryTo:true,
+        deadline:true,
+        workSpaceId:true,
+        workSpace:true,
+        applications:true
+      }
+    })
+    if(!reponse)
+    {
+      return NextResponse.json({ msg: "Data not found" }, { status: 404 });
+    }
+    return NextResponse.json({msg:" job details", reponse},{status:200});
+  } catch (error) {
+    if(error instanceof Error)
+    {
+      console.log(error.message);
+      return NextResponse.json({ msg: "error in getting job", error }, { status: 500 });
+    }
+  }
+  return NextResponse.json({msg:"test from job", id},{status:200});
 }

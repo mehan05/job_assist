@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
   console.log("tokenDecrypt",tokenDecrypt)
   console.log("Body",body);
-  if(!tokenDecrypt) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  if(tokenDecrypt.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   console.log(result.success);
   if(!result.success) return NextResponse.json({ msg: "invalid data" }, { status: 402 });
   const testObj = { ...data,
@@ -60,6 +60,9 @@ export async function POST(req: NextRequest) {
 export async function GET()
 {
   const token = (await cookies()).get("token")?.value;
+  const verifToken = jwt.verify(token as string,Secret) as tokenDecryptInterface;
+  console.log("verifToken",verifToken);
+  if(verifToken.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   if(!token) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
   if(!tokenDecrypt) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });

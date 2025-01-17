@@ -14,21 +14,34 @@ import { useRouter } from "next/navigation";
 
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-interface WorkSpaceTableProps {
+interface JobTableInterface {
   id:string,
   name: string;
   members: number;
+  title: string;
+  salaryFrom: number;
+  salaryTo: number;
   jobPosted: number;
   joinRequests: number;
+  applications: number;
+  workSpace:WorkSpace
 }
-
-const WorkSpaceTables = () => {
+interface WorkSpace {
+    id: string;
+    name: string;
+    description: string;
+    createdById: string;
+    createdBy: string;
+    createdAt?: string;
+    updatedAt?: string;
+  }
+const PostJobTable = () => {
   const router = useRouter();
   const[error,setError] = useState(false);
   const[loading,setLoading] = useState(true);
-  const[workSpaceData,setWorkSpaceData] = useState<WorkSpaceTableProps[]>([]);
+  const[JobData,setJobData] = useState<JobTableInterface[]>([]);
   useEffect(()=>{
-    console.log("workspcateData:",workSpaceData); 
+    console.log("workspcateData:",JobData); 
   })
   const handleDeleteWorkspace = async(id:string)=>{
     const toastId  = toast.loading("Deleting Workspace...");
@@ -38,7 +51,7 @@ const WorkSpaceTables = () => {
         if(response.status==200)
         {
           toast.success("Workspace Deleted Successfully", { id: toastId });
-          getAllWorkSpaces();
+          getJobData();
         }
         else if(response.status==401)
         {
@@ -51,34 +64,32 @@ const WorkSpaceTables = () => {
           }
       }
   }
-  const getAllWorkSpaces = async()=>{
+  const getJobData = async()=>{
 
     try {
       
-      const workSpaceData = await axios.get("http://localhost:3000/api/company-api/workspace");
-      if(workSpaceData.status === 200)
+      const JobData = await axios.get("http://localhost:3000/api/company-api/post-job");
+      if(JobData.status === 200)
         {
           setLoading(false);
-          console.log("workspaceData:",workSpaceData.data);
-       
-          setWorkSpaceData(workSpaceData.data.data.map((val: any) => ({
-            id: val.id,
-            name: val.name,
-            members: val._count.members,
-            jobPosted: val._count.jobBoards,
-          })));
+          console.log("postJob Data:",JobData.data);
+          console.log("postJob DataType:", typeof JobData.data);
+            
+          setJobData(JobData.data.reponse);
+
+          console.log("Job state data");
           
         }
-      else if(workSpaceData.status === 401)
+      else if(JobData.status === 401)
       {
         toast.warning("Invalid User");
         router.replace("/company/auth/login");
       }
-      else if(workSpaceData.status === 404)
+      else if(JobData.status === 404)
       {
-          setWorkSpaceData([]);
+          setJobData([]);
       }
-      else if(workSpaceData.status === 500)
+      else if(JobData.status === 500)
       {
         setError(true);
       }
@@ -89,12 +100,12 @@ const WorkSpaceTables = () => {
 
         }
     }
-      console.log("workspace StateData:",workSpaceData);
+      console.log("workspace StateData:",JobData);
   }
 
   useEffect(()=>{
     
-      getAllWorkSpaces();
+      getJobData();
   },[])
   return (
     <div className="  dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700  rounded-xl p-5 w-full h-80 max-h-80 min-h-72 scrollable-element  overflow-y-auto">
@@ -102,26 +113,25 @@ const WorkSpaceTables = () => {
         <TableHeader>
           <TableRow>
             <TableHead> Workspace Name </TableHead>
-            <TableHead> Members </TableHead>
-            <TableHead>Jobs Posted</TableHead>
-            <TableHead>Join Requests </TableHead>
+            <TableHead> Job Title </TableHead>
+            <TableHead> Applications </TableHead>
+            <TableHead>Salary</TableHead>
             <TableHead>Actions </TableHead>
-            <TableHead>Create Job</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {workSpaceData.map((val,index)=>(
+          {JobData.map((val,index)=>(
               
             <TableRow key={index}>
-              <TableCell className="font-medium">{val.name}</TableCell>
-              <TableCell>{val.members}</TableCell>
-              <TableCell>{val.jobPosted}</TableCell>
-              <TableCell>{val.joinRequests||0}</TableCell>
+              <TableCell className="font-medium">{val.workSpace.name}</TableCell>
+              <TableCell className="font-medium">{val.title}</TableCell>
+             <TableCell className="font-medium">{Array.isArray(val.applications) ? val.applications.length : 0}</TableCell>
+              <TableCell>{val.salaryFrom || 0}/{val.salaryTo || 0}</TableCell>
 
               <TableCell>
                   <div className="flex gap-2  items-center">
                     <div>
-                      <Link href={`/company/workspace/edit/${val.id}`}>
+                      <Link href={`/company/post-job/edit/${val.id}`}>
                         <button className="p-2  dark:bg-black border border-black dark:border-white/[0.2]   rounded-xl dark:group-hover:border-slate-700  ">
                         Edit
                       </button>
@@ -137,21 +147,7 @@ const WorkSpaceTables = () => {
                     </div>
                   </div>
               </TableCell>
-              <TableCell>
-                  <Link href={{
-                      pathname:"/company/post-job",
-                      query:{workspaceId:val.id}
-                  }}> 
-
-                  <div className="flex   items-center">
-                      <div>
-                      <button className="p-2  dark:bg-black border border-black dark:border-white/[0.2]   rounded-xl   hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out  hover:border-[#9574e2]dark:group-hover:border-slate-700  ">
-                          Create Job
-                      </button>
-                      </div>
-                  </div>
-                  </Link>
-              </TableCell>
+             
             </TableRow>
           ))}
         
@@ -161,4 +157,4 @@ const WorkSpaceTables = () => {
   );
 };
 
-export default WorkSpaceTables;
+export default PostJobTable;

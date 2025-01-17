@@ -56,11 +56,11 @@ export default function CreateJobPage() {
     let toastId;
     try {
       toastId = toast.loading("Creating Job...");
-      const response = await axios.post(`http://localhost:3000/api/company/post-job?workspaceId=${workspaceId}`,jobData);
+      const response = await axios.post(`http://localhost:3000/api/company-api/post-job?workspaceId=${workspaceId}`,jobData);
 
       if (response.status === 200) {
         toast.success("Job Created Successfully", { id: toastId });
-        // router.replace("/company/dashboard");
+        router.replace("/company/dashboard");
       }
       else if(response.status==401)
       {
