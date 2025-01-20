@@ -1,8 +1,8 @@
 import { NavBar } from "@/components/NavBar";
 import React from "react";
-import ProfileAvatar from "./(profilePage)/ProfileAvatar";
-import AboutRectangle from "./(profilePage)/aboutRectangle/AboutRectangle";
-import BioRectangle from "./(profilePage)/BioRectangle/BioRectangle";
+import ProfileAvatar from "../(profilePage)/ProfileAvatar";
+import AboutRectangle from "../(profilePage)/aboutRectangle/AboutRectangle";
+import BioRectangle from "../(profilePage)/BioRectangle/BioRectangle";
 
 const page = () => {
   return (

@@ -11,7 +11,7 @@ const UserSignup = () => {
   const words = "Job_Assist";
   const [skills, SetSkills] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState<Date|null>();
   const [userData, setUserData] = useState({
     name: "",
     age: 0,
@@ -36,19 +36,21 @@ const UserSignup = () => {
 
   const handleFormSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
+    const toastId = toast.loading("Creating Account...");
     console.log(userData);
       try {
+
         const response = await axios.post("http://localhost:3000/api/auth/signup",userData);
         console.log("response",response);
         if(response)
         {
-          toast.success("User Created Successfully");
+          toast.success("User Created Successfully",{id:toastId});
         }
       } catch (error) {
             if(error instanceof AxiosError)
             {
               console.log(error.response?.data);
-              toast.error("Something went wrong");
+              toast.error("Something went wrong",{id:toastId});
             }
       }
   
@@ -60,11 +62,16 @@ const UserSignup = () => {
   }
 
   useEffect(() => {
-      setUserData((prev)=>({...prev,skills,age:(((date&&date.getFullYear())??0)-(new Date().getFullYear())),dob:date?.toISOString()}));
-      userData.age= ((date&& date?.getFullYear())??0)-(new Date().getFullYear());
-  },[date,skill])
-
-
+    if (date) {
+      const calculatedAge = new Date().getFullYear() - date.getFullYear();
+      setUserData((prev) => ({
+        ...prev,skills,
+        dob: date.toISOString(),
+        age: calculatedAge,
+      }));
+    }
+  }, [date,skills]);
+  
   return (
     <div className="">
       <div className="flex justify-center items-center mb-5">
@@ -125,7 +132,7 @@ const UserSignup = () => {
                             <option value="Female">Female</option>
                     </select>
 
-                    <input type="date" onChange={(e) => setDate(e.target.valueAsDate ?? undefined)
+                    <input type="date" onChange={(e) => setDate(e.target.valueAsDate)
                     
                     } className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground" />
 
@@ -203,8 +210,9 @@ const UserSignup = () => {
                 src="/loginPageImage.png"
                 className="rounded-3xl"
                 alt="Login"
-                width={500}
+                width={500} 
                 height={600}
+                layout="responsive"
               />
             </div>
           </div>
