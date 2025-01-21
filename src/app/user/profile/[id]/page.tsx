@@ -53,9 +53,9 @@ const page = async ({ params }: { params: { id: string } }) => {
           </div>
 
           {userData && (
-            <div>
+            <div className="flex flex-col gap-5">
               <AboutRectangle userData={userData} />
-              <div className=" w-[90%] h-28 max-w-[90%] ">
+              <div className=" w-[90%] h-28 max-w-[90%] justify-center">
                 <BioRectangle userData={userData} />
               </div>
             </div>

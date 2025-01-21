@@ -42,6 +42,7 @@ const CandidateSearchPage = () => {
       } catch (error) {
         if (error instanceof AxiosError) {
           toast.error("An error occurred while fetching candidates", { id: toastId });
+          console.log(error);
           setError(error.response?.data || "An error occurred while fetching candidates");
         }
       }
@@ -50,13 +51,18 @@ const CandidateSearchPage = () => {
     fetchCandidateData();
   }, []);
 
-    useEffect(()=>{
+    console.log("candidate type:", candidates);
+    console.log("filtered Type:",typeof filteredCandidates);
+    useEffect(()=>{ 
+      if(candidates)
+      {
         const filteredCandidates = candidates.filter((candidate) =>
           candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           candidate.place.toLowerCase().includes(searchQuery.toLowerCase()) ||
           candidate.skills.join(", ").toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredCandidates(filteredCandidates);
+      }
     },[searchQuery])
 
   return (

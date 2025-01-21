@@ -31,6 +31,7 @@ model User{
   password String
   jobApplications JobApplication[]
   workspace WorkSpace[]  @relation("UserWorkSpace")
+  workspaceRequested WorkSpace[] @relation("WorkSpaceRequests")
   createdWorkSpaces WorkSpace[] @relation("WorkSpaceOwners")
   analytics Analytic[]
   messagesSent Message[]  @relation("messageSender")
@@ -66,6 +67,7 @@ model WorkSpace{
   owner User @relation("WorkSpaceOwners",fields: [createdById] ,references: [id] , onDelete: Cascade)
   jobBoards JobBoard[]
   joinRequests Int @default(0)    
+  requestedMembers User[] @relation("WorkSpaceRequests")
   category String[]
 }
 
