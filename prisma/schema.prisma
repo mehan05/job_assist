@@ -34,8 +34,7 @@ model User{
   workspaceRequested WorkSpace[] @relation("WorkSpaceRequests")
   createdWorkSpaces WorkSpace[] @relation("WorkSpaceOwners")
   analytics Analytic[]
-  messagesSent Message[]  @relation("messageSender")
-  messagesReceived Message[]  @relation("messageReceiver")
+
 }
 
 model JobApplication {
@@ -69,6 +68,7 @@ model WorkSpace{
   joinRequests Int @default(0)    
   requestedMembers User[] @relation("WorkSpaceRequests")
   category String[]
+  workSpaceRequests workspaceRequestData[]
 }
 
 model JobBoard{
@@ -101,13 +101,15 @@ model Analytic{
   user User? @relation(fields: [userId] ,references: [id])
 } 
 
-model Message{
-  id String @id @default(uuid()) @db.Uuid
-  senderId String @db.Uuid
-  receiverId String @db.Uuid
-  message String
-  createdAt DateTime @default(now())
-  UpdatedAt DateTime @updatedAt
-  sender User? @relation("messageSender",fields: [senderId] ,references: [id])
-  receiver User? @relation("messageReceiver",fields: [receiverId] ,references: [id])
+
+model workspaceRequestData {
+   description String
+   id String @id @default(uuid()) @db.Uuid
+   requestedById String @db.Uuid
+   requestedBy String
+   createdAt DateTime @default(now())
+   UpdatedAt DateTime @updatedAt
+   workSpaceId String @db.Uuid
+   skills String[]
+   workSpace WorkSpace @relation(fields: [workSpaceId] , references: [id])
 }
