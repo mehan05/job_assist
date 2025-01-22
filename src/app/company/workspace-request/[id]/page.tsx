@@ -26,7 +26,7 @@ interface WorkspaceRequestData {
 
 export default function WorkspaceRequestPage() {
   const params = useParams();
-  const id   = params.id;
+  const id = params.id;
   const [requests, setRequests] = useState<WorkspaceRequestData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,9 +35,13 @@ export default function WorkspaceRequestPage() {
     const fetchRequests = async () => {
       const toastId = toast.loading("Fetching workspace requests...");
       try {
-        const response = await axios.get(`/api/company-api/workspace/request/${id}`);
-        setRequests(response.data.data);  
-        toast.success("Workspace requests loaded successfully", { id: toastId });
+        const response = await axios.get(
+          `/api/company-api/workspace/request/${id}`
+        );
+        setRequests(response.data.data);
+        toast.success("Workspace requests loaded successfully", {
+          id: toastId,
+        });
       } catch (err) {
         console.error(err);
         setError("Error fetching workspace requests");
@@ -71,19 +75,23 @@ export default function WorkspaceRequestPage() {
           <div key={request.id} className="mt-5 p-5 rounded-lg shadow-md">
             <h2 className="text-xl font-bold">Request ID: {request.id}</h2>
             <p>
-              <strong>Requested By:</strong> {request.requestedBy} ({request.requestedById})
+              <strong>Requested By:</strong> {request.requestedBy} (
+              {request.requestedById})
             </p>
             <p>
-              <strong>Created At:</strong> {new Date(request.createdAt).toLocaleString()}
+              <strong>Created At:</strong>{" "}
+              {new Date(request.createdAt).toLocaleString()}
             </p>
             <p>
-              <strong>Last Updated At:</strong> {new Date(request.updatedAt).toLocaleString()}
+              <strong>Last Updated At:</strong>{" "}
+              {new Date(request.updatedAt).toLocaleString()}
             </p>
             <p>
               <strong>Workspace Name:</strong> {request.workSpace.name}
             </p>
             <p>
-              <strong>Workspace Categories:</strong> {request.workSpace.category.join(", ")}
+              <strong>Workspace Categories:</strong>{" "}
+              {request.workSpace.category.join(", ")}
             </p>
             <p>
               <strong>Description:</strong> {request.description}
