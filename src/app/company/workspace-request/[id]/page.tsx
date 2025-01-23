@@ -57,12 +57,12 @@ export default function WorkspaceRequestPage() {
 
     fetchRequests();
   }, [id]);
-  const handleRequestAction = async(id:string)=>{
+  const handleRequestAction = async(requestID:string)=>{
     const toastId  = toast.loading("Updating Status...")
       if(requestAction=="APPROVED")
       {
         try {
-            const response = await axios.post("http://localhost:3000/api/company-api/workspace/request/requested-status/accept/"+id);
+            const response = await axios.post("http://localhost:3000/api/company-api/workspace/request/requested-status/accept/"+requestID,{workspaceId:id});
             if(response.status==200)
             {
                 toast.success("Status Updated",{id:toastId  })
@@ -81,6 +81,10 @@ export default function WorkspaceRequestPage() {
             {
                 toast.success("Status Updated",{id:toastId  })
             }
+            if(response.status==404)
+            {
+              toast.message("No Request to display.")
+            }
         } catch (error) {
               if(error instanceof AxiosError)
               {
@@ -91,16 +95,28 @@ export default function WorkspaceRequestPage() {
   }
   if (loading) {
     return (
-      <div className=" border-violet-600  flex items-center justify-center min-h-screen">
-        <p>Loading...</p>
+      <div>
+        <div>
+          <NavBar/>
+        </div>
+        <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-large border-b-4 border-purple-500"></div>
+        </div>
       </div>
+          
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500">{error}</p>
+      <div>
+        <div>
+           <NavBar/>
+        </div>
+
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-red-500">No Request to display </p>
+        </div>
       </div>
     );
   }
@@ -108,7 +124,7 @@ export default function WorkspaceRequestPage() {
   return (
     <div className="overflow-hidden">
       <NavBar />
-
+    
       <div className="mt-10 mx-10">
         <h1 className="font-Josefin_Sans text-4xl font-bold mb-5">
           Workspace Requests
@@ -133,7 +149,7 @@ export default function WorkspaceRequestPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {requests.map((request) => (
+                  {requests.length>0&&requests.map((request) => (
                     <tr
                       key={request.id}
                       className=" border-b border-purple-300"
@@ -175,7 +191,7 @@ export default function WorkspaceRequestPage() {
           </p>
         )}
 
-        {requests.map((request) => (
+        {requests.length>0 && requests.map((request) => (
           <div
             key={request.id}
             className="mt-8 p-6 border-2 border-purple-600 rounded-lg shadow-md"

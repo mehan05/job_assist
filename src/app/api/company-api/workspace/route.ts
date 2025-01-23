@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
 export async function GET()
 {
   const token = (await cookies()).get("token")?.value;
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laGFubWVoYW42QGdtYWlsLmNvbSIsImlkIjoiNzQxNGJkNTgtZmE2OC00MTMzLWFlYjUtYTY1NGVjZTU1ODhiIiwicm9sZSI6IkNPTVBBTlkiLCJpYXQiOjE3Mzc2Mjg1ODcsImV4cCI6MTczNzcxNDk4N30.rHEFl3BqiY9BxQ4THFylOo17nq_ZZ6I9unyJXPpgHQo"
   const verifToken = jwt.verify(token as string,Secret) as tokenDecryptInterface;
   console.log("verifToken",verifToken);
   if(verifToken.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
@@ -71,6 +72,7 @@ export async function GET()
       select:{
         name:true,
         id:true,
+        members:true,
         joinRequests:true,
         _count:{
           select:{

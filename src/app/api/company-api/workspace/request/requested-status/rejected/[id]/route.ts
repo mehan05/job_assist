@@ -14,6 +14,11 @@ export async function POST(req:NextRequest,{params}:{params:{id:string}})
                   status: STATUS.REJECTED,
                 },
               });
+              await prisma.workspaceRequestData.delete({
+                where: {
+                  id:id
+                }
+              })
               return NextResponse.json({ msg: "Accepted" }, { status: 200 });
             } catch (error) {
               if (error instanceof Error) {

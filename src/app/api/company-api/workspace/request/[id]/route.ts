@@ -34,7 +34,7 @@ export async function POST(req: NextRequest,{params}:{params:{id:string}}) {
 
     const decodedToken = jwt.verify(token, SECRET_KEY) as TokenPayload;
     if (decodedToken.role !== "USER") {
-      return NextResponse.json({ msg: "Unauthorized" }, { status: 403 });
+      return NextResponse.json({ msg: "Unauthorized only user can send request" }, { status: 403 });
     }
 
     const { message, skills } = validationResult.data;
