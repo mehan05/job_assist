@@ -34,6 +34,7 @@ model User{
   workspaceRequested WorkSpace[] @relation("WorkSpaceRequests")
   createdWorkSpaces WorkSpace[] @relation("WorkSpaceOwners")
   analytics Analytic[]
+  workSpaceRequests workspaceRequestData[]
 
 }
 
@@ -101,7 +102,11 @@ model Analytic{
   user User? @relation(fields: [userId] ,references: [id])
 } 
 
-
+enum STATUS{
+  REQUESTED
+  ACCEPTED
+  REJECTED
+}
 model workspaceRequestData {
    description String
    id String @id @default(uuid()) @db.Uuid
@@ -111,5 +116,7 @@ model workspaceRequestData {
    UpdatedAt DateTime @updatedAt
    workSpaceId String @db.Uuid
    skills String[]
+   status STATUS @default(REQUESTED) 
+   requestedByUser User @relation(fields: [requestedById] ,references: [id])
    workSpace WorkSpace @relation(fields: [workSpaceId] , references: [id])
 }

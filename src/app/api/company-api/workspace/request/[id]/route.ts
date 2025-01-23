@@ -70,6 +70,7 @@ export async function GET(req: NextRequest,{params}:{params:{id:string}}) {
       },
       include: {
         workSpace: true,
+        requestedByUser:true
       },
     });
 

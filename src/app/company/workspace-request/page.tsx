@@ -53,7 +53,7 @@ const WorkspaceRequestPage = () => {
 
     fetchRequests();
   }, []);
-
+  console.log("request id",requests);
   if (loading) {
     return (
         <div>
@@ -80,7 +80,7 @@ const WorkspaceRequestPage = () => {
 
       <div className="mt-10">
         {requests.map((val, index) => (
-        <Link href={`workspace-request/${val.id}`} key={index}>
+        <Link href={`workspace-request/${val.workSpace.id}`} key={index}>
 
             <div key={index} className="flex flex-col gap-10 justify-center items-center">
                 <div className="hover:scale-105 transition-all duration-100 ease-in mb-6">

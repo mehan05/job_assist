@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "STATUS" AS ENUM ('REQUESTED', 'ACCEPTED', 'REJECTED');
+
+-- AlterTable
+ALTER TABLE "workspaceRequestData" ADD COLUMN     "status" "STATUS" NOT NULL DEFAULT 'REQUESTED';

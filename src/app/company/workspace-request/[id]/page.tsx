@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { NavBar } from "@/components/NavBar";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
@@ -22,6 +22,10 @@ interface WorkspaceRequestData {
     createdBy: string;
   };
   skills: string[];
+  requestedByUser: {
+    name: string;
+    email: string;
+  };
 }
 
 export default function WorkspaceRequestPage() {
@@ -30,7 +34,7 @@ export default function WorkspaceRequestPage() {
   const [requests, setRequests] = useState<WorkspaceRequestData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const[requestAction,setRequestAction] = useState("");
   useEffect(() => {
     const fetchRequests = async () => {
       const toastId = toast.loading("Fetching workspace requests...");
@@ -44,7 +48,7 @@ export default function WorkspaceRequestPage() {
         });
       } catch (err) {
         console.error(err);
-        setError("Error fetching workspace requests");
+        setError("Failed to fetch workspace requests. Please try again later.");
         toast.error("Failed to load workspace requests", { id: toastId });
       } finally {
         setLoading(false);
@@ -53,60 +57,145 @@ export default function WorkspaceRequestPage() {
 
     fetchRequests();
   }, [id]);
-
+  const handleRequestAction = async(id:string)=>{
+    const toastId  = toast.loading("Updating Status...")
+      if(requestAction=="APPROVED")
+      {
+        try {
+            const response = await axios.post("http://localhost:3000/api/company-api/workspace/request/requested-status/accept/"+id);
+            if(response.status==200)
+            {
+                toast.success("Status Updated",{id:toastId  })
+            }
+        } catch (error) {
+              if(error instanceof AxiosError)
+              {
+                toast.error(error.response?.data.message,{id:toastId})
+              }
+        }
+      }
+      else{
+          try {
+            const response = await axios.post("http://localhost:3000/api/company-api/workspace/request/requested-status/rejected/"+id);
+            if(response.status==200)
+            {
+                toast.success("Status Updated",{id:toastId  })
+            }
+        } catch (error) {
+              if(error instanceof AxiosError)
+              {
+                toast.error(error.response?.data.message,{id:toastId})
+              }
+        }
+      }
+  }
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className=" border-violet-600  flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
   }
 
   return (
     <div className="overflow-hidden">
       <NavBar />
 
-      <div className="mt-10 mx-5 sm:mx-10">
-        <h1 className="font-Josefin_Sans text-3xl md:text-4xl lg:text-6xl font-bold">
+      <div className="mt-10 mx-10">
+        <h1 className="font-Josefin_Sans text-4xl font-bold mb-5">
           Workspace Requests
         </h1>
 
-        {requests.map((request) => (
-          <div key={request.id} className="mt-5 p-5 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold">Request ID: {request.id}</h2>
-            <p>
-              <strong>Requested By:</strong> {request.requestedBy} (
-              {request.requestedById})
-            </p>
-            <p>
-              <strong>Created At:</strong>{" "}
-              {new Date(request.createdAt).toLocaleString()}
-            </p>
-            <p>
-              <strong>Last Updated At:</strong>{" "}
-              {new Date(request.updatedAt).toLocaleString()}
-            </p>
-            <p>
-              <strong>Workspace Name:</strong> {request.workSpace.name}
-            </p>
-            <p>
-              <strong>Workspace Categories:</strong>{" "}
-              {request.workSpace.category.join(", ")}
-            </p>
-            <p>
-              <strong>Description:</strong> {request.description}
-            </p>
-            <p>
-              <strong>Skills Required:</strong> {request.skills.join(", ")}
-            </p>
-            <div className="flex justify-center mt-4">
-              <button className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:scale-110 hover:shadow-lg transition-transform">
-                Accept
-              </button>
-              <button className="ml-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:scale-110 hover:shadow-lg transition-transform">
-                Reject
-              </button>
+        {requests.length > 0 ? (
+          <div className="p-6 border-2 border-purple-600 rounded-lg shadow-md">
+            <h2 className="font-Josefin_Sans text-2xl font-semibold mb-4">
+              Request List
+            </h2>
+            <hr className="text-violet-600 mb-4" />
+            <div className="overflow-x-auto">
+              <table className="table-auto w-full text-left border-collapse">
+                <thead className="border-b border-purple-300">
+                  <tr>
+                    <th className="px-4 py-2">Request ID</th>
+                    <th className="px-4 py-2">Workspace Name</th>
+                    <th className="px-4 py-2">Categories</th>
+                    <th className="px-4 py-2">Created At</th>
+                    <th className="px-4 py-2">Last Updated</th>
+                    <th className="px-4 py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {requests.map((request) => (
+                    <tr
+                      key={request.id}
+                      className=" border-b border-purple-300"
+                    >
+                      <td className="px-4 py-2">{request.id}</td>
+                      <td className="px-4 py-2">{request.workSpace.name}</td>
+                      <td className="px-4 py-2">
+                        {request.workSpace.category.join(", ")}
+                      </td>
+                      <td className="px-4 py-2">
+                        {new Date(request.createdAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-2">
+                        {new Date(request.updatedAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="flex space-x-2">
+                          <button className="px-3 py-1 bg-green-500 text-white rounded hover:scale-105 hover:shadow" onClick={()=>{setRequestAction("APPROVED");
+                            handleRequestAction(request.id);
+                          }}>
+                            Accept
+                          </button>
+                          <button className="px-3 py-1 bg-red-500 text-white rounded hover:scale-105 hover:shadow" onClick={()=>{setRequestAction("REJECTED");
+                            handleRequestAction(request.id);
+                          }}>
+                            Reject
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </div>
+        ) : (
+          <p className="text-center mt-10 text-lg">
+            No workspace requests available.
+          </p>
+        )}
+
+        {requests.map((request) => (
+          <div
+            key={request.id}
+            className="mt-8 p-6 border-2 border-purple-600 rounded-lg shadow-md"
+          >
+            <h2 className="font-Josefin_Sans text-2xl font-semibold mb-4">
+              Request Details
+            </h2>
+            <hr className="text-violet-600 mb-4" />
+            <p>
+              <span className="font-bold">Requested By:</span> {" "}
+              {request.requestedByUser.name} ({request.requestedByUser.email})
+            </p>
+            <p className="mt-4">
+              <span className="font-bold">Description:</span> {" "}
+              {request.description}
+            </p>
+            <p className="mt-4">
+              <span className="font-bold">Skills Required:</span> {" "}
+              {request.skills.join(", ")}
+            </p>
           </div>
         ))}
       </div>

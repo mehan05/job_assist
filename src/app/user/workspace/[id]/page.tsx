@@ -83,8 +83,8 @@ export default function WorkspaceDetails() {
         console.log("Submitted Data:", formData);
     console.log("type:", typeof formData.skills);
 
+    const toastId = toast.loading("Submitting request...");
     try {
-      const toastId = toast.loading("Submitting request...");
       const response = await axios.post("/api/company-api/workspace/request/"+id, formDataNew);
       if (response.status === 201) {
         toast.success("Request submitted successfully!", { id: toastId });
