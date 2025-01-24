@@ -6,6 +6,46 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import Cookies from "js-cookie";
+import JobBoardDetails from "../(components)/JobDetails";
+interface TokenPayload {
+  id: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+export interface User {
+  id: string;
+  name: string;
+  age: number;
+  headlines: string;
+  bio: string;
+  gender: string;
+  place: string;
+  role: "USER" | "ADMIN"; 
+  skills: string[];
+  dob: string; 
+  email: string;
+  password: string; 
+}
+interface JobBoard {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  postById: string;
+  postBy: string;
+  deadline: string;
+  skillsRequired: string[];
+  contactEmail: string;
+  workSpaceId: string;
+  salaryFrom: number;
+  salaryTo: number;
+  employmentType: string;
+  createdAt: string;
+  UpdatedAt: string;
+}
 interface WorkSpace {
   createdAt: string;
   id: string;
@@ -16,10 +56,13 @@ interface WorkSpace {
   jobPosted: number;
   joinRequests: number;
   category: string[];
+  members: User[];
+  jobBoards:JobBoard[];
 }
 
 export default function WorkspaceDetails() {
   const { id } = useParams();
+  const[ismember,setIsMember] = useState<boolean|null>(null);
   const [workspaces, setWorkspaces] = useState<WorkSpace>({
     createdAt: "",
     id: "",
@@ -30,6 +73,8 @@ export default function WorkspaceDetails() {
     jobPosted: 0,
     joinRequests: 0,
     category: [],
+    members: [],
+    jobBoards: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -40,9 +85,8 @@ export default function WorkspaceDetails() {
     message: "",
     skills: "",
   });
-
-  useEffect(() => {
-    const fetchWorkspaces = async () => {
+  useEffect(() => {   
+      const fetchWorkspaces = async () => {
       const toastId = toast.loading("Loading workspaces...");
       try {
         const response = await axios.get("/api/user-api/workspace/" + id);
@@ -50,6 +94,7 @@ export default function WorkspaceDetails() {
           toast.success("Workspaces loaded successfully", { id: toastId });
           setWorkspaces(response.data.workspaces);
           setLoading(false);
+          setIsMember(response.data.isMember);
         } else {
           toast.error("Failed to load workspaces", { id: toastId });
           setError(true);
@@ -60,10 +105,13 @@ export default function WorkspaceDetails() {
           toast.error("Error fetching workspaces");
         }
       }
-    };
 
-    fetchWorkspaces();
-  }, []);
+    };
+    
+   
+  fetchWorkspaces();
+}, []);
+console.log("workspaces",workspaces);
 
   // Handle input changes
   const handleInputChange = (
@@ -160,33 +208,41 @@ export default function WorkspaceDetails() {
             </tbody>
           </table>
         </div>
-
-        <div className="p-6 border-2 border-purple-600 rounded-lg shadow-md mb-10">
-          <h2 className="font-Josefin_Sans text-2xl font-semibold mb-4">
-            Request to Join
-          </h2>
-          <textarea
-            name="message"
-            placeholder="Write a short message explaining why you'd like to join this workspace. (Max 250 characters)"
-            className="w-full h-28 border rounded-md p-3 mb-4"
-            value={formData.message}
-            onChange={handleInputChange}
-          ></textarea>
-          <input
-            name="skills"
-            type="text"
-            placeholder="Relevant Skills (e.g., Skill 1, Skill 2)"
-            className="w-full border rounded-md p-3 mb-4"
-            value={formData.skills}
-            onChange={handleInputChange}
-          />
-          <button
-            onClick={handleSubmit}
-            className="px-6 py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:scale-105 text-white rounded-md"
-          >
-            Submit Request
-          </button>
-        </div>
+          {
+            ismember && ismember!=null && ismember==true?(
+              <JobBoardDetails jobBoards={workspaces.jobBoards}/>
+            ):(
+              ismember && ismember!=null && ismember==false&&(
+                
+            <div className="p-6 border-2 border-purple-600 rounded-lg shadow-md mb-10">
+              <h2 className="font-Josefin_Sans text-2xl font-semibold mb-4">
+                Request to Join
+              </h2>
+              <textarea
+                name="message"
+                placeholder="Write a short message explaining why you'd like to join this workspace. (Max 250 characters)"
+                className="w-full h-28 border rounded-md p-3 mb-4"
+                value={formData.message}
+                onChange={handleInputChange}
+              ></textarea>
+              <input
+                name="skills"
+                type="text"
+                placeholder="Relevant Skills (e.g., Skill 1, Skill 2)"
+                className="w-full border rounded-md p-3 mb-4"
+                value={formData.skills}
+                onChange={handleInputChange}
+              />
+              <button
+                onClick={handleSubmit}
+                className="px-6 py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:scale-105 text-white rounded-md"
+              >
+                Submit Request
+              </button>
+            </div>
+              )
+            )
+          }
       </div>
     </div>
   );

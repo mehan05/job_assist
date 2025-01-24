@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 
 import { z } from "zod";
 import prisma from "@/lib/db";
+import { cookies } from "next/headers";
 
 const WorkspaceRequestSchema = z.object({
   message: z.string().min(1, "Message is required").max(250),
@@ -30,6 +30,7 @@ export async function POST(req: NextRequest,{params}:{params:{id:string}}) {
     }
 
     const token =(await cookies()).get("token")?.value;
+    // const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laGFudXNlcjZAZ21haWwuY29tIiwiaWQiOiI1OGExNTE1ZS03OTVlLTRhYjgtYjJhNy1mN2IxNTZjYzJjNmUiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTczNzczMzUwNCwiZXhwIjoxNzM3ODE5OTA0fQ.ja4x6eH7uYMDEJfNN4LFTuGcE0qfajY8eRBhYOq0qs4';
     if (!token) return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
 
     const decodedToken = jwt.verify(token, SECRET_KEY) as TokenPayload;
@@ -71,6 +72,7 @@ export async function GET(req: NextRequest,{params}:{params:{id:string}}) {
       include: {
         workSpace: true,
         requestedByUser:true
+
       },
     });
 

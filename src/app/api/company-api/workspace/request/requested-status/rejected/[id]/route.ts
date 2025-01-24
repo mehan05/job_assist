@@ -6,19 +6,22 @@ export async function POST(req:NextRequest,{params}:{params:{id:string}})
 {
         const {id} = (await params);
         try {
-             await prisma.workspaceRequestData.updateMany({
+          await prisma.$transaction(async (prisma)=>{
+            await prisma.workspaceRequestData.updateMany({
                 where: {
                   id: id,
                 },
                 data: {
                   status: STATUS.REJECTED,
                 },
-              });
+              })
               await prisma.workspaceRequestData.delete({
                 where: {
                   id:id
                 }
               })
+          })
+             
               return NextResponse.json({ msg: "Accepted" }, { status: 200 });
             } catch (error) {
               if (error instanceof Error) {
