@@ -76,7 +76,7 @@ export async function GET(req: NextRequest,{params}:{params:{id:string}}) {
       },
     });
 
-    if (!workspaceRequests || workspaceRequests.length === 0) {
+    if (!workspaceRequests ) {
       return NextResponse.json({ msg: "No requests found for this workspace" }, { status: 404 });
     }
 

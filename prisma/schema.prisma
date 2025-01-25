@@ -37,13 +37,15 @@ model User{
   workSpaceRequests workspaceRequestData[]
 
 }
-
+enum APPLICATION_STATUS{
+  PENDING
+  ACCEPTED
+  REJECTED
+}
 model JobApplication {
   id String @id @default(uuid()) @db.Uuid
   title String
-  company String
-  status String
-  notes String
+  status APPLICATION_STATUS @default(PENDING) 
   jobId String @db.Uuid  
   userId String? @db.Uuid
   createdAt DateTime @default(now())

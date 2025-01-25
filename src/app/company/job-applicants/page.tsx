@@ -5,55 +5,57 @@ import { NavBar } from "@/components/NavBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import Link from "next/link";
-interface WorkspaceRequestData {
+interface User {
     id: string;
-    description: string;
-    requestedBy: string;
-    requestedById: string;
-    createdAt: string;
-    updatedAt: string;
+    name: string;
+    age: number;
+    headlines: string;
+    bio: string;
+    gender: string;
+    place: string;
+    role: "USER" | "COMPANY";
     skills: string[];
-    workSpace: {
-      id: string;
-      name: string;
-      description: string;
-      createdBy: string;
-      createdById: string;
-      isPublic: boolean;
-      jobPosted: number;
-      joinRequests: number;
-      category: string[];
-      createdAt: string;
-      updatedAt: string;
-    };
+    dob: string;
+    email: string;
+    password: string;
   }
   
-
-const WorkspaceRequestPage = () => {
-  const [requests, setRequests] = useState<WorkspaceRequestData[]>([]);
+export interface JobApplication {
+    id: string;
+    title: string;
+    jobId: string;
+    userId: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    user:User
+  }
+  
+const ApplicantPage = () => {
+  const [applicants, setapplicants] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchRequests = async () => {
-        const toastId = toast.loading("Loading workspaces...");
+    const fetchapplicants = async () => {
+        const toastId = toast.loading("Loading Applications...");
       try {
-        const response = await axios.get("/api/company-api/workspace/request");
-        console.log(response.data.data);
-        setRequests(response.data.data);
-        toast.success("Workspaces loaded successfully", { id: toastId });
+        const response = await axios.get("/api/company-api/job-applications/");
+        console.log(response.data);
+        setapplicants(response.data.response);
+        toast.success("Applications loaded successfully", { id: toastId });
       } catch (err) {
-        setError("Error fetching requests");
+        setError("Error fetching applicants");
         console.error(err);
-        toast.error("Error fetching requests", { id: toastId });
+        toast.error("Error fetching applicants", { id: toastId });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchRequests();
+    fetchapplicants();
   }, []);
-  console.log("request id",requests);
+  console.log("request id",applicants);
   if (loading) {
     return (
         <div>
@@ -61,7 +63,7 @@ const WorkspaceRequestPage = () => {
                 <NavBar/>
             </div>
             <h1 className="font-Josefin_Sans text-3xl font-bold m-4">
-              Workspace Requests
+               Applicants
             </h1>
             <div className="flex justify-center items-center h-screen">
               
@@ -82,11 +84,11 @@ const WorkspaceRequestPage = () => {
         <NavBar />
       </div>
       <h1 className="font-Josefin_Sans text-3xl font-bold m-4">
-              Workspace Requests
+               Applicants
             </h1>
       <div className="mt-10">
-        {requests.map((val, index) => (
-        <Link href={`workspace-request/${val.workSpace.id}`} key={index}>
+        {applicants.map((val, index) => (
+        <Link href={`job-applicants/${val.id}`} key={index}>
             <div key={index} className="flex flex-col gap-10 justify-center items-center">
                 <div className="hover:scale-105 transition-all duration-100 ease-in mb-6">
                 <div className="border-2 border-[#9b58ff] w-[1000px] h-24 min-w-64 max-w-[1000px] lg:w-[1000px] lg:h-24 min-h-24 rounded-xl text-wrap">
@@ -100,18 +102,17 @@ const WorkspaceRequestPage = () => {
                             </Avatar>
                         </div>
                         <div>
-                            <p className="font-Josefin_Sans font-bold text-2xl">{val.requestedBy}</p>
-                            <p className="font-Josefin_Sans font-semibold">{val.workSpace.name}</p>
+                            <p className="font-Josefin_Sans font-bold text-2xl">{val.user.name}</p>
+                            <p className="font-Josefin_Sans font-semibold">{val.title}</p>
                         </div>
                         </div>
+                            <h1>Application Status: {val.status}</h1>
                         <div className="flex justify-center items-center">
                         <div className="flex justify-center items-center gap-5">
-                            <p className="font-Josefin_Sans font-semibold">{new Date(val.workSpace.createdAt).toLocaleString()}</p>
+                            <p className="font-Josefin_Sans font-semibold">{new Date(val.createdAt).toLocaleString()}</p>
                         </div>    
                         </div>
-                        <div className="flex justify-end items-center">
-                        <h1 className="font-Josefin_Sans font-semibold">Skills: {val.skills.join(", ")}</h1>
-                        </div>
+                       
                     </div>
                     </div>
                 </div>
@@ -124,4 +125,4 @@ const WorkspaceRequestPage = () => {
   );
 };
 
-export default WorkspaceRequestPage;
+export default ApplicantPage;

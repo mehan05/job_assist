@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { NavBar } from "@/components/NavBar";
+import axios from "axios";
+import { toast } from "sonner";
 
 interface JobBoard {
   id: string;
@@ -39,6 +41,32 @@ const jobBoardData: JobBoard = {
 };
 
 export default function JobBoardDetails({jobBoards}: {jobBoards: JobBoard[]}) {
+  const handleApply = async(jobId:string)=>{
+    const toastId = toast.loading("Applying...");
+    try {
+      const response =await axios.post("/api/company-api/job-applications/apply",{jobId});
+      console.log(response);
+      if(response.status==200)
+      {
+        toast.success("Applied Successfully",{id:toastId});
+      }
+      else if(response.status==401)
+      {
+        toast.error("Unauthorised user",{id:toastId});
+      }
+      else if(response.status==402)
+      {
+        toast.error("Job Id Not found",{id:toastId});
+      }
+      else if(response.status==404)
+      {
+        toast.error("Job Not found",{id:toastId});
+      }
+    } catch (error) {
+      
+      toast.error("Something went wrong",{id:toastId});
+    }
+  }
   return (
     <div>
 
@@ -102,7 +130,7 @@ export default function JobBoardDetails({jobBoards}: {jobBoards: JobBoard[]}) {
                 <div className="   m-2">
                   <div className="flex justify-end items-center">
 
-                      <button className="bg-[#9574e2] hover:bg-[#9574e2]  font-bold py-2 px-4 rounded justify-center text-white hover:scale-105  ">Apply</button>
+                      <button className="bg-[#9574e2] hover:bg-[#9574e2]  font-bold py-2 px-4 rounded justify-center text-white hover:scale-105  " onClick={()=>handleApply(jobBoardData.id)}>Apply</button>
                   </div>
                 </div>
               </div>
