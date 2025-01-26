@@ -14,7 +14,7 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [imageLocationLinks] = [
+  const imageLocationLinks = [
     "/job-applied_icon.png",
     "/job-rejected-icon.png",
     "/job-pending-icon.png",

@@ -24,8 +24,7 @@ interface WorkSpaceTableProps {
 
 const WorkSpaceTables = () => {
   const router = useRouter();
-  const[error,setError] = useState(false);
-  const[loading,setLoading] = useState(true);
+
   const[workSpaceData,setWorkSpaceData] = useState<WorkSpaceTableProps[]>([]);
   useEffect(()=>{
     console.log("workspcateData:",workSpaceData); 
@@ -58,9 +57,9 @@ const WorkSpaceTables = () => {
       const workSpaceData = await axios.get("http://localhost:3000/api/company-api/workspace");
       if(workSpaceData.status === 200)
         {
-          setLoading(false);
           console.log("workspaceData:",workSpaceData.data);
        
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           setWorkSpaceData(workSpaceData.data.data.map((val: any) => ({
             id: val.id,
             name: val.name,
@@ -80,7 +79,7 @@ const WorkSpaceTables = () => {
       }
       else if(workSpaceData.status === 500)
       {
-        setError(true);
+        toast.error("cant Load Workspaces");
       }
     } catch (error) {
         if(error instanceof AxiosError)
@@ -95,6 +94,7 @@ const WorkSpaceTables = () => {
   useEffect(()=>{
     
       getAllWorkSpaces();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     <div className="  dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700  rounded-xl p-5 w-full h-80 max-h-80 min-h-72 scrollable-element  overflow-y-auto">
