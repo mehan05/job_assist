@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req:NextRequest)
 {
+  const body = await req.json();
   const token = (await cookies()).get("token")?.value;
   // if(!token)
   // {

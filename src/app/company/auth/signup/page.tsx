@@ -66,6 +66,7 @@ const CompanySignup = () => {
   useEffect(() => {
       setUserData((prev)=>({...prev,dob:date}));
       userData.age= ((date&& date?.getFullYear())??0)-(new Date().getFullYear());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[date])
   return (
     <div className="max-w-7xl mx-auto">

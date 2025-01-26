@@ -1,9 +1,12 @@
+"use client"; 
 import { LandingPageMarquee } from "@/components/LandingPageMarquee";
 import { NavBar } from "@/components/NavBar";
-const TypingAnimation  = dynamic(() => import('@/components/ui/typing-animation'))
+const TypingAnimation  = dynamic(() => import('@/components/ui/typing-animation'),{
+  ssr:false})
 import dynamic from "next/dynamic";
-const RootNavigator = dynamic(() => import("./rootnavigator/page"));
+const RootNavigator = dynamic(() => import("./rootnavigator/page"),{ssr:false});
 export default function Home() {
+
   return (
     <div className="overflow-hidden">
 
@@ -12,11 +15,11 @@ export default function Home() {
         <NavBar />
       </div>
 
-      <div className="mt-10 ml-10 m-5">
+      <div className="mt-10 ml-10 m-5 min-w-96">
         <div className="h-64 w-auto max-w-3/4 flex  items-center ">
           <div className="  w-full">
             <div>
-              <h1 className="font-Josefin_Sans text-6xl font-bold">
+              <h1 className="font-Josefin_Sans text-6xl font-bold"> 
                 {" "}
                 Find the Right Job
               </h1>{" "}

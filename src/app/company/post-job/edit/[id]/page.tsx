@@ -2,7 +2,7 @@
 import { NavBar } from "@/components/NavBar";
 import { Badge } from "@/components/ui/badge";
 import axios, { AxiosError } from "axios";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams,  useRouter } from "next/navigation";
 import React, {  useEffect, useState } from "react";
 import { toast } from "sonner";
 interface JobData {
@@ -16,9 +16,9 @@ interface JobData {
   employmentType: string;
   deadline: string;
 }
-export default function CreateJobPage({params}:{params:{id:string}}) {
-  const pathname = usePathname();
-    const {id }= React.use(params)
+export default function CreateJobPage() {
+    const params= useParams();
+    const id = params.id;
   const router = useRouter();
   const [skillsRequired, setskillsRequired] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
@@ -45,8 +45,12 @@ export default function CreateJobPage({params}:{params:{id:string}}) {
   }
 
   useEffect(()=>{
+    if(id)
+    {
 
-    getDataForEdit(id);
+      getDataForEdit(id.toString());
+    }
+    else toast.error("No Id Found");
   },[id])
 
   useEffect(() => {

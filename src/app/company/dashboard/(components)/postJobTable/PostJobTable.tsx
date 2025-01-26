@@ -37,8 +37,6 @@ interface WorkSpace {
   }
 const PostJobTable = () => {
   const router = useRouter();
-  const[error,setError] = useState(false);
-  const[loading,setLoading] = useState(true);
   const[JobData,setJobData] = useState<JobTableInterface[]>([]);
   useEffect(()=>{
     console.log("workspcateData:",JobData); 
@@ -71,7 +69,6 @@ const PostJobTable = () => {
       const JobData = await axios.get("http://localhost:3000/api/company-api/post-job");
       if(JobData.status === 200)
         {
-          setLoading(false);
           console.log("postJob Data:",JobData.data);
           console.log("postJob DataType:", typeof JobData.data);
             
@@ -91,7 +88,7 @@ const PostJobTable = () => {
       }
       else if(JobData.status === 500)
       {
-        setError(true);
+        toast.error("Something went wrong");
       }
     } catch (error) {
         if(error instanceof AxiosError)
@@ -106,6 +103,7 @@ const PostJobTable = () => {
   useEffect(()=>{
     
       getJobData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     <div className="  dark:bg-black border border-black dark:border-white/[0.2] dark:group-hover:border-slate-700  rounded-xl p-5 w-full h-80 max-h-80 min-h-72 scrollable-element  overflow-y-auto">

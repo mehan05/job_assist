@@ -2,6 +2,7 @@ import React from 'react'
 import JobAlertCard from './JobAlertCard/JobAlertCard'
 
 const JobAlerts = () => {
+    
   return (
     <div>
     <div className='flex flex-col gap-5'>

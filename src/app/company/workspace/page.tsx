@@ -52,6 +52,7 @@ export default function Workspace() {
                const arr2 = category;
                const filteredArr = arr2.filter((item)=> !workspaceData.category.includes(item));
                workspaceData.category.push(...filteredArr); 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         },[category])
 
           const handleSubmit = async(e:React.FormEvent)=>{

@@ -110,7 +110,7 @@ export default function WorkspaceDetails() {
     
    
   fetchWorkspaces();
-}, []);
+}, [id]);
 console.log("workspaces",workspaces);
 
   // Handle input changes

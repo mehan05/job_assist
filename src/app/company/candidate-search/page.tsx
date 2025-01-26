@@ -63,6 +63,7 @@ const CandidateSearchPage = () => {
         );
         setFilteredCandidates(filteredCandidates);
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[searchQuery])
 
   return (

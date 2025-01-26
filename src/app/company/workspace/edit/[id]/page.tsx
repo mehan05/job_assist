@@ -1,8 +1,8 @@
 "use client"
 import { NavBar } from "@/components/NavBar";
 import axios, { AxiosError } from "axios";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { get } from "react-hook-form";
 import { toast } from "sonner";
 interface WorkspaceData{
   name:string,
@@ -18,8 +18,9 @@ interface NewWorkspaceData{
   visibility: boolean,
   inviteMembers:string[]
 }
- function WorkSpaceEdit({params}:{params:{id:string}}) {
-  const {id }= React.use( params);
+ function WorkSpaceEdit() {
+  const params = useParams();
+  const id = params.id;
   const [loading, setLoading] = useState(true);
   const[isPublic,setIsPublic] = useState<boolean>(false);
   const[category,setCategory] = useState<string[]>([]);
@@ -41,9 +42,17 @@ interface NewWorkspaceData{
           if(workspaceData){
             setLoading(false)
           }
-          getDataForEdit(id);
+          if(id)
+          {
+            getDataForEdit(id.toString());
+          }
+          else{
+            setLoading(false)
+            toast.error("ID not found");
+          }
           console.log("workspace state data",workspaceData);
-        },[])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        },[loading])
 
         const getDataForEdit = async(id:string)=>{
           const toastId = toast.loading("Fetching Data...");
@@ -90,6 +99,7 @@ interface NewWorkspaceData{
                const arr2 = category;
                const filteredArr = arr2.filter((item)=> !workspaceData.category.includes(item));
                workspaceData.category.push(...filteredArr); 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         },[category])
 
           const handleSubmit = async(e:React.FormEvent)=>{

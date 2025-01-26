@@ -13,12 +13,12 @@ export const HoverEffect = ({
   }[];
   className?: string;
 }) => {
-  let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [imageLocationLinks,setimageLocationLinks] = useState<string[]>([
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [imageLocationLinks] = [
     "/job-applied_icon.png",
     "/job-rejected-icon.png",
     "/job-pending-icon.png",
-    "/job-selected-icon.png"]);
+    "/job-selected-icon.png"];
 
   return (
     <div
