@@ -1,6 +1,6 @@
 import { LandingPageMarquee } from "@/components/LandingPageMarquee";
 import { NavBar } from "@/components/NavBar";
-import TypingAnimation from "@/components/ui/typing-animation";
+const TypingAnimation  = dynamic(() => import('@/components/ui/typing-animation'))
 import dynamic from "next/dynamic";
 const RootNavigator = dynamic(() => import("./rootnavigator/page"));
 export default function Home() {

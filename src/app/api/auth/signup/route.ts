@@ -2,7 +2,7 @@ import { CompanySchema } from "@/schemas/CompanySchema";
 import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import { sign } from "@/lib/jwtsign";
 
 export async function POST(req:NextRequest)
 {
@@ -10,7 +10,7 @@ export async function POST(req:NextRequest)
     const body = await req.json();
     const result = CompanySchema.safeParse(body);
     const Secret = process.env.SECRET_KEY!
-    const hashPassword = await bcrypt.hash(body.password,10)
+    const hashPassword = await bcrypt.hashSync(body.password,10)
     body.password = hashPassword
     console.log("testbody",body);
     console.log("Zod Result:",result.error);
@@ -22,10 +22,16 @@ export async function POST(req:NextRequest)
                     ...body
                 }
             })
-            const token = jwt.sign({email:body.email,id:createdUser.id, role:body.role},Secret,{expiresIn:"1d"})
+            
+            const token =await sign({email:body.email,id:createdUser.id, role:body.role},Secret)
 
             const response = NextResponse.json({message:"user created",token},{status:200});
-            response.cookies.set("token",token);
+            response.cookies.set("token",token,{
+                httpOnly:true,
+                path:"/",
+                sameSite:"strict",
+                maxAge:60*60*24
+            });
             
             return  response;
         }
