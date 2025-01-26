@@ -6,12 +6,7 @@ export async function GET(req:NextRequest) {
     const id = searchParams.get("userId")?.toString();
     console.log("request arrived for jobalert",id)
     try {
-        const response = await prisma.user.findUnique({
-            where:{id},
-            select:{
-                jobApplications:true
-            }
-        });
+        const response = await prisma.jobBoard.findMany({});
         if(!response) return NextResponse.json({ msg: "Data not found" }, { status: 404 });
         return NextResponse.json({response},{status:200});
     } catch (error) {

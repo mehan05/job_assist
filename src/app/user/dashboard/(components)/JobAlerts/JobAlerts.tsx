@@ -22,7 +22,7 @@ interface JobBoard {
 
 const fetchJobs = async (): Promise<JobBoard[]> => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/user-api/dashboard/jobs/`);
+    const response = await axios.get(`http://localhost:3000/api/user-api/dashboard/job/`);
     if (response.status === 200) {
       console.log("Response:", response.data);
       return response.data.response;
