@@ -14,8 +14,7 @@ interface JobApplication {
 
 const fetchApplications = async (userId: string) => {
   try {
-    const response = await axios.get(
-      "/api/user-api/dashboard/job-applications",
+    const response = await axios.get("/api/user-api/dashboard/job-applications",
       { params: { userId } }
     );
     if (response.status == 200) {
