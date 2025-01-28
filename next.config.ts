@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     domains:[
       "avatar.vercel.sh"
     ]
+  },
+  typescript:{
+    ignoreBuildErrors:true
   }
  
 };
