@@ -1,5 +1,4 @@
 "use client";
-import { DatePickerDemo } from "@/components/DateSwitcher";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Textarea } from "@/components/ui/textarea";
 import axios, { AxiosError } from "axios";
@@ -11,7 +10,7 @@ import { toast } from "sonner";
 const CompanySignup = () => {
   const words = "Job_Assist";
   const router = useRouter();
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = useState<Date>();
   const [userData, setUserData] = useState({
     name: "",
     age: 0,
@@ -127,10 +126,7 @@ const CompanySignup = () => {
                             <option value="Female">Female</option>
                     </select>
 
-                    <DatePickerDemo
-                      setDate={setDate}
-                      date={date ?? new Date()}
-                    />
+                         <input type="date" onChange={(e) => setDate(new Date(e.target.value))} />                   
 
                     <input
                       type="text"
