@@ -3,11 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import prisma from "@/lib/db";
 interface TokenPayload {
-    id: string;
-    email: string;
-    role: string;
-    iat: number;
-    exp: number;
+    payload:{
+        email:string,
+        id:string,
+        role:string
+      },
+      exp:number;
+      iat:number;
+      nbf:number
   }
 export async function POST(req:NextRequest) {
     const {jobId} = await req.json();
@@ -21,7 +24,7 @@ export async function POST(req:NextRequest) {
     }
     try {
         
-        const user = await prisma.user.findUnique({where:{id:decrypt.id}});
+        const user = await prisma.user.findUnique({where:{id:decrypt.payload.id}});
         if(!user) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
         if(!jobId)
         {

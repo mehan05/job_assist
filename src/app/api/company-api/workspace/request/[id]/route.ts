@@ -13,11 +13,14 @@ const WorkspaceRequestSchema = z.object({
 const SECRET_KEY = process.env.SECRET_KEY!;
 
 interface TokenPayload {
-  id: string;
-  email: string;
-  role: string;
-  iat: number;
-  exp: number;
+  payload:{
+    email:string,
+    id:string,
+    role:string
+  },
+  exp:number;
+  iat:number;
+  nbf:number
 }
 
 export async function POST(req: NextRequest,{params}:{params:{id:string}}) {
@@ -34,7 +37,7 @@ export async function POST(req: NextRequest,{params}:{params:{id:string}}) {
     if (!token) return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
 
     const decodedToken = jwt.verify(token, SECRET_KEY) as TokenPayload;
-    if (decodedToken.role !== "USER") {
+    if (decodedToken.payload.role !== "USER") {
       return NextResponse.json({ msg: "Unauthorized only user can send request" }, { status: 403 });
     }
 
@@ -42,8 +45,8 @@ export async function POST(req: NextRequest,{params}:{params:{id:string}}) {
     const newRequest = await prisma.workspaceRequestData.create({
       data: {
         description: message,
-        requestedById: decodedToken.id,
-        requestedBy: decodedToken.email,
+        requestedById: decodedToken.payload.id,
+        requestedBy: decodedToken.payload.email,
         workSpaceId: workspaceId,
         skills: skills,
       },

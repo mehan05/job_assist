@@ -4,11 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 interface tokenDecryptInterface {
-  email: string;
-  id: number;
-  role: string;
-  iat: number;
-  exp: number;
+  payload:{
+    email:string,
+    id:string,
+    role:string
+  },
+  exp:number;
+  iat:number;
+  nbf:number
 }
 const Secret = process.env.SECRET_KEY;
 export async function POST(req: NextRequest) {
@@ -42,7 +45,7 @@ export async function POST(req: NextRequest) {
   }
   console.log(res.error);
   try {
-    if (tokenDecrypt.role !== "COMPANY")
+    if (tokenDecrypt.payload.role !== "COMPANY")
       return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
     if (!res.success)
       return NextResponse.json({ msg: "invalid data" }, { status: 402 });
@@ -52,8 +55,8 @@ export async function POST(req: NextRequest) {
       const jobBoard = await prisma.jobBoard.create({
         data: {
           ...body,
-          postBy: tokenDecrypt.email,
-          postById: tokenDecrypt.id,
+          postBy: tokenDecrypt.payload.email,
+          postById: tokenDecrypt.payload.id,
           deadline:new Date(deadline),
           workSpaceId:workspaceId
         },
@@ -75,10 +78,10 @@ export async function POST(req: NextRequest) {
 }
 
 
-export async function GET(req:NextRequest)
+export async function GET()
 {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const body = await req.json();
+  // const body = await req.json();
   const token = (await cookies()).get("token")?.value;
   // if(!token)
   // {
@@ -86,7 +89,7 @@ export async function GET(req:NextRequest)
   // }
   console.log("token from post job",token)
   const tokenDecrypt = jwt.verify(token as string,Secret as string) as tokenDecryptInterface;
-  if(!(tokenDecrypt.role==="COMPANY")) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  if(!(tokenDecrypt.payload.role==="COMPANY")) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   try {
     const reponse = await prisma.jobBoard.findMany({
       select:{

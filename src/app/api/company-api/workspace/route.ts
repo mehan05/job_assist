@@ -4,11 +4,14 @@ import { cookies } from "next/headers";
 import prisma from '@/lib/db';
 import { WorkSpaceSchema } from '@/schemas/WorkSpaceSchema';
 interface tokenDecryptInterface {
-  email: string;
-  id: string,
-  role: string,
-  iat:number,
-  exp:number
+  payload:{
+    email:string,
+    id:string,
+    role:string
+  },
+  exp:number;
+  iat:number;
+  nbf:number
 }
 const Secret:string = process.env.SECRET_KEY!;
 export async function POST(req: NextRequest) {
@@ -24,12 +27,12 @@ export async function POST(req: NextRequest) {
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
   console.log("tokenDecrypt",tokenDecrypt)
   console.log("Body",body);
-  if(tokenDecrypt.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  if(tokenDecrypt.payload.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   console.log(result.success);
   if(!result.success) return NextResponse.json({ msg: "invalid data" }, { status: 402 });
   const testObj = { ...data,
-    createdBy:tokenDecrypt.email,
-    createdById:tokenDecrypt.id,
+    createdBy:tokenDecrypt.payload.email,
+    createdById:tokenDecrypt.payload.id,
     isPublic:body.visibility
   }
   console.log("testObj",testObj);
@@ -39,8 +42,8 @@ export async function POST(req: NextRequest) {
           const response =await prisma.workSpace.create({
             data:{
               ...data,
-              createdBy:tokenDecrypt.email,
-              createdById:tokenDecrypt.id,
+              createdBy:tokenDecrypt.payload.email,
+              createdById:tokenDecrypt.payload.id,
               isPublic:body.visibility
 
             }
@@ -64,7 +67,7 @@ export async function GET(req:NextRequest)
   console.log("printign token:",token);
   const verifToken = jwt.verify(token as string,Secret) as tokenDecryptInterface;
   console.log("verifToken",verifToken);
-  if(verifToken.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
+  if(verifToken.payload.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   if(!token) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
   if(!tokenDecrypt) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
@@ -83,7 +86,7 @@ export async function GET(req:NextRequest)
         }
       },
       where:{
-        createdById:tokenDecrypt.id
+        createdById:tokenDecrypt.payload.id
       }
     })
     if(workspaceData)

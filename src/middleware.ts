@@ -44,16 +44,17 @@ export async function middleware(request: NextRequest) {
         
           if(decodedToken.payload.role!=="USER")
           {
-            return NextResponse.redirect(new URL("/dashboard",request.nextUrl));
+            return NextResponse.redirect(new URL("/",request.nextUrl));
           }
         }
         else if(request.nextUrl.pathname.includes("/company"))
         {
           const decodedToken = await verifyJWT(token, Secret) as unknown as TokenPayLoad ;
+          console.log("decrypt token company",decodedToken);
 
           if(decodedToken.payload.role!=="COMPANY")
           {
-            return NextResponse.redirect(new URL("/dashboard",request.nextUrl));
+            return NextResponse.redirect(new URL("/",request.nextUrl));
           }
         }
     } catch (error) {

@@ -3,11 +3,14 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 interface TokenPayload {
-    id: string;
-    email: string;
-    role: string;
-    iat: number;
-    exp: number;
+    payload:{
+        email:string,
+        id:string,
+        role:string
+      },
+      exp:number;
+      iat:number;
+      nbf:number
   }
 export async function GET() {
     const Secret = process.env.SECRET_KEY as string;
