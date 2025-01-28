@@ -57,8 +57,8 @@ const WorkSpaceTables = () => {
       if (workSpaceData.status === 200) {
         console.log("workspaceData:", workSpaceData.data);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setWorkSpaceData(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           workSpaceData.data.data.map((val: any) => ({
             id: val.id,
             name: val.name,
