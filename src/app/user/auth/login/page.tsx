@@ -21,7 +21,7 @@ const UserLogin = () => {
     let toastId;
       try {
          toastId = toast.loading("Logging in ...");
-        const response = await axios.post("/api/auth/login",userData);
+        const response = await axios.post("http://localhost:3000/api/auth/login",userData);
         console.log(response.data);
      
         if(response.status === 200)
