@@ -40,7 +40,9 @@ const ApplicantPage = () => {
     const fetchApplicants = async () => {
       const toastId = toast.loading("Loading Applications...");
       try {
-        const response = await axios.get("/api/company-api/job-applications/");
+        const response = await axios.get(
+          "http://localhost:3000/api/company-api/job-applications/"
+        );
         setApplicants(response.data.response);
         toast.success("Applications loaded successfully", { id: toastId });
       } catch (err) {
@@ -55,33 +57,38 @@ const ApplicantPage = () => {
     fetchApplicants();
   }, []);
 
-  const handleAction = async(id: string, action: "approve" | "reject") => {
-    const toastId = toast.loading(`${action === "approve" ? "Approving" : "Rejecting"} application...`);
+  const handleAction = async (id: string, action: "approve" | "reject") => {
+    const toastId = toast.loading(
+      `${action === "approve" ? "Approving" : "Rejecting"} application...`
+    );
     try {
-        const response = await axios.put(`/api/company-api/job-applications/${id}`,{status:action === "approve" ? "ACCEPTED" : "REJECTED"});
-        if(response.status==200)
-        {
-            const updatedApplicants = applicants.map((applicant) => {
-                if (applicant.id === id) {
-                  return {
-                    ...applicant,
-                    status: action === "approve" ? "ACCEPTED" : "REJECTED",
-                  };
-                }
-                return applicant;
-              });
-              setApplicants(updatedApplicants);
-              toast.success(`${action === "approve" ? "Approved" : "Rejected"} application with ID: ${id}`, { id: toastId });
-        }
+      const response = await axios.put(
+        `http://localhost:3000/api/company-api/job-applications/${id}`,
+        { status: action === "approve" ? "ACCEPTED" : "REJECTED" }
+      );
+      if (response.status == 200) {
+        const updatedApplicants = applicants.map((applicant) => {
+          if (applicant.id === id) {
+            return {
+              ...applicant,
+              status: action === "approve" ? "ACCEPTED" : "REJECTED",
+            };
+          }
+          return applicant;
+        });
+        setApplicants(updatedApplicants);
+        toast.success(
+          `${action === "approve" ? "Approved" : "Rejected"} application with ID: ${id}`,
+          { id: toastId }
+        );
+      }
     } catch (error) {
-        if(error instanceof AxiosError)
-        {
-            console.log(error);
-            toast(error.response?.data.message, { id: toastId });
-            return false;
-        }
+      if (error instanceof AxiosError) {
+        console.log(error);
+        toast(error.response?.data.message, { id: toastId });
+        return false;
+      }
     }
-
   };
 
   if (loading) {
@@ -109,7 +116,9 @@ const ApplicantPage = () => {
   return (
     <div>
       <NavBar />
-      <h1 className="font-Josefin_Sans text-3xl font-bold m-4 text-center">Applicants</h1>
+      <h1 className="font-Josefin_Sans text-3xl font-bold m-4 text-center">
+        Applicants
+      </h1>
       <div className="flex justify-center items-center mt-10">
         <div className="overflow-x-auto w-[90%] rounded-xl  max-w-7xl">
           <table className="table-auto  w-full  border-collapse  shadow-lg">
@@ -129,22 +138,27 @@ const ApplicantPage = () => {
             </thead>
             <tbody>
               {applicants.map((val) => (
-                <tr
-                  key={val.id}
-                  className=" transition-colors border-b "
-                >
+                <tr key={val.id} className=" transition-colors border-b ">
                   <td className="border border-gray-300 p-4 text-center">
                     <Avatar>
                       <AvatarImage src="https://github.com/shadcn.png" />
                       <AvatarFallback>{val.user.name[0]}</AvatarFallback>
                     </Avatar>
                   </td>
-                  <td className="border border-gray-300 p-4">{val.user.name}</td>
+                  <td className="border border-gray-300 p-4">
+                    {val.user.name}
+                  </td>
                   <td className="border border-gray-300 p-4">{val.title}</td>
                   <td className="border border-gray-300 p-4">{val.status}</td>
-                  <td className="border border-gray-300 p-4">{val.user.email}</td>
-                  <td className="border border-gray-300 p-4">{val.user.gender}</td>
-                  <td className="border border-gray-300 p-4">{val.user.place}</td>
+                  <td className="border border-gray-300 p-4">
+                    {val.user.email}
+                  </td>
+                  <td className="border border-gray-300 p-4">
+                    {val.user.gender}
+                  </td>
+                  <td className="border border-gray-300 p-4">
+                    {val.user.place}
+                  </td>
                   <td className="border border-gray-300 p-4">
                     {val.user.skills.join(", ")}
                   </td>

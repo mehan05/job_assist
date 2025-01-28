@@ -26,7 +26,9 @@ export default function BrowseWorkspaces() {
     const fetchWorkspaces = async () => {
       const toastId = toast.loading("Loading workspaces...");
       try {
-        const response = await axios.get("/api/user-api/workspace");
+        const response = await axios.get(
+          "http://localhost:3000/api/user-api/workspace"
+        );
         if (response.status === 200) {
           toast.success("Workspaces loaded successfully", { id: toastId });
           setWorkspaces(response.data.workspaces);
@@ -88,7 +90,10 @@ export default function BrowseWorkspaces() {
             <div>Failed to load workspaces</div>
           ) : (
             workspaces.map((workspace) => (
-              <div key={workspace.id} className="p-5 border-2 border-purple-600 rounded-xl shadow-md">
+              <div
+                key={workspace.id}
+                className="p-5 border-2 border-purple-600 rounded-xl shadow-md"
+              >
                 <div className="flex flex-col gap-5">
                   <h3 className="text-2xl font-Josefin_Sans font-semibold">
                     {workspace.name}
@@ -106,7 +111,10 @@ export default function BrowseWorkspaces() {
                     <span className="font-bold">Privacy: </span>
                     {workspace.isPublic ? "Public" : "Private"}
                   </p>
-                  <Link href={`workspace/${workspace.id}`} className="text-purple-600 font-medium">
+                  <Link
+                    href={`workspace/${workspace.id}`}
+                    className="text-purple-600 font-medium"
+                  >
                     View Details
                   </Link>
                 </div>

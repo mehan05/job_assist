@@ -44,7 +44,7 @@ const PostJobTable = () => {
   const handleDeleteWorkspace = async(id:string)=>{
     const toastId  = toast.loading("Deleting Workspace...");
       try {
-        const response = await axios.delete(`/api/company-api/workspace/delete/${id}`);
+        const response = await axios.delete(`http://localhost:3000/api/company-api/workspace/delete/${id}`);
 
         if(response.status==200)
         {

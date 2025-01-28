@@ -23,11 +23,11 @@ export interface User {
   bio: string;
   gender: string;
   place: string;
-  role: "USER" | "ADMIN"; 
+  role: "USER" | "ADMIN";
   skills: string[];
-  dob: string; 
+  dob: string;
   email: string;
-  password: string; 
+  password: string;
 }
 interface JobBoard {
   id: string;
@@ -57,12 +57,12 @@ interface WorkSpace {
   joinRequests: number;
   category: string[];
   members: User[];
-  jobBoards:JobBoard[];
+  jobBoards: JobBoard[];
 }
 
 export default function WorkspaceDetails() {
   const { id } = useParams();
-  const[ismember,setIsMember] = useState<boolean|null>(null);
+  const [ismember, setIsMember] = useState<boolean | null>(null);
   const [workspaces, setWorkspaces] = useState<WorkSpace>({
     createdAt: "",
     id: "",
@@ -85,11 +85,13 @@ export default function WorkspaceDetails() {
     message: "",
     skills: "",
   });
-  useEffect(() => {   
-      const fetchWorkspaces = async () => {
+  useEffect(() => {
+    const fetchWorkspaces = async () => {
       const toastId = toast.loading("Loading workspaces...");
       try {
-        const response = await axios.get("/api/user-api/workspace/" + id);
+        const response = await axios.get(
+          "http://localhost:3000/api/user-api/workspace/" + id
+        );
         if (response.status === 200) {
           toast.success("Workspaces loaded successfully", { id: toastId });
           setWorkspaces(response.data.workspaces);
@@ -105,13 +107,11 @@ export default function WorkspaceDetails() {
           toast.error("Error fetching workspaces");
         }
       }
-
     };
-    
-   
-  fetchWorkspaces();
-}, [id]);
-console.log("workspaces",workspaces);
+
+    fetchWorkspaces();
+  }, [id]);
+  console.log("workspaces", workspaces);
 
   // Handle input changes
   const handleInputChange = (
@@ -121,28 +121,31 @@ console.log("workspaces",workspaces);
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit =async () => {
+  const handleSubmit = async () => {
     const formDataNew = {
-      message:formData.message,
-      skills:formData.skills.split(","),
-      
-    }
+      message: formData.message,
+      skills: formData.skills.split(","),
+    };
     console.log("formdatanew", formDataNew);
-        console.log("Submitted Data:", formData);
+    console.log("Submitted Data:", formData);
     console.log("type:", typeof formData.skills);
 
     const toastId = toast.loading("Submitting request...");
     try {
-      const response = await axios.post("/api/company-api/workspace/request/"+id, formDataNew);
+      const response = await axios.post(
+        "http://localhost:3000/api/company-api/workspace/request/" + id,
+        formDataNew
+      );
       if (response.status === 201) {
         toast.success("Request submitted successfully!", { id: toastId });
         setFormData({ message: "", skills: "" });
       }
     } catch (error) {
       console.error("Error submitting request:", error);
-      toast.error("Failed to submit request. Please try again.", { id: toastId });
+      toast.error("Failed to submit request. Please try again.", {
+        id: toastId,
+      });
     }
-    
   };
 
   return (
@@ -208,12 +211,12 @@ console.log("workspaces",workspaces);
             </tbody>
           </table>
         </div>
-          {
-            ismember && ismember!=null && ismember==true?(
-              <JobBoardDetails jobBoards={workspaces.jobBoards}/>
-            ):(
-              ismember && ismember!=null && ismember==false&&(
-                
+        {ismember && ismember != null && ismember == true ? (
+          <JobBoardDetails jobBoards={workspaces.jobBoards} />
+        ) : (
+          ismember &&
+          ismember != null &&
+          ismember == false && (
             <div className="p-6 border-2 border-purple-600 rounded-lg shadow-md mb-10">
               <h2 className="font-Josefin_Sans text-2xl font-semibold mb-4">
                 Request to Join
@@ -240,9 +243,8 @@ console.log("workspaces",workspaces);
                 Submit Request
               </button>
             </div>
-              )
-            )
-          }
+          )
+        )}
       </div>
     </div>
   );
