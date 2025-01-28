@@ -13,8 +13,8 @@ interface User {
   gender: string;
   place: string;
   role: string;
-  skills: string[]; 
-  dob: string; 
+  skills: string[];
+  dob: string;
   email: string;
   profileImage?: string;
 
@@ -22,19 +22,19 @@ interface User {
   password: string;
 }
 const page = async ({ params }: { params: { id: string } }) => {
-  const {id} =await params;
-  let userData:User|null = null; 
+  const { id } = await params;
+  let userData: User | null = null;
   try {
+    const UserData = await axios.get(
+      `https://job-assist.vercel.app/api/user-api/profile/${id}`
+    );
+    userData = UserData.data.response as User;
 
-    const UserData  = await axios.get(`http://localhost:3000/api/user-api/profile/${id}`);
-     userData = UserData.data.response as User
-
-    console.log("Profile Id:",id);
+    console.log("Profile Id:", id);
   } catch (error) {
-      if(error instanceof AxiosError)
-      {
-        console.log(error);
-      }
+    if (error instanceof AxiosError) {
+      console.log(error);
+    }
   }
   return (
     <div className="scale-90">
@@ -46,9 +46,13 @@ const page = async ({ params }: { params: { id: string } }) => {
         <div className="flex flex-col gap-5 items-center">
           <ProfileAvatar />
           <div className="flex flex-col items-center justify-between gap-5">
-            <h1 className="text-2xl font-Josefin_Sans font-bold">{userData?.name}</h1>
+            <h1 className="text-2xl font-Josefin_Sans font-bold">
+              {userData?.name}
+            </h1>
             <p className="font-Josefin_Sans text-lg  font-semibold">
-             {userData?.headlines ? userData?.headlines : " HeadLines about the user"}
+              {userData?.headlines
+                ? userData?.headlines
+                : " HeadLines about the user"}
             </p>
           </div>
 

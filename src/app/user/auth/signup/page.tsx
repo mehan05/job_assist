@@ -2,16 +2,16 @@
 import { Badge } from "@/components/ui/badge";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Textarea } from "@/components/ui/textarea";
-import {toast} from "sonner";
+import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 const UserSignup = () => {
   const words = "Job_Assist";
   const [skills, SetSkills] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
-  const [date, setDate] = React.useState<Date|null>();
+  const [date, setDate] = React.useState<Date | null>();
   const [userData, setUserData] = useState({
     name: "",
     age: 0,
@@ -34,44 +34,48 @@ const UserSignup = () => {
     }
   };
 
-  const handleFormSubmit =async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const toastId = toast.loading("Creating Account...");
     console.log(userData);
-      try {
-
-        const response = await axios.post("http://localhost:3000/api/auth/signup",userData);
-        console.log("response",response);
-        if(response)
-        {
-          toast.success("User Created Successfully",{id:toastId});
-        }
-      } catch (error) {
-            if(error instanceof AxiosError)
-            {
-              console.log(error.response?.data);
-              toast.error("Something went wrong",{id:toastId});
-            }
+    try {
+      const response = await axios.post(
+        "https://job-assist.vercel.app/api/auth/signup",
+        userData
+      );
+      console.log("response", response);
+      if (response) {
+        toast.success("User Created Successfully", { id: toastId });
       }
-  
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        toast.error("Something went wrong", { id: toastId });
+      }
+    }
   };
 
-  const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
+  const handleOnchange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-  }
+  };
 
   useEffect(() => {
     if (date) {
       const calculatedAge = new Date().getFullYear() - date.getFullYear();
       setUserData((prev) => ({
-        ...prev,skills,
+        ...prev,
+        skills,
         dob: date.toISOString(),
         age: calculatedAge,
       }));
     }
-  }, [date,skills]);
-  
+  }, [date, skills]);
+
   return (
     <div className="">
       <div className="flex justify-center items-center mb-5">
@@ -99,7 +103,6 @@ const UserSignup = () => {
                       required
                       onChange={handleOnchange}
                       name="name"
-                      
                       className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
                     />
                     <input
@@ -120,21 +123,22 @@ const UserSignup = () => {
                     />
 
                     <select
-                            id="gender"
-                            value={userData.gender}
-                            onChange={handleOnchange}
-                            name="gender"
-                            
-                            className="border p-2 rounded font-Josefin_Sans bg-black"
-                          >
-                            <option hidden >Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                      id="gender"
+                      value={userData.gender}
+                      onChange={handleOnchange}
+                      name="gender"
+                      className="border p-2 rounded font-Josefin_Sans bg-black"
+                    >
+                      <option hidden>Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
                     </select>
 
-                    <input type="date" onChange={(e) => setDate(e.target.valueAsDate)
-                    
-                    } className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground" />
+                    <input
+                      type="date"
+                      onChange={(e) => setDate(e.target.valueAsDate)}
+                      className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
+                    />
 
                     <input
                       type="text"
@@ -154,22 +158,24 @@ const UserSignup = () => {
                     />
                     {skills.length > 0 && (
                       <div className="flex gap-1 items-center  ">
-
                         <p className="font-Josefin_Sans font-semibold">
                           Skills:
                         </p>
-                      <div className="m-1 p-1 flex gap-2   scrollable-element overflow-x-auto w-full max-w-[300px]">
-
-                        {skills.map((ele, index) => (
-                          <Badge key={index} variant={"outline"}>
-                            {ele}
-                          </Badge>
-                        ))}
-                      </div>
+                        <div className="m-1 p-1 flex gap-2   scrollable-element overflow-x-auto w-full max-w-[300px]">
+                          {skills.map((ele, index) => (
+                            <Badge key={index} variant={"outline"}>
+                              {ele}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     )}
                     <div className="grid w-full gap-2">
-                      <Textarea placeholder="Add Bio" name="bio" onChange={handleOnchange} />
+                      <Textarea
+                        placeholder="Add Bio"
+                        name="bio"
+                        onChange={handleOnchange}
+                      />
                     </div>
                     <div></div>
                     <button
@@ -181,10 +187,12 @@ const UserSignup = () => {
                   </div>
                 </form>
                 <Link href="/user/auth/login " className="mt-5">
-                    <p className="font-Josefin_Sans font-semibold  text-xl hover:text-white text-[#9574e2]">Already have an account</p>
+                  <p className="font-Josefin_Sans font-semibold  text-xl hover:text-white text-[#9574e2]">
+                    Already have an account
+                  </p>
                 </Link>
                 <p className="font-Josefin_Sans font-semibold mt-2 text-xl dark:text-[var(--primary)]">
-                signup with Other Platform
+                  signup with Other Platform
                 </p>
 
                 <button
@@ -199,7 +207,7 @@ const UserSignup = () => {
                       height={10}
                     />
                     <span className="font-Josefin_Sans font-semibold">
-                    signup   With Google
+                      signup With Google
                     </span>
                   </div>
                 </button>
@@ -210,7 +218,7 @@ const UserSignup = () => {
                 src="/loginPageImage.png"
                 className="rounded-3xl"
                 alt="Login"
-                width={500} 
+                width={500}
                 height={600}
                 layout="responsive"
               />

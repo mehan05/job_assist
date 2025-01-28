@@ -5,7 +5,7 @@ import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 const CompanySignup = () => {
   const words = "Job_Assist";
@@ -16,7 +16,7 @@ const CompanySignup = () => {
     age: 0,
     email: "",
     gender: "",
-    dob:date,
+    dob: date,
     password: "",
     place: "",
     headlines: "",
@@ -24,49 +24,50 @@ const CompanySignup = () => {
   });
   console.log(date);
 
-  const handleFormSubmit =async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let toastId;
     console.log(userData);
-      try {
-        toastId = toast.loading("Creating User...");
+    try {
+      toastId = toast.loading("Creating User...");
 
-        const response = await axios.post("http://localhost:3000/api/auth/signup",userData);
-        console.log("response",response);
+      const response = await axios.post(
+        "https://job-assist.vercel.app/api/auth/signup",
+        userData
+      );
+      console.log("response", response);
 
-        if(response.status === 200)
-        {
-          toast.success("User Created Successfully", { id: toastId });
-          router.replace("/company/dashboard");
-        }
-        else if(response.status === 401)
-        {
-          toast.warning("Invalid Data", { id: toastId });
-        }
-      
-      } catch (error) {
-            if(error instanceof AxiosError)
-            {
-               if(error.status === 500)
-                {
-                  toast.error("Something went wrong", { id: toastId });
-                }
-              console.log(error.response?.data);
-            }
+      if (response.status === 200) {
+        toast.success("User Created Successfully", { id: toastId });
+        router.replace("/company/dashboard");
+      } else if (response.status === 401) {
+        toast.warning("Invalid Data", { id: toastId });
       }
-  
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.status === 500) {
+          toast.error("Something went wrong", { id: toastId });
+        }
+        console.log(error.response?.data);
+      }
+    }
   };
 
-  const handleOnchange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
-    const { name, value } = e.target ;
+  const handleOnchange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-    console.log("FOrm data:",userData);
-  }
+    console.log("FOrm data:", userData);
+  };
   useEffect(() => {
-      setUserData((prev)=>({...prev,dob:date}));
-      userData.age= ((date&& date?.getFullYear())??0)-(new Date().getFullYear());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[date])
+    setUserData((prev) => ({ ...prev, dob: date }));
+    userData.age =
+      ((date && date?.getFullYear()) ?? 0) - new Date().getFullYear();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date]);
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-center items-center mb-5">
@@ -95,7 +96,6 @@ const CompanySignup = () => {
                       required
                       onChange={handleOnchange}
                       name="name"
-                      
                       className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
                     />
                     <input
@@ -116,17 +116,20 @@ const CompanySignup = () => {
                     />
 
                     <select
-                            id="gender"
-                            value={userData.gender}
-                            onChange={handleOnchange}
-                            name="gender"
-                            className="border p-2 rounded font-Josefin_Sans bg-black"
-                          >
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                      id="gender"
+                      value={userData.gender}
+                      onChange={handleOnchange}
+                      name="gender"
+                      className="border p-2 rounded font-Josefin_Sans bg-black"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
                     </select>
 
-                         <input type="date" onChange={(e) => setDate(new Date(e.target.value))} />                   
+                    <input
+                      type="date"
+                      onChange={(e) => setDate(new Date(e.target.value))}
+                    />
 
                     <input
                       type="text"
@@ -136,9 +139,13 @@ const CompanySignup = () => {
                       name="place"
                       className="p-2 w-full border-2 rounded-lg focus:outline-none bg-background text-foreground border-foreground"
                     />
-                   
+
                     <div className="grid w-full gap-2">
-                      <Textarea placeholder="Add Bio" name="bio" onChange={handleOnchange} />
+                      <Textarea
+                        placeholder="Add Bio"
+                        name="bio"
+                        onChange={handleOnchange}
+                      />
                     </div>
                     <div></div>
                     <button
@@ -150,7 +157,9 @@ const CompanySignup = () => {
                   </div>
                 </form>
                 <Link href="/company/auth/login " className="mt-5">
-                    <p className="font-Josefin_Sans font-semibold  text-xl hover:text-white text-[#9574e2]">Already have an account</p>
+                  <p className="font-Josefin_Sans font-semibold  text-xl hover:text-white text-[#9574e2]">
+                    Already have an account
+                  </p>
                 </Link>
                 <p className="font-Josefin_Sans font-semibold mt-2 text-xl  dark:text-[var(--primary)]">
                   Login with Other Platform

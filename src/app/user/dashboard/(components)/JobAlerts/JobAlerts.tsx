@@ -1,6 +1,6 @@
-import React from 'react';
-import JobAlertCard from './JobAlertCard/JobAlertCard';
-import axios from 'axios';
+import React from "react";
+import JobAlertCard from "./JobAlertCard/JobAlertCard";
+import axios from "axios";
 
 interface JobBoard {
   id: string;
@@ -22,7 +22,9 @@ interface JobBoard {
 
 const fetchJobs = async (): Promise<JobBoard[]> => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/user-api/dashboard/job/`);
+    const response = await axios.get(
+      `https://job-assist.vercel.app/api/user-api/dashboard/job/`
+    );
     if (response.status === 200) {
       console.log("Response:", response.data);
       return response.data.response;
@@ -35,7 +37,6 @@ const fetchJobs = async (): Promise<JobBoard[]> => {
 };
 
 const JobAlerts = async () => {
-
   const jobs = await fetchJobs();
 
   if (!jobs || jobs.length === 0) {

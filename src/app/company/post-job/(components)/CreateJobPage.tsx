@@ -1,17 +1,17 @@
-"use client"
+"use client";
 import { Badge } from "@/components/ui/badge";
 import axios, { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 interface JobData {
   title: string;
-  skillsRequired:string[];
+  skillsRequired: string[];
   description: string;
   location: string;
   salaryFrom: number;
   salaryTo: number;
-  contactEmail:string
+  contactEmail: string;
   employmentType: string;
   deadline: string;
 }
@@ -28,63 +28,59 @@ export default function CreateJobPage() {
     skillsRequired: [],
     location: "",
     salaryFrom: 0,
-    contactEmail:"",
+    contactEmail: "",
     salaryTo: 0,
     employmentType: "Full-time",
     deadline: "",
-  })
+  });
 
-  const handleOnChange = (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
-    const{name,value} = e.target;
-    setJobData((prev)=>({...prev,[name]:value}));
-    if(name=="salaryFrom" || name==="salaryTo")
-    {
-      setJobData((prev)=>({...prev,[name]:+value}))
+  const handleOnChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setJobData((prev) => ({ ...prev, [name]: value }));
+    if (name == "salaryFrom" || name === "salaryTo") {
+      setJobData((prev) => ({ ...prev, [name]: +value }));
     }
-  }
+  };
 
   useEffect(() => {
-        
-    const date1 = date.toISOString().split('T')[0];
-    console.log(typeof date1)
-    setJobData((prev)=>({...prev,skillsRequired:skillsRequired}))
-    setJobData((prev)=>({...prev,deadline:date1}));
-  },[skillsRequired,date]);
-  
+    const date1 = date.toISOString().split("T")[0];
+    console.log(typeof date1);
+    setJobData((prev) => ({ ...prev, skillsRequired: skillsRequired }));
+    setJobData((prev) => ({ ...prev, deadline: date1 }));
+  }, [skillsRequired, date]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let toastId;
     try {
       toastId = toast.loading("Creating Job...");
-      const response = await axios.post(`http://localhost:3000/api/company-api/post-job?workspaceId=${workspaceId}`,jobData);
+      const response = await axios.post(
+        `https://job-assist.vercel.app/api/company-api/post-job?workspaceId=${workspaceId}`,
+        jobData
+      );
 
       if (response.status === 200) {
         toast.success("Job Created Successfully", { id: toastId });
         router.replace("/company/dashboard");
-      }
-      else if(response.status==401)
-      {
+      } else if (response.status == 401) {
         toast.error("Invalid Data", { id: toastId });
-      }
-      else if(response.status==403)
-      {
+      } else if (response.status == 403) {
         toast.warning("Fill All Details", { id: toastId });
-      }
-      else if(response.status==407)
-      {
+      } else if (response.status == 407) {
         toast.warning("Fill All Details", { id: toastId });
-      }
-      else if(response.status==402){
+      } else if (response.status == 402) {
         toast.error("Invalid User", { id: toastId });
       }
-
     } catch (error) {
-        if(error instanceof AxiosError)
-          { 
-            console.log(error.response?.data);
-            toast.error("Something went wrong", { id: toastId });
-            console.log(error)    
-          } 
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        toast.error("Something went wrong", { id: toastId });
+        console.log(error);
+      }
     }
 
     console.log(jobData);
@@ -93,14 +89,13 @@ export default function CreateJobPage() {
   const HandleSkillAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      console.log("skill",skillsRequired);
-      if(skill.trim())
-      {
-        setskillsRequired((prev)=>[...prev,skill]);
+      console.log("skill", skillsRequired);
+      if (skill.trim()) {
+        setskillsRequired((prev) => [...prev, skill]);
         setSkill("");
       }
     }
-  }
+  };
   console.log(jobData);
   return (
     <div className="overflow-hidden scale-90">
@@ -111,7 +106,9 @@ export default function CreateJobPage() {
           </h1>
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Job Title</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Job Title
+              </label>
               <input
                 type="text"
                 name="title"
@@ -123,9 +120,11 @@ export default function CreateJobPage() {
             </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Job Description</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Job Description
+              </label>
               <textarea
-              name="description"
+                name="description"
                 value={jobData.description}
                 onChange={handleOnChange}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -135,7 +134,9 @@ export default function CreateJobPage() {
             </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Required skillsRequired</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Required skillsRequired
+              </label>
               <input
                 type="text"
                 value={skill}
@@ -147,22 +148,22 @@ export default function CreateJobPage() {
               />
             </div>
 
-                    <div className="flex gap-5">
-                        {skillsRequired.slice(0, 7).map((ele, index) => (
-                          <Badge key={index} variant={"outline"}>
-                            {ele}
-                          </Badge>
-                        ))}
-                        
-                        {skillsRequired.length > 7 && (
-                          <Badge variant={"outline"}>
-                            ...
-                          </Badge>
-                        )}
-                 </div>
+            <div className="flex gap-5">
+              {skillsRequired.slice(0, 7).map((ele, index) => (
+                <Badge key={index} variant={"outline"}>
+                  {ele}
+                </Badge>
+              ))}
+
+              {skillsRequired.length > 7 && (
+                <Badge variant={"outline"}>...</Badge>
+              )}
+            </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Location</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Location
+              </label>
               <input
                 type="text"
                 name="location"
@@ -173,7 +174,9 @@ export default function CreateJobPage() {
               />
             </div>
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Contact contactEmail</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Contact contactEmail
+              </label>
               <input
                 type="contactEmail"
                 name="contactEmail"
@@ -185,7 +188,9 @@ export default function CreateJobPage() {
             </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Employment Type</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Employment Type
+              </label>
               <select
                 value={jobData.employmentType}
                 onChange={handleOnChange}
@@ -200,7 +205,9 @@ export default function CreateJobPage() {
             </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Salary Range</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Salary Range
+              </label>
               <div className="flex space-x-4 mt-2">
                 <input
                   type="number"
@@ -222,12 +229,14 @@ export default function CreateJobPage() {
             </div>
 
             <div>
-              <label className="font-Josefin_Sans text-xl font-semibold">Application Deadline</label>
+              <label className="font-Josefin_Sans text-xl font-semibold">
+                Application Deadline
+              </label>
               <input
                 type="date"
                 value={jobData.deadline}
                 name="deadline"
-                onChange={(e)=>setDate(e.target.valueAsDate!)}
+                onChange={(e) => setDate(e.target.valueAsDate!)}
                 className="mt-2 w-full p-3 border-2 border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
@@ -243,8 +252,6 @@ export default function CreateJobPage() {
           </form>
         </div>
       </div>
-
-     
     </div>
   );
 }
