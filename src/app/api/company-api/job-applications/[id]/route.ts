@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function PUT(req:NextRequest,{params}:{params:{id:string}}) {
     const {status} = await req.json();
 
-    const id = params.id;
+    const id =params.id;
     try {
         const response = await prisma.jobApplication.update({
             where:{id},

@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req:NextRequest)
 {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const body = await req.json();
   const token = (await cookies()).get("token")?.value;
   // if(!token)
@@ -111,5 +112,4 @@ export async function GET(req:NextRequest)
       return NextResponse.json({ msg: "error in getting job", error }, { status: 500 });
     }
   }
-  return NextResponse.json({msg:"test from job", id},{status:200});
 }

@@ -4,7 +4,6 @@ import React from 'react'
 import Card from './(components)/card/Card'
 import AppliedJobs from './(components)/appliedJobs/AppliedJobs'
 import JobAlerts from './(components)/JobAlerts/JobAlerts'
-import axios, { AxiosError } from 'axios'
 
 const UserDashboard = () => {
   return (
