@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import prisma from "@/lib/db";
 import { APPLICATION_STATUS } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(req:NextRequest,{params}:{params:{id:string}}) {
+export async function PUT(req:NextRequest, context:any) {
     const {status} = await req.json();
-
-    const id =params.id;
+    const {id }= await context.params;
     try {
         const response = await prisma.jobApplication.update({
             where:{id},
