@@ -111,8 +111,8 @@ export default function WorkspaceDetails() {
 
     fetchWorkspaces();
   }, [id]);
-  console.log("workspaces", workspaces);
-
+  console.log("workspacesjobboards" , workspaces.jobBoards);
+  console.log("memeber status:", ismember);
   // Handle input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -214,8 +214,7 @@ export default function WorkspaceDetails() {
         {ismember && ismember != null && ismember == true ? (
           <JobBoardDetails jobBoards={workspaces.jobBoards} />
         ) : (
-          ismember &&
-          ismember != null &&
+          
           ismember == false && (
             <div className="p-6 border-2 border-purple-600 rounded-lg shadow-md mb-10">
               <h2 className="font-Josefin_Sans text-2xl font-semibold mb-4">

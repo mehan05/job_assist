@@ -5,7 +5,7 @@ import JobCardsComponent from "./(components)/JobCards/JobCardsComponent";
 
 const page = () => {
   return (
-    <div className="scale-90 overflow-hidden">
+    <div className=" overflow-hidden">
       <div>
         <div>
           <NavBar />

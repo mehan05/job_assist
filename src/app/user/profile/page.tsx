@@ -1,9 +1,12 @@
 import { NavBar } from "@/components/NavBar";
 import React from "react";
-import ProfileAvatar from "../(profilePage)/ProfileAvatar";
-import AboutRectangle from "../(profilePage)/aboutRectangle/AboutRectangle";
-import BioRectangle from "../(profilePage)/BioRectangle/BioRectangle";
+import ProfileAvatar from "./(profilePage)/ProfileAvatar";
+import AboutRectangle from "./(profilePage)/aboutRectangle/AboutRectangle";
+import BioRectangle from "./(profilePage)/BioRectangle/BioRectangle";
 import axios, { AxiosError } from "axios";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 interface User {
   id: string;
   name: string;
@@ -21,19 +24,26 @@ interface User {
   professionalRole?: string;
   password: string;
 }
-const page = async ({ params }: { params: { id: string } }) => {
-  const {id} =await params;
+const page = async () => {
   let userData:User|null = null; 
+   const cookie = await cookies();
+   const token = cookie.get("token")?.value;
+  //  console.log("token from profile",token);
+
   try {
 
-    const UserData  = await axios.get(`http://localhost:3000/api/user-api/profile/${id}`);
-     userData = UserData.data.response as User
+    const UserData  = await axios.get(`http://localhost:3000/api/user-api/profile/`,{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
+     userData = UserData.data.userDetails as User;
 
-    console.log("Profile Id:",id);
   } catch (error) {
       if(error instanceof AxiosError)
       {
-        console.log(error);
+        console.log(error.message);
+        redirect("auth/login");
       }
   }
   return (

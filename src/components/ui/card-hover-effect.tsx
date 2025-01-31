@@ -8,9 +8,9 @@ export const HoverEffect = ({
   className,
 }: {
   items: {
-    title: string;
     description: string;
-  }[];
+    count:number
+  };
   className?: string;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -20,6 +20,7 @@ export const HoverEffect = ({
     "/job-pending-icon.png",
     "/job-selected-icon.png"];
 
+    console.log("count from innre hovercard:",items);
   return (
     <div
       className={cn(
@@ -29,32 +30,32 @@ export const HoverEffect = ({
     >
       {items.map((item, idx) => (
         <div
-          key={idx}
-          className="relative group  block p-2   max-w-70 min-w-50"
-          onMouseEnter={() => setHoveredIndex(idx)}
-          onMouseLeave={() => setHoveredIndex(null)}
+        key={idx}
+        className="relative group  block p-2   max-w-70 min-w-50"
+        onMouseEnter={() => setHoveredIndex(idx)}
+        onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 max-w-70 min-w-50 bg-[var(--primary)] dark:[var(--primary)] block  rounded-3xl"
-                layoutId="hoverBackground"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { duration: 0.15 },
-                }}
-                exit={{
-                  opacity: 0,
-                  transition: { duration: 0.15, delay: 0.2 },
-                }}
+              className="absolute inset-0 max-w-70 min-w-50 bg-[var(--primary)] dark:[var(--primary)] block  rounded-3xl"
+              layoutId="hoverBackground"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: 1,
+                transition: { duration: 0.15 },
+              }}
+              exit={{
+                opacity: 0,
+                transition: { duration: 0.15, delay: 0.2 },
+              }}
               />
             )}
           </AnimatePresence>
           <Card>
           <div className="flex gap-10 justify-between  items-center ">
               <div>
-                <CardTitle className="text-2xl font-bold font-Josefin_Sans">{item.title}</CardTitle>
+                <CardTitle className="text-2xl font-bold font-Josefin_Sans text-center" >{item.count}</CardTitle>
                 <CardDescription className="text-sm font-semibold font-Josefin_Sans">{item.description}</CardDescription>
               </div>
               {/*Add Logo below*/}

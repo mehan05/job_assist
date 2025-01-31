@@ -1,5 +1,6 @@
 "use client";
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
+import { useAuthStore } from '@/store/AuthStore';
 import axios, { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,7 @@ interface UserData {
 }
 const UserLogin = () => {
   const router = useRouter();
+  const {fetchUser} = useAuthStore();
   const words = "Job_Assist";
   const[userData,setUserData] = useState<UserData>({
     email:"",
@@ -26,6 +28,8 @@ const UserLogin = () => {
      
         if(response.status === 200)
         { 
+          localStorage.setItem("token",response.data.token);
+        //  await fetchUser(response.data.userData);
           router.replace("/user/dashboard");
           toast.success("Login Success",{id:toastId});
         }

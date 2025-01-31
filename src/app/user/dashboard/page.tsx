@@ -4,12 +4,20 @@ import React from 'react'
 import Card from './(components)/card/Card'
 import AppliedJobs from './(components)/appliedJobs/AppliedJobs'
 import JobAlerts from './(components)/JobAlerts/JobAlerts'
+import { cookies } from 'next/headers'
 
-const UserDashboard = () => {
+const UserDashboard =async () => {
+     const cookie = await cookies();
+     const token = cookie.get("token")?.value;
+     console.log("token from dashboard",token);
+     if (!token) {
+      throw new Error("Token is missing");
+    }
+     
   return (
     <div>
       <div className='mb-10  mr-3 ml-10'>
-          <NavBar/>
+          <NavBar  />
       </div>
           <div className='m-10 sm:m-5 lg:m-10 '>
               <div >
@@ -18,7 +26,7 @@ const UserDashboard = () => {
                   </TextAnimate>
                 
                 <div className='w-full'>
-                    <Card/>
+                    <Card token={token}/>
                 </div>
 
                 <div className='flex justify-between  items-center  w-full h-[400px] mt-2'>

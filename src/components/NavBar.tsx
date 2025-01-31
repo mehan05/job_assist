@@ -1,8 +1,5 @@
 "use client";
-
-import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import { Dock, DockIcon } from "@/components/ui/dock";
 import Link from "next/link";
 import { BorderBeam } from "./ui/border-beam";
@@ -11,13 +8,9 @@ import ThemeSwitch from "./ThemeSwitcher";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 import { usePathname } from "next/navigation";
 
-export type IconProps = React.HTMLAttributes<SVGElement>;
-
-export function NavBar() {
-  const words = "Job_Assist";
+export   function NavBar() {
   const pathName = usePathname();
-  console.log(pathName.startsWith("/user/auth"));
-
+  const words = "Job_Assist";
   return (
     <div className="relative mt-3 ml-3 mr-3   border-b-1 border-gray-500 p-5">
       {!pathName.includes("auth") && (
@@ -33,7 +26,7 @@ export function NavBar() {
             <Dock direction="middle">
               <BorderBeam />
               <DockIcon>
-                <Link href="/">
+                <Link href="/user/dashboard">
                   <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 bg-foreground text-background dark:bg-foreground dark:text-background ">
                     <RippleButton
                       rippleColor="#ADD8E6"
@@ -45,7 +38,7 @@ export function NavBar() {
                 </Link>
               </DockIcon>
               <DockIcon>
-                <Link href="/">
+                <Link href="workspace">
                   <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 ">
                     <RippleButton rippleColor="#ADD8E6">
                       WorkSpaces
@@ -54,23 +47,24 @@ export function NavBar() {
                 </Link>
               </DockIcon>
               <DockIcon>
-                <Link href="/">
+                <Link href="job-board">
                   <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 ">
                     <RippleButton rippleColor="#ADD8E6">JobBoards</RippleButton>
                   </div>
                 </Link>
               </DockIcon>
-              <DockIcon>
+              
+              {/* <DockIcon>
                 <Link href="/">
                   <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 ">
                     <RippleButton rippleColor="#ADD8E6">Messages</RippleButton>
                   </div>
                 </Link>
-              </DockIcon>
+              </DockIcon> */}
             </Dock>
           </div>
           <div className="flex items-center gap-5">
-            <Link href="/">
+            <Link href="profile">
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>US</AvatarFallback>
