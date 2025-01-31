@@ -13,7 +13,7 @@ const Card = async ({token}:{token:string}) => {
             });
             detailsOfUser = response.data.userDetails;
 
-            // console.log("user job details from card:",detailsOfUser);
+            console.log("user job details from card:",detailsOfUser);
 
       } catch (error) {
             if(error instanceof AxiosError)

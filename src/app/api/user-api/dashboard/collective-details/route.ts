@@ -15,26 +15,24 @@ interface TokenPayLoad {
 }
 
 const JobDetails = [
-  {
-    description: "Jobs Applied",
-    status: "APPLIED" 
-  },
+
   {
     description: "Jobs Rejected",
-    status: "REJECTED"
+    status: APPLICATION_STATUS.REJECTED
   },
   {
     description: "Job Application Under Review",
-    status: "PENDING"
+    status: APPLICATION_STATUS.PENDING
   },
   {
     description: "Jobs Selected",
-    status: "ACCEPTED"
+    status: APPLICATION_STATUS.ACCEPTED
   }
 ];
 
 export async function GET(req: NextRequest) {
   try {
+    console.log("requet hit");
     const token = req.headers.get('Authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ message: 'No token provided' }, { status: 401 })
@@ -44,18 +42,16 @@ export async function GET(req: NextRequest) {
 
     const statusCounts: { [key: string]: number } = {}
 
-    // Fetch count for each status
     for (const job of JobDetails) {
       const count = await prisma.jobApplication.count({
         where: {
           userId: userId.payload.id,
-          status: job.status as APPLICATION_STATUS,
+          status: job.status ,
         },
       })
       statusCounts[job.status] = count
     }
 
-    // Format the response
     const formattedDetails = JobDetails.map((job) => {
       return {
         description: job.description,
