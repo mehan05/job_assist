@@ -7,9 +7,7 @@ interface HoverComponentProps{
 
 }
 const HoverComponent = ({detailsOfUser}:{detailsOfUser:HoverComponentProps[]}) => {
-  console.log("user job details from hovercard:",detailsOfUser);
-  console.log("user job details from hovercard:",typeof detailsOfUser);
-  console.log("typeof from hovercard:",[detailsOfUser]);
+
   const[mounted,isMounted] = useState(false);
   useEffect(()=>{
     isMounted(true);

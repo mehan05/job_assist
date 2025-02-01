@@ -6,6 +6,7 @@ import { useState } from "react";
 export const HoverEffect = ({
   items,
   className,
+  
 }: {
   items: {
     description: string;

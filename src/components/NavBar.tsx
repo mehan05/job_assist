@@ -27,7 +27,7 @@ export   function NavBar() {
               <BorderBeam />
               <DockIcon>
                 <Link href="/user/dashboard">
-                  <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 bg-foreground text-background dark:bg-foreground dark:text-background ">
+                  <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 bg-foreground text-background dark:bg-foreground dark:text-background  ">
                     <RippleButton
                       rippleColor="#ADD8E6"
                       className="font-Josefin_Sans"
@@ -46,13 +46,7 @@ export   function NavBar() {
                   </div>
                 </Link>
               </DockIcon>
-              <DockIcon>
-                <Link href="job-board">
-                  <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 ">
-                    <RippleButton rippleColor="#ADD8E6">JobBoards</RippleButton>
-                  </div>
-                </Link>
-              </DockIcon>
+              
               
               {/* <DockIcon>
                 <Link href="/">
