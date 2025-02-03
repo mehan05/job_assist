@@ -26,9 +26,9 @@ export async function middleware(request: NextRequest) {
   console.log(path);
   console.log(request.nextUrl);
     if(path.includes("/auth"))
-  {
-    return NextResponse.next();
-  }
+    {
+      return NextResponse.next();
+    }
     const token = request.cookies.get("token")?.value;
     if(!token)
     {

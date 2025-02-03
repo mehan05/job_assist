@@ -69,7 +69,7 @@ const CompanySignup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto scale-90">
       <div className="flex justify-center items-center mb-5">
         <div className="">
           <TextGenerateEffect words={words} />

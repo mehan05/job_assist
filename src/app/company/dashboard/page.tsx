@@ -6,9 +6,16 @@ import TableLayoutComponent from './(components)/tables/Table'
 import WorkSpaceTables from './(components)/workspaceTable/WorkSpaceTable'
 import Link from 'next/link'
 import PostJobTable from './(components)/postJobTable/PostJobTable'
+import { cookies } from 'next/headers'
 
 
-const CompanyDashboard = () => {
+const CompanyDashboard = async () => {
+    const cookie = await cookies();
+       const token = cookie.get("token")?.value;
+       console.log("token from company  dashboard",token);
+       if (!token) {
+        throw new Error("Token is missing");
+      }
 
   return (
     <div>
@@ -22,14 +29,11 @@ const CompanyDashboard = () => {
                 </TextAnimate>
               
               <div className='w-full'>
-                  <Companycard/>
+                  <Companycard token={token} />
               </div>
 
                 <div className='w-full  m-2 flex flex-col gap-6 items-center '>
-                      <div className='w-full  flex-col gap-2'>
-                        <h1 className='font-Josefin_Sans text-2xl '>Analytics Overview</h1>
-                      <TableLayoutComponent/>
-                      </div>
+                      
                       <div className='w-full border-gray-700  flex-col gap-2 border-2 rounded-xl p-3'>
                         <div className='flex justify-between items-center'>
                           <h1 className='font-Josefin_Sans text-2xl '>Workspaces Managed</h1>

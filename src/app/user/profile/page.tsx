@@ -1,9 +1,12 @@
 import { NavBar } from "@/components/NavBar";
 import React from "react";
-import ProfileAvatar from "../(profilePage)/ProfileAvatar";
-import AboutRectangle from "../(profilePage)/aboutRectangle/AboutRectangle";
-import BioRectangle from "../(profilePage)/BioRectangle/BioRectangle";
+import ProfileAvatar from "./(profilePage)/ProfileAvatar";
+import AboutRectangle from "./(profilePage)/aboutRectangle/AboutRectangle";
+import BioRectangle from "./(profilePage)/BioRectangle/BioRectangle";
 import axios, { AxiosError } from "axios";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 interface User {
   id: string;
   name: string;
@@ -13,31 +16,38 @@ interface User {
   gender: string;
   place: string;
   role: string;
-  skills: string[];
-  dob: string;
+  skills: string[]; 
+  dob: string; 
   email: string;
   profileImage?: string;
 
   professionalRole?: string;
   password: string;
 }
-const page = async ({ params }: { params: { id: string } }) => {
-  const { id } = await params;
-  let userData: User | null = null;
-  try {
-    const UserData = await axios.get(
-      `https://job-assist.vercel.app/api/user-api/profile/${id}`
-    );
-    userData = UserData.data.response as User;
+const page = async () => {
+  let userData:User|null = null; 
+   const cookie = await cookies();
+   const token = cookie.get("token")?.value;
+  //  console.log("token from profile",token);
 
-    console.log("Profile Id:", id);
+  try {
+
+    const UserData  = await axios.get(`http://localhost:3000/api/company-api/profile/`,{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
+     userData = UserData.data.userDetails as User;
+
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error);
-    }
+      if(error instanceof AxiosError)
+      {
+        console.log(error.message);
+        redirect("auth/login");
+      }
   }
   return (
-    <div className="scale-90">
+    <div className="">
       <div>
         <NavBar />
       </div>
@@ -46,13 +56,9 @@ const page = async ({ params }: { params: { id: string } }) => {
         <div className="flex flex-col gap-5 items-center">
           <ProfileAvatar />
           <div className="flex flex-col items-center justify-between gap-5">
-            <h1 className="text-2xl font-Josefin_Sans font-bold">
-              {userData?.name}
-            </h1>
+            <h1 className="text-2xl font-Josefin_Sans font-bold">{userData?.name}</h1>
             <p className="font-Josefin_Sans text-lg  font-semibold">
-              {userData?.headlines
-                ? userData?.headlines
-                : " HeadLines about the user"}
+             {userData?.headlines ? userData?.headlines : " HeadLines about the user"}
             </p>
           </div>
 

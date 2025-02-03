@@ -1,29 +1,20 @@
 "use client"
 import { HoverEffect } from '@/components/ui/card-hover-effect'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+interface HoverComponentProps{
+  description:string,
+  count:number
 
-const HoverComponent = () => {
+}
+const HoverComponent = ({detailsOfUser}:{detailsOfUser:HoverComponentProps[]}) => {
 
-  const JobDetails = [{
-    title: "Stripe",
-    description:
-      "Jobs Applied",
-  },{
-    title: "Stripe",
-    description:
-      "Jobs Rejected",
-  },{
-    title: "Stripe",
-    description:
-      "Job Application Under Review",
-  },{
-    title: "Stripe",
-    description:
-      "Jobs Selected",
-  },]
+  const[mounted,isMounted] = useState(false);
+  useEffect(()=>{
+    isMounted(true);
+  },[mounted])
   return (
     <div >
-         <HoverEffect items={JobDetails}/>
+         <HoverEffect items={detailsOfUser}/>
 
     </div>
   )

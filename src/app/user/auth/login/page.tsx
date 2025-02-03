@@ -19,30 +19,38 @@ const UserLogin = () => {
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let toastId;
-    try {
-      toastId = toast.loading("Logging in ...");
-      const response = await axios.post(
-        "https://job-assist.vercel.app/api/auth/login",
-        userData
-      );
-      console.log(response.data);
-
-      if (response.status === 200) {
-        router.replace("/user/dashboard");
-        toast.success("Login Success", { id: toastId });
-      } else if (response.status === 401) {
-        toast.error("Invalid Password", { id: toastId });
-      } else if (response.status === 403) {
-        toast.error("Invalid Data", { id: toastId });
-      } else if (response.status === 404) {
-        toast.error("Invalid User", { id: toastId });
-      } else if (response.status === 500) {
-        toast.error("Something went wrong", { id: toastId });
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data);
-        toast.error("Something went wrong", { id: toastId });
+      try {
+         toastId = toast.loading("Logging in ...");
+        const response = await axios.post("http://localhost:3000/api/auth/login",userData);
+        console.log(response.data);
+     
+        if(response.status === 200)
+        { 
+          router.replace("/user/dashboard");
+          toast.success("Login Success",{id:toastId});
+        }
+        else if(response.status === 401)
+        {
+          toast.error("Invalid Password",{id:toastId});
+        }
+        else if(response.status === 403)
+        {
+          toast.error("Invalid Data",{id:toastId});
+        }
+        else if(response.status === 404)
+        {
+          toast.error("Invalid User",{id:toastId});
+        }
+        else if(response.status===500)
+        {
+            toast.error("Something went wrong",{id:toastId});
+        }
+      } catch (error) {
+          if(error instanceof AxiosError)
+          {
+            console.log(error.response?.data);
+            toast.error("Something went wrong",{id:toastId})
+          }
       }
     }
   };

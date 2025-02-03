@@ -1,29 +1,20 @@
 "use client"
-import { HoverEffect } from '@/components/ui/card-hover-effect'
 import React from 'react'
+import { HoverEffect } from './card-hover-effect';
 
-const HoverComponent = () => {
+interface DetailsOfCompany {
+  totalWorkspacesCount: number;
+  totalMembersCount: number;
+  totalJobBoardsCount: number;
+  totalJobApplicationCount: number;
+};
 
-  const JobDetails = [{
-    title: "0",
-    description:
-      "Total Workspaces",
-  },{
-    title: "0",
-    description:
-      "Total Members",
-  },{
-    title: "0",
-    description:
-      "Total Jobs",
-  },{
-    title: "0",
-    description:
-      "Total Applications",
-  },]
+const HoverComponent = ({detailsOfCompany}:{detailsOfCompany:DetailsOfCompany[]}) => {
+
+  
   return (
     <div>
-         <HoverEffect items={JobDetails}/>
+         <HoverEffect details={detailsOfCompany}/>
 
     </div>
   )

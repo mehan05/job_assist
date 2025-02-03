@@ -35,7 +35,6 @@ model User{
   createdWorkSpaces WorkSpace[] @relation("WorkSpaceOwners")
   analytics Analytic[]
   workSpaceRequests workspaceRequestData[]
-
 }
 enum APPLICATION_STATUS{
   PENDING
