@@ -7,7 +7,7 @@ const Companycard
       let detailsOfCompany ;
 
       try {
-            const response =await  axios.get("http://localhost:3000/api/company-api/collective-details/",{
+            const response =await  axios.get("job-assist.vercel.app/api/company-api/collective-details/",{
                   headers:{
                         Authorization:`Bearer ${token}`
                   }

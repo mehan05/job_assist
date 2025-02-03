@@ -25,27 +25,26 @@ interface User {
   password: string;
 }
 const page = async () => {
-  let userData:User|null = null; 
-   const cookie = await cookies();
-   const token = cookie.get("token")?.value;
+  let userData: User | null = null;
+  const cookie = await cookies();
+  const token = cookie.get("token")?.value;
   //  console.log("token from profile",token);
 
   try {
-   
-
-    const UserData  = await axios.get(`http://localhost:3000/api/user-api/profile/`,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    });
-     userData = UserData.data.userDetails as User;
-
-  } catch (error) {
-      if(error instanceof AxiosError)
+    const UserData = await axios.get(
+      `https://job-assist.vercel.app/api/user-api/profile/`,
       {
-        console.log(error.message);
-        redirect("auth/login");
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
+    userData = UserData.data.userDetails as User;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.message);
+      redirect("auth/login");
+    }
   }
   return (
     <div className="">

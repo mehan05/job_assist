@@ -16,8 +16,8 @@ interface User {
   gender: string;
   place: string;
   role: string;
-  skills: string[]; 
-  dob: string; 
+  skills: string[];
+  dob: string;
   email: string;
   profileImage?: string;
 
@@ -25,26 +25,26 @@ interface User {
   password: string;
 }
 const page = async () => {
-  let userData:User|null = null; 
-   const cookie = await cookies();
-   const token = cookie.get("token")?.value;
+  let userData: User | null = null;
+  const cookie = await cookies();
+  const token = cookie.get("token")?.value;
   //  console.log("token from profile",token);
 
   try {
-
-    const UserData  = await axios.get(`http://localhost:3000/api/company-api/profile/`,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    });
-     userData = UserData.data.userDetails as User;
-
-  } catch (error) {
-      if(error instanceof AxiosError)
+    const UserData = await axios.get(
+      `job-assist.vercel.app/api/company-api/profile/`,
       {
-        console.log(error.message);
-        redirect("auth/login");
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
+    userData = UserData.data.userDetails as User;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.message);
+      redirect("auth/login");
+    }
   }
   return (
     <div className="">
@@ -56,9 +56,13 @@ const page = async () => {
         <div className="flex flex-col gap-5 items-center">
           <ProfileAvatar />
           <div className="flex flex-col items-center justify-between gap-5">
-            <h1 className="text-2xl font-Josefin_Sans font-bold">{userData?.name}</h1>
+            <h1 className="text-2xl font-Josefin_Sans font-bold">
+              {userData?.name}
+            </h1>
             <p className="font-Josefin_Sans text-lg  font-semibold">
-             {userData?.headlines ? userData?.headlines : " HeadLines about the user"}
+              {userData?.headlines
+                ? userData?.headlines
+                : " HeadLines about the user"}
             </p>
           </div>
 

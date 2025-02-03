@@ -6,7 +6,7 @@ import axios, { AxiosError } from 'axios';
 const Card = async ({token}:{token:string}) => {
       let detailsOfUser ;
       try {
-            const response =await  axios.get("http://localhost:3000/api/user-api/dashboard/collective-details/",{
+            const response =await  axios.get("job-assist.vercel.app/api/user-api/dashboard/collective-details/",{
                   headers:{
                         Authorization:`Bearer ${token}`
                   }

@@ -1,7 +1,5 @@
-import { User } from './../../../user/workspace/[id]/page';
 import prisma from "@/lib/db";
 import jwt from "jsonwebtoken"
-import { cookies } from "next/headers";
 
 import { NextRequest, NextResponse } from "next/server";
 interface TokenPayLoad{
