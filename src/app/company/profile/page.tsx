@@ -32,7 +32,7 @@ const page = async () => {
 
   try {
     const UserData = await axios.get(
-      `https://job-assist.vercel.app/api/user-api/profile/`,
+      `http://localhost:3000/api/user-api/profile/`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

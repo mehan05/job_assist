@@ -38,7 +38,7 @@ export   function NavBar() {
                 </Link>
               </DockIcon>
               <DockIcon>
-                <Link href="workspace">
+                <Link href="/user/workspace">
                   <div className="realtive text-sm sm:text-md lg:text-md font-semibold px-2 sm:px-3 lg:px-3 py-1 sm:py-2 ">
                     <RippleButton rippleColor="#ADD8E6">
                       WorkSpaces

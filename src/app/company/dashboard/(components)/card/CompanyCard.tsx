@@ -1,36 +1,32 @@
-import React from 'react'
-import HoverComponent from './HoverComponent'
-import axios, { AxiosError } from 'axios';
+import React from "react";
+import HoverComponent from "./HoverComponent";
+import axios, { AxiosError } from "axios";
 
-const Companycard
- =  async ({token}:{token:string}) => {
-      let detailsOfCompany ;
+const Companycard = async ({ token }: { token: string }) => {
+  let detailsOfCompany;
 
-      try {
-            const response =await  axios.get("job-assist.vercel.app/api/company-api/collective-details/",{
-                  headers:{
-                        Authorization:`Bearer ${token}`
-                  }
-            });
-            detailsOfCompany = response.data.CollectiveObject;
-
-            console.log("company job details from card:",detailsOfCompany);
-
-      } catch (error) {
-            if(error instanceof AxiosError)
-            {
-                  console.log(error.message);
-
-            }
-            
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/api/company-api/collective-details/",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
+    detailsOfCompany = response.data.CollectiveObject;
+
+    console.log("company job details from card:", detailsOfCompany);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.message);
+    }
+  }
   return (
+    <div className="flex gap-5 justify-center items-center">
+      <HoverComponent detailsOfCompany={[detailsOfCompany]} />
+    </div>
+  );
+};
 
-        <div className='flex gap-5 justify-center items-center'>
-            
-              <HoverComponent  detailsOfCompany={[detailsOfCompany]} />
-        </div>
-  )
-}
-
-export default Companycard
+export default Companycard;

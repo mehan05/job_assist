@@ -49,7 +49,7 @@ export default function JobBoardDetails({
     const toastId = toast.loading("Applying...");
     try {
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/company-api/job-applications/apply",
+        "http://localhost:3000/api/company-api/job-applications/apply",
         { jobId }
       );
       console.log(response);
