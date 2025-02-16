@@ -211,7 +211,7 @@ export default function WorkspaceDetails() {
             </tbody>
           </table>
         </div>
-        {ismember && ismember != null && ismember == true ? (
+        { ismember != null && ismember == true ? (
           <JobBoardDetails jobBoards={workspaces.jobBoards} />
         ) : (
           ismember == false && (

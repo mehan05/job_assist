@@ -22,11 +22,14 @@ const CompanyDashboard = async () => {
         <NavBar/>
     </div>
         <div className='m-10 sm:m-5 lg:m-10 '>
-            <div >
+            <div  >
+              <div className='flex justify-between items-center'>
+
                 <TextAnimate animate="slideLeft" by="character" className='text-4xl font-Josefin_Sans'>
                     Dashboard
                 </TextAnimate>
-              
+                      <Link href="/company/workspace-request" className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>View Requests</Link>
+              </div>
               <div className='w-full'>
                   <Companycard token={token} />
               </div>
@@ -48,9 +51,7 @@ const CompanyDashboard = async () => {
 
                         <div className='flex justify-between items-center'>
                             <h1 className='font-Josefin_Sans text-2xl '>Job  Applications</h1>
-                            <Link href="/company/post-job">
-                                <button className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>Create Job</button>
-                            </Link>
+                            
                           </div>
                               <PostJobTable/>
                       </div>

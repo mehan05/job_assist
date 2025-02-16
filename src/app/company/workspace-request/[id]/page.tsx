@@ -43,6 +43,12 @@ export default function WorkspaceRequestPage() {
           `http://localhost:3000/api/company-api/workspace/request/${id}`
         );
         setRequests(response.data.data);
+        setRequests((prev)=>{
+          const newRequest = response.data.data;
+          const mergedData = [...prev, ...newRequest];
+
+          return mergedData.filter((item,index,self)=>index===self.findIndex((workspace)=>workspace.id===item.id))
+        })
         toast.success("Workspace requests loaded successfully", {
           id: toastId,
         });
