@@ -1,7 +1,8 @@
 "use client"
 import React from 'react'
 
-const error = () => {
+const error = ({ error }: { error: Error }) => {
+  console.log(error);
   return (
     <div className='flex justify-center items-center'>
         <div>
