@@ -43,12 +43,15 @@ export default function WorkspaceRequestPage() {
           `https://job-assist.vercel.app/api/company-api/workspace/request/${id}`
         );
         setRequests(response.data.data);
-        setRequests((prev)=>{
+        setRequests((prev) => {
           const newRequest = response.data.data;
           const mergedData = [...prev, ...newRequest];
 
-          return mergedData.filter((item,index,self)=>index===self.findIndex((workspace)=>workspace.id===item.id))
-        })
+          return mergedData.filter(
+            (item, index, self) =>
+              index === self.findIndex((workspace) => workspace.id === item.id)
+          );
+        });
         toast.success("Workspace requests loaded successfully", {
           id: toastId,
         });
