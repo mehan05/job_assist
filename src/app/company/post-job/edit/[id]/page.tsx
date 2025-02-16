@@ -64,7 +64,7 @@ export default function CreateJobPage() {
     const toastId = toast.loading("Fetching Data...");
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/company-api/post-job/edit/" + id
+        "https://job-assist.vercel.app/api/company-api/post-job/edit/" + id
       );
       if (response.status == 200) {
         toast.success("Data Fetched Successfully", { id: toastId });
@@ -97,7 +97,7 @@ export default function CreateJobPage() {
     try {
       toastId = toast.loading("Updating Job...");
       const response = await axios.put(
-        `http://localhost:3000/api/company-api/post-job/edit/${id}`,
+        `https://job-assist.vercel.app/api/company-api/post-job/edit/${id}`,
         jobData
       );
 

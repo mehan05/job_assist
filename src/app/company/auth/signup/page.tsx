@@ -32,7 +32,7 @@ const CompanySignup = () => {
       toastId = toast.loading("Creating User...");
 
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "https://job-assist.vercel.app/api/auth/signup",
         userData
       );
       console.log("response", response);

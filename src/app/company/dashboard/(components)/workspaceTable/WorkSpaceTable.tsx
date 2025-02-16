@@ -32,7 +32,7 @@ const WorkSpaceTables = () => {
     const toastId = toast.loading("Deleting Workspace...");
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/company-api/workspace/delete/${id}`
+        `https://job-assist.vercel.app/api/company-api/workspace/delete/${id}`
       );
 
       if (response.status == 200) {
@@ -50,7 +50,7 @@ const WorkSpaceTables = () => {
   const getAllWorkSpaces = async () => {
     try {
       const workSpaceData = await axios.get(
-        "http://localhost:3000/api/company-api/workspace"
+        "https://job-assist.vercel.app/api/company-api/workspace"
       );
       if (workSpaceData.status === 200) {
         console.log("workspaceData:", workSpaceData.data);

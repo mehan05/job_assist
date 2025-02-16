@@ -41,7 +41,7 @@ const ApplicantPage = () => {
       const toastId = toast.loading("Loading Applications...");
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/company-api/job-applications/"
+          "https://job-assist.vercel.app/api/company-api/job-applications/"
         );
         setApplicants(response.data.response);
         toast.success("Applications loaded successfully", { id: toastId });
@@ -63,7 +63,7 @@ const ApplicantPage = () => {
     );
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/company-api/job-applications/${id}`,
+        `https://job-assist.vercel.app/api/company-api/job-applications/${id}`,
         { status: action === "approve" ? "ACCEPTED" : "REJECTED" }
       );
       if (response.status == 200) {

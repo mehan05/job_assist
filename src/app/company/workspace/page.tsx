@@ -74,7 +74,7 @@ export default function Workspace() {
     try {
       toastId = toast.loading("Craeting Workspace...");
       const response = await axios.post(
-        "http://localhost:3000/api/company-api/workspace",
+        "https://job-assist.vercel.app/api/company-api/workspace",
         { ...newWorkspace }
       );
       console.log(response.data);
