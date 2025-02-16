@@ -40,7 +40,7 @@ const UserSignup = () => {
     console.log(userData);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "https://job-assist.vercel.app/api/auth/signup",
         userData
       );
       console.log("response", response);

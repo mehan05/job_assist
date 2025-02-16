@@ -7,7 +7,7 @@ const Companycard = async ({ token }: { token: string }) => {
 
   try {
     const response = await axios.get(
-      "http://localhost:3000/api/company-api/collective-details/",
+      "https://job-assist.vercel.app/api/company-api/collective-details/",
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -59,7 +59,7 @@ export default function CreateJobPage() {
     try {
       toastId = toast.loading("Creating Job...");
       const response = await axios.post(
-        `http://localhost:3000/api/company-api/post-job?workspaceId=${workspaceId}`,
+        `https://job-assist.vercel.app/api/company-api/post-job?workspaceId=${workspaceId}`,
         jobData
       );
 
