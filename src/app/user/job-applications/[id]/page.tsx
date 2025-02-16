@@ -15,7 +15,7 @@ interface JobApplication {
 const fetchApplications = async (userId: string) => {
   try {
     const response = await axios.get(
-      "https://job-assist.vercel.app/api/user-api/dashboard/job-applications",
+      "http://localhost:3000/api/user-api/dashboard/job-applications",
       { params: { userId } }
     );
     if (response.status == 200) {

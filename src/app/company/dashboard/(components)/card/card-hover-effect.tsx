@@ -18,12 +18,17 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const company = details[0];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const company =  details?.[0] || (details as any)?.CollectiveObject || { totalWorkspacesCount: 0,
+    totalMembersCount: 0,
+    totalJobBoardsCount: 0,
+    totalJobApplicationCount: 0,};
+
   const items = [
-    { description: "Total Workspaces", count: company.totalWorkspacesCount },
-    { description: "Total Members", count: company.totalMembersCount },
-    { description: "Total Job Boards", count: company.totalJobBoardsCount },
-    { description: "Total Job Applications", count: company.totalJobApplicationCount },
+    { description: "Total Workspaces", count: company.totalWorkspacesCount ||0},
+    { description: "Total Members", count: company.totalMembersCount||0 },
+    { description: "Total Job Boards", count: company.totalJobBoardsCount||0 },
+    { description: "Total Job Applications", count: company.totalJobApplicationCount ||0},
   ];
   const imageLocationLinks = [
     "/job-applied_icon.png",
