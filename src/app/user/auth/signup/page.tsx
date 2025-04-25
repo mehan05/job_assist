@@ -41,7 +41,7 @@ const UserSignup = () => {
     const toastId = toast.loading("Creating Account...");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "https://job-assist.vercel.app/api/auth/signup",
         userData
       );
       if (response) {

@@ -22,7 +22,6 @@ interface JobBoard {
   UpdatedAt: string;
 }
 
-
 export default function JobBoardDetails({
   jobBoards,
 }: {
@@ -32,7 +31,7 @@ export default function JobBoardDetails({
     const toastId = toast.loading("Applying...");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/company-api/job-applications/apply",
+        "https://job-assist.vercel.app/api/company-api/job-applications/apply",
         { jobId }
       );
       console.log(response);

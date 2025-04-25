@@ -90,7 +90,7 @@ export default function WorkspaceDetails() {
       const toastId = toast.loading("Loading workspaces...");
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/user-api/workspace/" + id
+          "https://job-assist.vercel.app/api/user-api/workspace/" + id
         );
         if (response.status === 200) {
           toast.success("Workspaces loaded successfully", { id: toastId });
@@ -126,11 +126,10 @@ export default function WorkspaceDetails() {
       skills: formData.skills.split(","),
     };
 
-
     const toastId = toast.loading("Submitting request...");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/company-api/workspace/request/" + id,
+        "https://job-assist.vercel.app/api/company-api/workspace/request/" + id,
         formDataNew
       );
       if (response.status === 201) {

@@ -38,7 +38,7 @@ const WorkspaceRequestPage = () => {
       const toastId = toast.loading("Loading workspaces...");
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/company-api/workspace/request"
+          "https://job-assist.vercel.app/api/company-api/workspace/request"
         );
         console.log(response.data.data);
         setRequests(response.data.data);

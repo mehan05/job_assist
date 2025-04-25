@@ -19,7 +19,7 @@ interface NewWorkspaceData {
   inviteMembers: string[];
 }
 export default function Workspace() {
-  const router =useRouter();
+  const router = useRouter();
   const [isPublic, setIsPublic] = useState<boolean>(false);
   const [category, setCategory] = useState<string[]>([]);
   const [workspaceData, setWorkspaceData] = useState<WorkspaceData>({
@@ -29,7 +29,6 @@ export default function Workspace() {
     visibility: "",
     inviteMembers: [],
   });
-
 
   const handleOnChange = (
     e: React.ChangeEvent<
@@ -74,13 +73,12 @@ export default function Workspace() {
     try {
       toastId = toast.loading("Craeting Workspace...");
       const response = await axios.post(
-        "http://localhost:3000/api/company-api/workspace",
+        "https://job-assist.vercel.app/api/company-api/workspace",
         { ...newWorkspace }
       );
       if (response.status == 200) {
         toast.success("Workspace Created Successfully", { id: toastId });
-        router.replace("/company/dashboard")
-
+        router.replace("/company/dashboard");
       } else if (response.status == 401) {
         toast.error("Invalid Data", { id: toastId });
       } else if (response.status == 402) {

@@ -42,7 +42,7 @@ const PostJobTable = () => {
     const toastId = toast.loading("Deleting Workspace...");
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/company-api/workspace/delete/${id}`
+        `https://job-assist.vercel.app/api/company-api/workspace/delete/${id}`
       );
 
       if (response.status == 200) {
@@ -60,13 +60,10 @@ const PostJobTable = () => {
   const getJobData = async () => {
     try {
       const JobData = await axios.get(
-        "http://localhost:3000/api/company-api/post-job"
+        "https://job-assist.vercel.app/api/company-api/post-job"
       );
       if (JobData.status === 200) {
-
-
         setJobData(JobData.data.reponse);
-
       } else if (JobData.status === 401) {
         toast.warning("Invalid User");
         router.replace("/company/auth/login");
@@ -109,7 +106,8 @@ const PostJobTable = () => {
                 {Array.isArray(val.applications) ? val.applications.length : 0}
               </TableCell>
               <TableCell>
-                {val.salaryFrom || 0}{"   "}-{" "}{val.salaryTo || 0}
+                {val.salaryFrom || 0}
+                {"   "}- {val.salaryTo || 0}
               </TableCell>
 
               <TableCell>
