@@ -26,7 +26,6 @@ export async function PUT(
   const { id } = await params;
   const body = await req.json();
   try {
-    console.log("deadline from edit:",body.deadline);
      const findJob = await prisma.jobBoard.findUnique({
         where:{id}
      })

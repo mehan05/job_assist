@@ -35,7 +35,7 @@ const CandidateSearchPage = () => {
       const toastId = toast.loading("Fetching candidates...");
       try {
         const response = await axios.get(
-          "https://job-assist.vercel.app/api/company-api/get-candidate"
+          "http://localhost:3000/api/company-api/get-candidate"
         );
         if (response.status === 200) {
           setCandidates(response.data.response);
@@ -58,8 +58,6 @@ const CandidateSearchPage = () => {
     fetchCandidateData();
   }, []);
 
-  console.log("candidate type:", candidates);
-  console.log("filtered Type:", typeof filteredCandidates);
   useEffect(() => {
     if (candidates) {
       const filteredCandidates = candidates.filter(

@@ -40,7 +40,7 @@ export default function WorkspaceRequestPage() {
       const toastId = toast.loading("Fetching workspace requests...");
       try {
         const response = await axios.get(
-          `https://job-assist.vercel.app/api/company-api/workspace/request/${id}`
+          `http://localhost:3000/api/company-api/workspace/request/${id}`
         );
         setRequests(response.data.data);
         setRequests((prev) => {
@@ -71,7 +71,7 @@ export default function WorkspaceRequestPage() {
     if (requestAction == "APPROVED") {
       try {
         const response = await axios.post(
-          "https://job-assist.vercel.app/api/company-api/workspace/request/requested-status/accept/" +
+          "http://localhost:3000/api/company-api/workspace/request/requested-status/accept/" +
             requestID,
           { workspaceId: id }
         );
@@ -86,7 +86,7 @@ export default function WorkspaceRequestPage() {
     } else {
       try {
         const response = await axios.post(
-          "https://job-assist.vercel.app/api/company-api/workspace/request/requested-status/rejected/" +
+          "http://localhost:3000/api/company-api/workspace/request/requested-status/rejected/" +
             id
         );
         if (response.status == 200) {

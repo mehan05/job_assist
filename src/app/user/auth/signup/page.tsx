@@ -7,7 +7,9 @@ import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 const UserSignup = () => {
+  const router = useRouter();
   const words = "Job_Assist";
   const [skills, SetSkills] = useState<string[]>([]);
   const [skill, setSkill] = useState<string>("");
@@ -37,15 +39,14 @@ const UserSignup = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const toastId = toast.loading("Creating Account...");
-    console.log(userData);
     try {
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/auth/signup",
+        "http://localhost:3000/api/auth/signup",
         userData
       );
-      console.log("response", response);
       if (response) {
         toast.success("User Created Successfully", { id: toastId });
+        router.replace("/user/dashboard");
       }
     } catch (error) {
       if (error instanceof AxiosError) {

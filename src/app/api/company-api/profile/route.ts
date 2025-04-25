@@ -15,7 +15,6 @@ interface TokenPayLoad{
 export async function GET(req:NextRequest)
 {
     const token = req.headers.get("Authorization")?.split(" ")[1];
-  console.log("requet hit from api");
   if(token===undefined) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
         const Secret = process.env.SECRET_KEY as string; 
         const decrypt = jwt.verify(token,Secret as string) as unknown as TokenPayLoad;

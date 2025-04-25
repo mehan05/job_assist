@@ -22,20 +22,17 @@ const CompanySignup = () => {
     headlines: "",
     bio: "",
   });
-  console.log(date);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let toastId;
-    console.log(userData);
     try {
       toastId = toast.loading("Creating User...");
 
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/auth/signup",
+        "http://localhost:3000/api/auth/signup",
         userData
       );
-      console.log("response", response);
 
       if (response.status === 200) {
         toast.success("User Created Successfully", { id: toastId });
@@ -48,7 +45,6 @@ const CompanySignup = () => {
         if (error.status === 500) {
           toast.error("Something went wrong", { id: toastId });
         }
-        console.log(error.response?.data);
       }
     }
   };
@@ -60,7 +56,6 @@ const CompanySignup = () => {
   ) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-    console.log("FOrm data:", userData);
   };
   useEffect(() => {
     setUserData((prev) => ({ ...prev, dob: date }));

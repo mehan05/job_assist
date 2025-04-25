@@ -21,7 +21,6 @@ export const HoverEffect = ({
     "/job-pending-icon.png",
     "/job-selected-icon.png"];
 
-    console.log("count from innre hovercard:",items);
   return (
     <div
       className={cn(

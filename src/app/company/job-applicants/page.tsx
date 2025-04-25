@@ -41,7 +41,7 @@ const ApplicantPage = () => {
       const toastId = toast.loading("Loading Applications...");
       try {
         const response = await axios.get(
-          "https://job-assist.vercel.app/api/company-api/job-applications/"
+          "http://localhost:3000/api/company-api/job-applications/"
         );
         console.log(response.data);
         setapplicants(response.data.response);
@@ -57,7 +57,6 @@ const ApplicantPage = () => {
 
     fetchapplicants();
   }, []);
-  console.log("request id", applicants);
   if (loading) {
     return (
       <div>

@@ -6,9 +6,6 @@ export async function POST(req:NextRequest,{params}:{params:{id:string}})
 {
         const {id} = (await params);
         const {workspaceId} =await req.json();
-        console.log("Requet came for status");
-        console.log("id from params:",id);
-        console.log("workspace ID:",workspaceId);
         let response;
         try {
           await prisma.$transaction(async (prisma)=>{

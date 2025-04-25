@@ -11,7 +11,6 @@ import { cookies } from 'next/headers'
 const CompanyDashboard = async () => {
     const cookie = await cookies();
        const token = cookie.get("token")?.value;
-       console.log("token from company  dashboard",token);
        if (!token) {
         throw new Error("Token is missing");
       }
@@ -28,7 +27,12 @@ const CompanyDashboard = async () => {
                 <TextAnimate animate="slideLeft" by="character" className='text-4xl font-Josefin_Sans'>
                     Dashboard
                 </TextAnimate>
-                      <Link href="/company/workspace-request" className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>View Requests</Link>
+                <div className='flex gap-10'>
+
+                      <Link href="/company/workspace-request" className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>View Workspace  Requests</Link>
+                      
+                       <Link href="/company/job-applicants" className='font-Josefin_Sans text-lg m-2 hover:scale-105 hover:transition-all hover:duration-300 hover:ease-in-out border-2 border-[#9574e2] rounded-xl p-2 text-[#9574e2]'>View Job Applicants</Link>
+                </div>
               </div>
               <div className='w-full'>
                   <Companycard token={token} />

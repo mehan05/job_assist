@@ -19,23 +19,17 @@ export async function POST(req: NextRequest) {
   const data = {
     name: body.name,
     description: body.description,
-    
+    isPublic:body.visibility,
+    category:body.category
   }
-  console.log(typeof body);
   const token = (await cookies()).get("token")?.value;
   const result = WorkSpaceSchema.safeParse(body);
+  console.log("from bcakend",result);
+
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
-  console.log("tokenDecrypt",tokenDecrypt)
-  console.log("Body",body);
   if(tokenDecrypt.payload.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
-  console.log(result.success);
   if(!result.success) return NextResponse.json({ msg: "invalid data" }, { status: 402 });
-  const testObj = { ...data,
-    createdBy:tokenDecrypt.payload.email,
-    createdById:tokenDecrypt.payload.id,
-    isPublic:body.visibility
-  }
-  console.log("testObj",testObj);
+
    if(result.success)
    {
       try {
@@ -64,9 +58,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req:NextRequest)
 {
   const token = (await cookies()).get("token")?.value;
-  console.log("printign token:",token);
   const verifToken = jwt.verify(token as string,Secret) as tokenDecryptInterface;
-  console.log("verifToken",verifToken);
   if(verifToken.payload.role!=="COMPANY") return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   if(!token) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   const tokenDecrypt = jwt.verify(token as string,Secret) as tokenDecryptInterface;
@@ -91,7 +83,6 @@ export async function GET(req:NextRequest)
     })
     if(workspaceData)
     {
-      console.log("getting data:",workspaceData);
       return NextResponse.json({data:workspaceData},{status:200});
     }
     return NextResponse.json({ msg: "Data not found" }, { status: 404 });

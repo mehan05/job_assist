@@ -48,7 +48,6 @@ export default function CreateJobPage() {
 
   useEffect(() => {
     const date1 = date.toISOString().split("T")[0];
-    console.log(typeof date1);
     setJobData((prev) => ({ ...prev, skillsRequired: skillsRequired }));
     setJobData((prev) => ({ ...prev, deadline: date1 }));
   }, [skillsRequired, date]);
@@ -59,7 +58,7 @@ export default function CreateJobPage() {
     try {
       toastId = toast.loading("Creating Job...");
       const response = await axios.post(
-        `https://job-assist.vercel.app/api/company-api/post-job?workspaceId=${workspaceId}`,
+        `http://localhost:3000/api/company-api/post-job?workspaceId=${workspaceId}`,
         jobData
       );
 
@@ -83,20 +82,17 @@ export default function CreateJobPage() {
       }
     }
 
-    console.log(jobData);
   };
 
   const HandleSkillAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      console.log("skill", skillsRequired);
       if (skill.trim()) {
         setskillsRequired((prev) => [...prev, skill]);
         setSkill("");
       }
     }
   };
-  console.log(jobData);
   return (
     <div className="overflow-hidden scale-90">
       <div className=" ml-10 m-2">

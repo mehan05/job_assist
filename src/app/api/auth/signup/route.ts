@@ -6,14 +6,11 @@ import { sign } from "@/lib/jwtsign";
 
 export async function POST(req:NextRequest)
 {
-    console.log("Request arrived")
     const body = await req.json();
     const result = CompanySchema.safeParse(body);
     const Secret = process.env.SECRET_KEY!
     const hashPassword = await bcrypt.hashSync(body.password,10)
     body.password = hashPassword
-    console.log("testbody",body);
-    console.log("Zod Result:",result.error);
     try {
         if(result.success)
         {

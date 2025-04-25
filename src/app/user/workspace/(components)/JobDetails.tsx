@@ -22,23 +22,6 @@ interface JobBoard {
   UpdatedAt: string;
 }
 
-const jobBoardData: JobBoard = {
-  id: "d9f35cce-6b1b-4c4f-9a31-55ca2df7930a",
-  title: "mehanjob",
-  description: "mehanjob",
-  location: "salem",
-  postById: "7414bd58-fa68-4133-aeb5-a654ece5588b",
-  postBy: "mehanmehan6@gmail.com",
-  deadline: "2025-01-09T00:00:00.000Z",
-  skillsRequired: [],
-  contactEmail: "mehanmehan6@gmail.com",
-  workSpaceId: "08de30cb-defa-4d0c-8909-7cd684b0ec9c",
-  salaryFrom: 23,
-  salaryTo: 34,
-  employmentType: "Contract",
-  createdAt: "2025-01-14T09:51:14.980Z",
-  UpdatedAt: "2025-01-17T19:44:52.908Z",
-};
 
 export default function JobBoardDetails({
   jobBoards,
@@ -49,7 +32,7 @@ export default function JobBoardDetails({
     const toastId = toast.loading("Applying...");
     try {
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/company-api/job-applications/apply",
+        "http://localhost:3000/api/company-api/job-applications/apply",
         { jobId }
       );
       console.log(response);

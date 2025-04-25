@@ -23,7 +23,6 @@ interface CollectiveDetails {
 
 export async function GET(req: NextRequest) {
   try {
-    console.log("requet hit");
     const token = req.headers.get('Authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ message: 'No token provided' }, { status: 401 })
@@ -79,10 +78,8 @@ export async function GET(req: NextRequest) {
         totalJobBoardsCount: arr[0]._count.jobBoards,
         totalJobApplicationCount: JobAndWorkspaceCount._count.jobApplications
       };
-      console.log("printign the object of data:",CollectiveObject);
      return NextResponse.json({ CollectiveObject }, { status: 200 });
    } else {
-     console.log("No data found");
      return NextResponse.json({ message: 'No data found' }, { status: 404 });
    }
   
