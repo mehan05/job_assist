@@ -37,14 +37,12 @@ interface WorkSpace {
 const PostJobTable = () => {
   const router = useRouter();
   const [JobData, setJobData] = useState<JobTableInterface[]>([]);
-  useEffect(() => {
-    console.log("workspcateData:", JobData);
-  });
+
   const handleDeleteWorkspace = async (id: string) => {
     const toastId = toast.loading("Deleting Workspace...");
     try {
       const response = await axios.delete(
-        `https://job-assist.vercel.app/api/company-api/workspace/delete/${id}`
+        `http://localhost:3000/api/company-api/workspace/delete/${id}`
       );
 
       if (response.status == 200) {
@@ -62,15 +60,13 @@ const PostJobTable = () => {
   const getJobData = async () => {
     try {
       const JobData = await axios.get(
-        "https://job-assist.vercel.app/api/company-api/post-job"
+        "http://localhost:3000/api/company-api/post-job"
       );
       if (JobData.status === 200) {
-        console.log("postJob Data:", JobData.data);
-        console.log("postJob DataType:", typeof JobData.data);
+
 
         setJobData(JobData.data.reponse);
 
-        console.log("Job state data");
       } else if (JobData.status === 401) {
         toast.warning("Invalid User");
         router.replace("/company/auth/login");
@@ -84,7 +80,6 @@ const PostJobTable = () => {
         console.log(error.response?.data);
       }
     }
-    console.log("workspace StateData:", JobData);
   };
 
   useEffect(() => {
@@ -114,7 +109,7 @@ const PostJobTable = () => {
                 {Array.isArray(val.applications) ? val.applications.length : 0}
               </TableCell>
               <TableCell>
-                {val.salaryFrom || 0}/{val.salaryTo || 0}
+                {val.salaryFrom || 0}{"   "}-{" "}{val.salaryTo || 0}
               </TableCell>
 
               <TableCell>

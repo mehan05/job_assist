@@ -7,7 +7,7 @@ const Companycard = async ({ token }: { token: string }) => {
 
   try {
     const response = await axios.get(
-      "https://job-assist.vercel.app/api/company-api/collective-details/",
+      "http://localhost:3000/api/company-api/collective-details/",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -16,7 +16,6 @@ const Companycard = async ({ token }: { token: string }) => {
     );
     detailsOfCompany = response.data.CollectiveObject;
 
-    console.log("company job details from card:", detailsOfCompany);
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.message);

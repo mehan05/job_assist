@@ -1,6 +1,7 @@
 "use client";
 import { NavBar } from "@/components/NavBar";
 import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 interface WorkspaceData {
@@ -18,6 +19,7 @@ interface NewWorkspaceData {
   inviteMembers: string[];
 }
 export default function Workspace() {
+  const router =useRouter();
   const [isPublic, setIsPublic] = useState<boolean>(false);
   const [category, setCategory] = useState<string[]>([]);
   const [workspaceData, setWorkspaceData] = useState<WorkspaceData>({
@@ -28,8 +30,7 @@ export default function Workspace() {
     inviteMembers: [],
   });
 
-  console.log(workspaceData);
-  console.log("category:", category);
+
   const handleOnChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -62,7 +63,6 @@ export default function Workspace() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let toastId;
-    console.log(workspaceData);
     setIsPublic(workspaceData.visibility === "Public");
     const newWorkspace: NewWorkspaceData = {
       name: workspaceData.name,
@@ -74,12 +74,13 @@ export default function Workspace() {
     try {
       toastId = toast.loading("Craeting Workspace...");
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/company-api/workspace",
+        "http://localhost:3000/api/company-api/workspace",
         { ...newWorkspace }
       );
-      console.log(response.data);
       if (response.status == 200) {
         toast.success("Workspace Created Successfully", { id: toastId });
+        router.replace("/company/dashboard")
+
       } else if (response.status == 401) {
         toast.error("Invalid Data", { id: toastId });
       } else if (response.status == 402) {
@@ -132,42 +133,57 @@ export default function Workspace() {
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   <button
                     type="button"
-                    className={`${category.includes("Technology") && "bg-[#ad54f0]  text-white"}  hover:scale-105 p-2 border rounded-md`}
+                    className={`${
+                      category.includes("Technology") &&
+                      "bg-[#ad54f0]  text-white"
+                    }  hover:scale-105 p-2 border rounded-md`}
                     onClick={() => handleAddCategory("Technology")}
                   >
                     Technology
                   </button>
                   <button
                     type="button"
-                    className={`${category.includes("Marketing") && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                    className={`${
+                      category.includes("Marketing") &&
+                      "bg-[#ad54f0]  text-white"
+                    }  p-2 border hover:scale-105 rounded-md`}
                     onClick={() => handleAddCategory("Marketing")}
                   >
                     Marketing
                   </button>
                   <button
                     type="button"
-                    className={`${category.includes("Design") && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                    className={`${
+                      category.includes("Design") && "bg-[#ad54f0]  text-white"
+                    }  p-2 border hover:scale-105 rounded-md`}
                     onClick={() => handleAddCategory("Design")}
                   >
                     Design
                   </button>
                   <button
                     type="button"
-                    className={`${category.includes("Finance") && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                    className={`${
+                      category.includes("Finance") && "bg-[#ad54f0]  text-white"
+                    }  p-2 border hover:scale-105 rounded-md`}
                     onClick={() => handleAddCategory("Finance")}
                   >
                     Finance
                   </button>
                   <button
                     type="button"
-                    className={`${category.includes("Healthcare") && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                    className={`${
+                      category.includes("Healthcare") &&
+                      "bg-[#ad54f0]  text-white"
+                    }  p-2 border hover:scale-105 rounded-md`}
                     onClick={() => handleAddCategory("Healthcare")}
                   >
                     Healthcare
                   </button>
                   <button
                     type="button"
-                    className={`${category.includes("Other") && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                    className={`${
+                      category.includes("Other") && "bg-[#ad54f0]  text-white"
+                    }  p-2 border hover:scale-105 rounded-md`}
                     onClick={() => handleAddCategory("Other")}
                   >
                     Other

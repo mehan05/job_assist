@@ -52,7 +52,6 @@ function WorkSpaceEdit() {
       setLoading(false);
       toast.error("ID not found");
     }
-    console.log("workspace state data", workspaceData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
@@ -60,7 +59,7 @@ function WorkSpaceEdit() {
     const toastId = toast.loading("Fetching Data...");
     try {
       const response = await axios.get(
-        "https://job-assist.vercel.app/api/company-api/workspace/edit/" + id
+        "http://localhost:3000/api/company-api/workspace/edit/" + id
       );
       if (response.status == 200) {
         toast.success("Data Fetched Successfully", { id: toastId });
@@ -75,8 +74,6 @@ function WorkSpaceEdit() {
           };
         });
 
-        console.log("workspace state data", workspaceData);
-        console.log("workspace data", response.data.data.name);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -108,7 +105,6 @@ function WorkSpaceEdit() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let toastId;
-    console.log(workspaceData);
     setIsPublic(workspaceData.visibility === "Public");
     const newWorkspace: NewWorkspaceData = {
       name: workspaceData.name,
@@ -120,12 +116,12 @@ function WorkSpaceEdit() {
     try {
       toastId = toast.loading("Craeting Workspace...");
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/company/workspace",
+        "http://localhost:3000/api/company/workspace",
         { ...newWorkspace }
       );
-      console.log(response.data);
       if (response.status == 200) {
         toast.success("Workspace Created Successfully", { id: toastId });
+        
       } else if (response.status == 401) {
         toast.error("Invalid Data", { id: toastId });
       } else if (response.status == 402) {
@@ -152,7 +148,7 @@ function WorkSpaceEdit() {
             <div className="h-48 w-auto max-w-3/4 flex items-center">
               <div className="w-full">
                 <h1 className="font-Josefin_Sans text-4xl font-bold">
-                  Create Your Workspace
+                  Edit Your Workspace
                 </h1>
                 <p className="font-Josefin_Sans text-xl font-semibold ">
                   Collaborate, innovate, and grow with your team in a dedicated
@@ -185,42 +181,66 @@ function WorkSpaceEdit() {
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <button
                       type="button"
-                      className={`${(category.includes("Technology") || workspaceData.category?.includes("Technology")) && "bg-[#ad54f0]  text-white"}  hover:scale-105 p-2 border rounded-md`}
+                      className={`${
+                        (category.includes("Technology") ||
+                          workspaceData.category?.includes("Technology")) &&
+                        "bg-[#ad54f0]  text-white"
+                      }  hover:scale-105 p-2 border rounded-md`}
                       onClick={() => handleAddCategory("Technology")}
                     >
                       Technology
                     </button>
                     <button
                       type="button"
-                      className={`${(category.includes("Marketing") || workspaceData.category?.includes("Marketing")) && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                      className={`${
+                        (category.includes("Marketing") ||
+                          workspaceData.category?.includes("Marketing")) &&
+                        "bg-[#ad54f0]  text-white"
+                      }  p-2 border hover:scale-105 rounded-md`}
                       onClick={() => handleAddCategory("Marketing")}
                     >
                       Marketing
                     </button>
                     <button
                       type="button"
-                      className={`${(category.includes("Design") || workspaceData.category?.includes("Design")) && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                      className={`${
+                        (category.includes("Design") ||
+                          workspaceData.category?.includes("Design")) &&
+                        "bg-[#ad54f0]  text-white"
+                      }  p-2 border hover:scale-105 rounded-md`}
                       onClick={() => handleAddCategory("Design")}
                     >
                       Design
                     </button>
                     <button
                       type="button"
-                      className={`${(category.includes("Finance") || workspaceData.category?.includes("Finance")) && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                      className={`${
+                        (category.includes("Finance") ||
+                          workspaceData.category?.includes("Finance")) &&
+                        "bg-[#ad54f0]  text-white"
+                      }  p-2 border hover:scale-105 rounded-md`}
                       onClick={() => handleAddCategory("Finance")}
                     >
                       Finance
                     </button>
                     <button
                       type="button"
-                      className={`${(category.includes("Healthcare") || workspaceData.category?.includes("Healthcare")) && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                      className={`${
+                        (category.includes("Healthcare") ||
+                          workspaceData.category?.includes("Healthcare")) &&
+                        "bg-[#ad54f0]  text-white"
+                      }  p-2 border hover:scale-105 rounded-md`}
                       onClick={() => handleAddCategory("Healthcare")}
                     >
                       Healthcare
                     </button>
                     <button
                       type="button"
-                      className={`${(category.includes("Other") || workspaceData.category?.includes("Other")) && "bg-[#ad54f0]  text-white"}  p-2 border hover:scale-105 rounded-md`}
+                      className={`${
+                        (category.includes("Other") ||
+                          workspaceData.category?.includes("Other")) &&
+                        "bg-[#ad54f0]  text-white"
+                      }  p-2 border hover:scale-105 rounded-md`}
                       onClick={() => handleAddCategory("Other")}
                     >
                       Other

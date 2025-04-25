@@ -27,7 +27,7 @@ export default function BrowseWorkspaces() {
       const toastId = toast.loading("Loading workspaces...");
       try {
         const response = await axios.get(
-          "https://job-assist.vercel.app/api/user-api/workspace"
+          "http://localhost:3000/api/user-api/workspace"
         );
         if (response.status === 200) {
           toast.success("Workspaces loaded successfully", { id: toastId });

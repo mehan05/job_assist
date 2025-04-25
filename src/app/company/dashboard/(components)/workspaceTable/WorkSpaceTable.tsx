@@ -25,14 +25,12 @@ const WorkSpaceTables = () => {
   const router = useRouter();
 
   const [workSpaceData, setWorkSpaceData] = useState<WorkSpaceTableProps[]>([]);
-  useEffect(() => {
-    console.log("workspcateData:", workSpaceData);
-  });
+
   const handleDeleteWorkspace = async (id: string) => {
     const toastId = toast.loading("Deleting Workspace...");
     try {
       const response = await axios.delete(
-        `https://job-assist.vercel.app/api/company-api/workspace/delete/${id}`
+        `http://localhost:3000/api/company-api/workspace/delete/${id}`
       );
 
       if (response.status == 200) {
@@ -50,10 +48,9 @@ const WorkSpaceTables = () => {
   const getAllWorkSpaces = async () => {
     try {
       const workSpaceData = await axios.get(
-        "https://job-assist.vercel.app/api/company-api/workspace"
+        "http://localhost:3000/api/company-api/workspace"
       );
       if (workSpaceData.status === 200) {
-        console.log("workspaceData:", workSpaceData.data);
 
         setWorkSpaceData(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,7 +74,6 @@ const WorkSpaceTables = () => {
         console.log(error.response?.data);
       }
     }
-    console.log("workspace StateData:", workSpaceData);
   };
 
   useEffect(() => {

@@ -9,7 +9,6 @@ import { cookies } from 'next/headers'
 const UserDashboard =async () => {
      const cookie = await cookies();
      const token = cookie.get("token")?.value;
-     console.log("token from dashboard",token);
      if (!token) {
       throw new Error("Token is missing");
     }

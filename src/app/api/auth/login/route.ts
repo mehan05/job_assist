@@ -21,7 +21,6 @@ interface LoginBody{
 const Secret = process.env.SECRET_KEY as string
 export async function POST(req:NextRequest){
     const body:LoginBody = await req.json();
-    console.log(body);
     const result = UserLoginSchema.safeParse(body);
     try {
         if(result.success)

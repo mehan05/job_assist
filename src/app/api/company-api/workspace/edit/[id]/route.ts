@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const { id } = params;
-  console.log("id:",id);
   try {
     const workspace = await prisma.workSpace.findUnique({
       where: { id },
@@ -11,10 +10,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         members:true,
       }
     });
-    console.log("request get came");
     if (!workspace) {
       return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
     }
+    console.log("mehan",workspace);
     return NextResponse.json({ data: workspace }, { status: 200 });
 
   } catch (error) {
@@ -35,7 +34,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     isPublic: body.visibility,
     members: body.inviteMembers,
   }
-  console.log("updating body:", body);
   try {
     const updatedWorkspace = await prisma.workSpace.update({
       where: { id },

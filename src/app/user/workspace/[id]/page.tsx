@@ -90,7 +90,7 @@ export default function WorkspaceDetails() {
       const toastId = toast.loading("Loading workspaces...");
       try {
         const response = await axios.get(
-          "https://job-assist.vercel.app/api/user-api/workspace/" + id
+          "http://localhost:3000/api/user-api/workspace/" + id
         );
         if (response.status === 200) {
           toast.success("Workspaces loaded successfully", { id: toastId });
@@ -111,8 +111,7 @@ export default function WorkspaceDetails() {
 
     fetchWorkspaces();
   }, [id]);
-  console.log("workspacesjobboards", workspaces.jobBoards);
-  console.log("memeber status:", ismember);
+
   // Handle input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -126,14 +125,12 @@ export default function WorkspaceDetails() {
       message: formData.message,
       skills: formData.skills.split(","),
     };
-    console.log("formdatanew", formDataNew);
-    console.log("Submitted Data:", formData);
-    console.log("type:", typeof formData.skills);
+
 
     const toastId = toast.loading("Submitting request...");
     try {
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/company-api/workspace/request/" + id,
+        "http://localhost:3000/api/company-api/workspace/request/" + id,
         formDataNew
       );
       if (response.status === 201) {
@@ -141,7 +138,6 @@ export default function WorkspaceDetails() {
         setFormData({ message: "", skills: "" });
       }
     } catch (error) {
-      console.error("Error submitting request:", error);
       toast.error("Failed to submit request. Please try again.", {
         id: toastId,
       });

@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
-  console.log("User ID from server:", id);
 
   try {
     const jobApplications = await prisma.jobApplication.findMany({
@@ -15,7 +14,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       },
     });
 
-    console.log("Request arrived");
     if (jobApplications.length === 0) {
       return NextResponse.json({ msg: "No applications found" }, { status: 404 });
     }

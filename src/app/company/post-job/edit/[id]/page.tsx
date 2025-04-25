@@ -55,7 +55,6 @@ export default function CreateJobPage() {
 
   useEffect(() => {
     const date1 = date.toISOString();
-    console.log(typeof date1);
     setJobData((prev) => ({ ...prev, skillsRequired: skillsRequired }));
     setJobData((prev) => ({ ...prev, deadline: date1 }));
   }, [skillsRequired, date]);
@@ -64,7 +63,7 @@ export default function CreateJobPage() {
     const toastId = toast.loading("Fetching Data...");
     try {
       const response = await axios.get(
-        "https://job-assist.vercel.app/api/company-api/post-job/edit/" + id
+        "http://localhost:3000/api/company-api/post-job/edit/" + id
       );
       if (response.status == 200) {
         toast.success("Data Fetched Successfully", { id: toastId });
@@ -81,7 +80,6 @@ export default function CreateJobPage() {
             deadline: response.data.reponse.deadline,
           };
         });
-        console.log("jobData", response.data.reponse);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -97,7 +95,7 @@ export default function CreateJobPage() {
     try {
       toastId = toast.loading("Updating Job...");
       const response = await axios.put(
-        `https://job-assist.vercel.app/api/company-api/post-job/edit/${id}`,
+        `http://localhost:3000/api/company-api/post-job/edit/${id}`,
         jobData
       );
 
@@ -115,7 +113,6 @@ export default function CreateJobPage() {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
         toast.error("Something went wrong", { id: toastId });
         console.log(error);
       }
@@ -125,7 +122,6 @@ export default function CreateJobPage() {
   const HandleSkillAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      console.log("skill", skillsRequired);
       if (skill.trim() && !skillsRequired.includes(skill.trim())) {
         setskillsRequired((prev) => [
           ...jobData.skillsRequired,

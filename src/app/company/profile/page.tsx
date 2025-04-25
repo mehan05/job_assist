@@ -28,11 +28,10 @@ const page = async () => {
   let userData: User | null = null;
   const cookie = await cookies();
   const token = cookie.get("token")?.value;
-  //  console.log("token from profile",token);
 
   try {
     const UserData = await axios.get(
-      `https://job-assist.vercel.app/api/user-api/profile/`,
+      `http://localhost:3000/api/user-api/profile/`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

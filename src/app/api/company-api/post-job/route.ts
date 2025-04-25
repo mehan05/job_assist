@@ -17,7 +17,6 @@ const Secret = process.env.SECRET_KEY;
 export async function POST(req: NextRequest) {
   const url  = new URL(req.url);
   const workspaceId = url.searchParams.get("workspaceId");  
-  console.log("workspaceId",typeof Number(workspaceId));
   const body = await req.json();
   if (!body)
     return NextResponse.json({ msg: "Enter Some Data" }, { status: 403 });
@@ -29,11 +28,8 @@ export async function POST(req: NextRequest) {
     token as string,
     Secret as string
   ) as tokenDecryptInterface;
-  console.log("tokenDecrypt", tokenDecrypt);
-  console.log("body:", body);
   const res = JobOpeningSchema.safeParse(body);
   if (!Secret) {
-    console.error("SECRET_KEY is missing.");
     return NextResponse.json(
       { msg: "Server error: missing secret key" },
       { status: 500 }
@@ -62,7 +58,6 @@ export async function POST(req: NextRequest) {
         },
       });
       if (jobBoard) {
-        console.log(jobBoard);
         return NextResponse.json({ message: "job created" }, { status: 200 });
       }
     }
@@ -83,7 +78,6 @@ export async function GET()
  
   const token = (await cookies()).get("token")?.value;
 
-  console.log("token from post job",token)
   const tokenDecrypt = jwt.verify(token as string,Secret as string) as tokenDecryptInterface;
   if(!(tokenDecrypt.payload.role==="COMPANY")) return NextResponse.json({ msg: "unauthorized" }, { status: 401 });
   try {
