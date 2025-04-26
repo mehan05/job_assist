@@ -23,7 +23,7 @@ interface JobBoard {
 const fetchJobs = async (): Promise<JobBoard[]> => {
   try {
     const response = await axios.get(
-      `https://job-assist.vercel.app/api/user-api/dashboard/job/`
+      `http://localhost:3000/api/user-api/dashboard/job/`
     );
     if (response.status === 200) {
       console.log("Response:", response.data);

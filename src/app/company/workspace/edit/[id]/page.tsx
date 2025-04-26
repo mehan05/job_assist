@@ -59,7 +59,7 @@ function WorkSpaceEdit() {
     const toastId = toast.loading("Fetching Data...");
     try {
       const response = await axios.get(
-        "https://job-assist.vercel.app/api/company-api/workspace/edit/" + id
+        "http://localhost:3000/api/company-api/workspace/edit/" + id
       );
       if (response.status == 200) {
         toast.success("Data Fetched Successfully", { id: toastId });
@@ -115,7 +115,7 @@ function WorkSpaceEdit() {
     try {
       toastId = toast.loading("Craeting Workspace...");
       const response = await axios.post(
-        "https://job-assist.vercel.app/api/company/workspace",
+        "http://localhost:3000/api/company/workspace",
         { ...newWorkspace }
       );
       if (response.status == 200) {

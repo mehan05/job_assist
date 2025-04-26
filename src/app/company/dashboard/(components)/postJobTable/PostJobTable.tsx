@@ -42,7 +42,7 @@ const PostJobTable = () => {
     const toastId = toast.loading("Deleting Workspace...");
     try {
       const response = await axios.delete(
-        `https://job-assist.vercel.app/api/company-api/workspace/delete/${id}`
+        `http://localhost:3000/api/company-api/workspace/delete/${id}`
       );
 
       if (response.status == 200) {
@@ -60,7 +60,7 @@ const PostJobTable = () => {
   const getJobData = async () => {
     try {
       const JobData = await axios.get(
-        "https://job-assist.vercel.app/api/company-api/post-job"
+        "http://localhost:3000/api/company-api/post-job"
       );
       if (JobData.status === 200) {
         setJobData(JobData.data.reponse);
